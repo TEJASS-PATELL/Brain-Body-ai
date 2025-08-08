@@ -1,0 +1,33 @@
+import React from 'react';
+import Setting from './Setting';
+import './SettingsModal.css';
+
+interface SettingsModalProps {
+  onClose: () => void;
+  currentLanguage: string;
+  currentLevel: string;
+  onSave: (language: string, level: string) => void;
+}
+
+const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, currentLanguage, currentLevel, onSave }) => {
+  const handleComplete = (language: string, level: string) => {
+    onSave(language, level); 
+    onClose();           
+  };
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <button className="close-btn" onClick={onClose}>×</button>
+        <h2>Select Preferences</h2>
+        <Setting
+          onComplete={handleComplete}
+          currentLanguage={currentLanguage}
+          currentLevel={currentLevel}      
+        />
+      </div>
+    </div>
+  );
+};
+
+export default SettingsModal;

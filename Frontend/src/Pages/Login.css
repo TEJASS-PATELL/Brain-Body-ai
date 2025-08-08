@@ -1,0 +1,165 @@
+.login-wrapper {
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    font-family: 'Montserrat';
+}
+
+.login-box {
+  background-color: #fff;
+  padding: 40px;
+  max-width: 450px;
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 16px;
+}
+
+.login-title {
+  font-size: 34px;
+  font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
+  color: #000;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.login-title span {
+  color: #007bff;
+}
+
+.login-subtitle {
+  text-align: center;
+  font-size: 16px;
+  color: #000;
+  margin-bottom: 24px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-group label {
+  font-size: 14px;
+  
+  color: #000;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 0;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+    font-family: 'Montserrat';
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #000;
+}
+
+.forgot-link {
+  text-align: right;
+  font-size: 15px;
+}
+
+.forgot-link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.forgot-link a:hover {
+  text-decoration: underline;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  font-family: 'Orbitron', sans-serif;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.google-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  color: #374151;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.google-btn:hover {
+  background-color: #f9fafb;
+}
+
+.dividerr {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+  font-size: 15px;
+  color: #9ca3af;
+}
+
+.dividerr::before,
+.dividerr::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 0 10px;
+}
+
+.signup-text {
+  text-align: center;
+  font-size: 15px;
+  color: #0b0b0b;
+  margin-top: 20px;
+}
+
+.signup-text a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+  font-family: 'Orbitron', sans-serif;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.signup-text a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.logo-top-left {
+  position: absolute;
+  top: 20px;
+  left: 50px;
+}
+
+.logo-top-left img {
+  width: 150px; 
+  height: auto;
+}

@@ -1,0 +1,167 @@
+.htu-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: 'Montserrat';
+  color: #1c1c1c;
+}
+
+.htu-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.htu-title strong{
+ font-family: 'Orbitron', Tahoma, Geneva, Verdana, sans-serif;
+  color: #007bff;
+}
+
+.htu-subtitle {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.htu-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.htu-card {
+  background: #f8f9fa;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.2rem;
+  transition: 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.htu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.htu-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.6rem;
+}
+
+.htu-card-header h2 {
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.htu-card p {
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+.htu-icon {
+  font-size: 22px;
+}
+
+/* Optional colors */
+.blue { color: #007bff; }
+.green { color: #28a745; }
+.orange { color: #ff9900; }
+.purple { color: #6f42c1; }
+.red { color: #dc3545; }
+
+.htu-final {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.htu-link-note {
+  font-size: 1rem;
+}
+
+.htu-link {
+  color:#007bff;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* Responsive Tweaks for Tablets & Phones */
+@media (max-width: 768px) {
+  .htu-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .htu-title {
+    font-size: 1.6rem;
+    line-height: 1.4;
+  }
+
+  .htu-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .htu-card-grid {
+    gap: 16px;
+  }
+
+  .htu-card {
+    padding: 1rem;
+  }
+
+  .htu-card-header h2 {
+    font-size: 1rem;
+  }
+
+  .htu-card p {
+    font-size: 0.9rem;
+  }
+
+  .htu-final {
+    margin-top: 1.5rem;
+  }
+
+  .htu-link-note {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .htu-title {
+    font-size: 1.4rem;
+  }
+
+  .htu-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .htu-card {
+    padding: 0.9rem;
+    border-radius: 10px;
+  }
+
+  .htu-card-header {
+    gap: 8px;
+  }
+
+  .htu-icon {
+    font-size: 20px;
+  }
+
+  .htu-card-header h2 {
+    font-size: 0.95rem;
+  }
+
+  .htu-card p {
+    font-size: 0.88rem;
+  }
+
+  .htu-link {
+    font-size: 0.95rem;
+  }
+}
+

@@ -1,0 +1,160 @@
+.signup-wrapper {
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.signup-box {
+  background-color: white;
+  max-width: 520px;
+  width: 100%;
+  padding: 40px 32px;
+  border-radius: 16px;
+  border: 1px solid #d1d5db;
+  box-sizing: border-box;
+}
+
+.signup-title {
+  font-size: 34px;
+  font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
+  color: #020202;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.signup-subtitle {
+  text-align: center;
+  font-size: 16px;
+  color: #000;
+  margin-bottom: 24px;
+}
+
+.signup-subtitle span {
+  font-weight: 500;
+  color: #007bff;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 6px;
+  font-size: 16px;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.form-group label a {
+  color: #007bff;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 16px;
+  border-radius: 12px;
+  border: 1.8px solid #ddd;
+  outline: none;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  border-color: #000;
+}
+
+.password-input-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input {
+  flex-grow: 1;
+}
+
+.toggle-password {
+  background: transparent;
+  border: none;
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 8px 12px;
+  font-size: 15px;
+  border-radius: 10px;
+  margin-left: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.password-help {
+  color: #2c2c2c;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.terms-group {
+  margin-bottom: 20px;
+  font-size: 15px;
+  color: #252525;
+}
+
+.error-text {
+  color: #ff0000;
+  font-size: 14px;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+.signup-btn {
+  width: 100%;
+  background-color: #007bff;
+  border: none;
+  border-radius: 14px;
+  margin-top: 20px;
+  padding: 12px 0;
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.login-redirect {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 16px;
+  color: #141414;
+}
+
+.login-redirect a {
+  font-family: 'Orbitron', sans-serif;
+  color: #007bff;
+  font-weight: 700;
+  text-decoration: none;
+  transition: text-decoration 0.3s ease;
+}
+
+.login-redirect a:hover {
+  text-decoration: underline;
+}
+
+.logo-top-left {
+  position: absolute;
+  top: 20px;
+  left: 50px;
+}
+
+@media (max-width: 480px) {
+  .signup-box {
+    padding: 32px 24px;
+  }
+}

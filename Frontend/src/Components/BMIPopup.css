@@ -1,0 +1,112 @@
+.bmi-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.25s ease-in-out;
+  z-index: 1000;
+}
+
+.bmi-popup {
+  position: relative;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 92%;
+  max-width: 420px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  animation: slideUp 0.3s ease;
+}
+
+.bmi-popup h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 26px;
+  margin-bottom: 1.2rem;
+  color: #111;
+}
+
+.bmi-popup input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.2s ease-in-out;
+}
+
+.bmi-popup input:focus {
+  border-color: #000000;
+  outline: none;
+}
+
+.bmi-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.bmi-buttons button {
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+
+.bmi-buttons button:not(.close-btnn) {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.bmi-buttons button:hover:not(.close-btnn) {
+  background-color: #333333;
+}
+
+.close-btnn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  font-weight: bold;
+  color: #ff4444;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.bmi-result {
+  margin-top: 1.2rem;
+  padding: 14px;
+  font-size: 1rem;
+  background-color: #e8f0fe;
+  color: #0055cc;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.bmi-tip {
+  margin-top: 0.5rem;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #222;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

@@ -19,7 +19,10 @@ const RightSidebar = () => {
     "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
   ];
 
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [musicSrc, setMusicSrc] = useState<string>(musicTracks[0]);
+  const [isCustomTrack, setIsCustomTrack] = useState(false);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [dailyTasks, setDailyTasks] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -66,6 +69,7 @@ const RightSidebar = () => {
     if (file) {
       const objectUrl = URL.createObjectURL(file);
       setMusicSrc(objectUrl);
+      setIsCustomTrack(true);
       setIsPlaying(true);
 
       setTimeout(() => {
@@ -82,9 +86,35 @@ const RightSidebar = () => {
     }
   };
 
-  const handleSeek = (seconds: number) => {
+  const handleNextTrack = () => {
+    if (isCustomTrack) return; 
+    const nextIndex = (currentTrackIndex + 1) % musicTracks.length;
+    setCurrentTrackIndex(nextIndex);
+    setMusicSrc(musicTracks[nextIndex]);
+    setIsPlaying(true);
     if (audioRef.current) {
-      audioRef.current.currentTime += seconds;
+      audioRef.current.load();
+      audioRef.current.play();
+    }
+  };
+
+  const handlePrevTrack = () => {
+    if (isCustomTrack) return; 
+    const prevIndex =
+      (currentTrackIndex - 1 + musicTracks.length) % musicTracks.length;
+    setCurrentTrackIndex(prevIndex);
+    setMusicSrc(musicTracks[prevIndex]);
+    setIsPlaying(true);
+    if (audioRef.current) {
+      audioRef.current.load();
+      audioRef.current.play();
+    }
+  };
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      const query = encodeURIComponent(searchQuery.trim());
+      window.open(`https://www.google.com/search?q=${query}`, "_blank");
     }
   };
 
@@ -136,14 +166,10 @@ const RightSidebar = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="search-input"
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
         <button
-          onClick={() => {
-            if (searchQuery.trim()) {
-              const query = encodeURIComponent(searchQuery.trim());
-              window.open(`https://www.google.com/search?q=${query}`, "_blank");
-            }
-          }}
+          onClick={handleSearch}
           className="search-btn"
           title="Search"
         >
@@ -155,7 +181,7 @@ const RightSidebar = () => {
         <div className="music-player">
           <audio ref={audioRef} src={musicSrc} loop preload="auto" />
           <div className="music-controls">
-            <button onClick={() => handleSeek(-10)} title="Back 10 seconds">
+            <button onClick={handlePrevTrack} title="Previous Song">
               <FaBackward />
             </button>
 
@@ -167,7 +193,7 @@ const RightSidebar = () => {
               {isPlaying ? <FaPause /> : <FaPlay />}
             </button>
 
-            <button onClick={() => handleSeek(10)} title="Forward 10 seconds">
+            <button onClick={handleNextTrack} title="Next Song">
               <FaForward />
             </button>
           </div>

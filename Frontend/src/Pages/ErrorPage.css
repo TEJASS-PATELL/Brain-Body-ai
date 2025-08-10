@@ -1,51 +1,54 @@
-.error-page {
-  height: 100vh;
-  background-color: #1f1f1f;
-  color: white;
+.Error {
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+#error-txt {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  text-align: center;
-  padding: 2rem;
-}
-
-.error-image-wrap {
-  display: flex;
   justify-content: center;
-  margin-bottom: 2rem;
 }
 
-.error-image {
-  width: 300px;
-  max-width: 100%;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-}
-
-.error-content h2 {
-  margin-bottom: 1.5rem;
-}
-
-.error-buttons {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.button, .back-home-btn {
-  background: #00adb5;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  border: none;
-  transition: 0.3s;
+#error-txt img {
+  height: 35%;
+  width: 35%;
   cursor: pointer;
 }
 
-.button:hover, .back-home-btn:hover {
-  background: #00fff5;
-  color: black;
+.error-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.error-content h2 {
+  font-size: 35px;
+  text-align: center;
+   font-family: 'Montserrat';
+  margin-bottom: 20px;
+}
+
+.error-btn {
+  display: inline-block;
+  padding: 10px 30px;
+  font-size: 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-family: 'Montserrat';
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.3s;
+  margin-right: 10px;
+}
+
+.error-btn.home {
+  background-color: rgb(255, 187, 0);
+  color: rgb(0, 0, 0);
+}
+
+.error-btn.previous {
+  background-color: black;
+  color: white;
 }

@@ -1,18 +1,18 @@
-** Brain-Body AI
+# Brain-Body AI
 Your Personal AI Wellness Assistant — Track, Chat & Transform Your Health
 
-** Overview
+# Overview
 Brain-Body AI is an intelligent health companion that blends AI-powered conversation with real-time body metrics tracking.
 From calculating your BMI to guiding you on health & wellness tips, it brings your brain and body together in one seamless digital experience.
 
 Whether you're tracking your fitness goals, asking health-related questions, or seeking instant lifestyle advice — Brain-Body AI is here to assist.
 
-** Key Features
+# Key Features
 AI Chatbot: Engage in natural, human-like conversations for health & fitness guidance, powered by intelligent prompt processing.
 Voice Input Support: Interact with the AI using your voice for a hands-free and accessible experience.
 BMI Calculator: Get instant BMI results with detailed health category classification and actionable recommendations.
-Chat & Data History: All interactions and BMI results are stored, allowing users (or visitors) to view history anytime and continue previous conversations seamlessly.
-Daily Task & Habit Tracking: Create and manage daily health or fitness goals, with AI assistance to keep you consistent.
+Chat & Data History: All interactions and BMI results are stored, allowing users (or visitors) to view their history at any time and continue previous conversations seamlessly.
+Daily Task & Habit Tracking: Create and manage daily health or fitness goals with AI assistance to help you stay consistent.
 Interactive UI: Sleek, responsive, and mobile-friendly interface built with React.js & Tailwind CSS for a premium user experience.
 Mind Relaxation Mode: Play soothing background sounds or music to help users relax and improve focus during workouts or meditation.
 Google Search Integration: Built-in Google Search feature for instantly finding additional health tips, exercises, diet plans, or related information.
@@ -22,48 +22,46 @@ Multi-Language Capability: Designed to support future expansion into multiple la
 Skill Level Demonstrated: Showcases Full-Stack Web Development, Database Integration, REST API Design, State Management, and AI Prompt Engineering skills.
 
 
-Frontend
+# Frontend-
 React.js (Vite) — Fast & modular frontend framework
 CSS — Utility-first, responsive styling
 Axios — Efficient HTTP requests & API integration
 
-Backend
+# Backend-
 Node.js + Express.js — Lightweight & scalable backend framework
 MySQL Database — Relational database for storing user data & health metrics
 RESTful APIs — Structured data exchange between frontend & backend
 CORS & Middleware — Secure and efficient request handling
 
-AI / Logic
+# AI/Logic-
 Custom BMI Calculation Logic — Instant health metric computation
 Prompt-based AI Responses — Intelligent and context-aware replies
 
-Installation Guide
-bash
-Copy
-Edit
-# Clone the repository
+# Installation Guide-
+
+Clone the repository
 git clone https://github.com/TEJASS-PATELL/Brain-Body-ai.git
 
-# Navigate to project folder
+Navigate to the project folder
 cd Brain-Body-ai
 
-# Install dependencies for frontend
-cd frontend
+Install dependencies for frontend
+cd Frontend
 npm install
 
-# Install dependencies for backend
+Install dependencies for backend
 cd ../Backend
 npm install
 
-# Run backend server
+Run backend server
 npm start
 
-# Run frontend
+Run frontend
 cd ../Frontend
 npm run dev
 
 
-** Usage
+# Usage
 Open the app in your browser.
 Start by calculating your BMI or asking the AI chatbot a health-related question.
 Get instant, AI-powered insights & actionable advice.

@@ -73,9 +73,9 @@ npm run dev
 
 
 # Usage
-- ** Open the app in your browser.
-- ** Start by calculating your BMI or asking the AI chatbot a health-related question.
-- ** Get instant, AI-powered insights & actionable advice.
+- Open the app in your browser.
+- Start by calculating your BMI or asking the AI chatbot a health-related question.
+- Get instant, AI-powered insights & actionable advice.
 
 ---
 
@@ -83,7 +83,7 @@ npm run dev
 https://github.com/TEJASS-PATELL/Brain-Body-ai/tree/main/Screenshot
 
 Tejas Patel
-- ** Email: tejasspatell2@gmail.com
-- ** LinkedIn: https://www.linkedin.com/in/tejasspatell
-- ** GitHub: https://github.com/TEJASS-PATELL
+- **Email:** tejasspatell2@gmail.com
+- **LinkedIn:** https://www.linkedin.com/in/tejasspatell
+- **GitHub:** https://github.com/TEJASS-PATELL
 

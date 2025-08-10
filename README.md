@@ -1,13 +1,13 @@
-# Brain-Body AI
+** Brain-Body AI
 Your Personal AI Wellness Assistant — Track, Chat & Transform Your Health
 
-# Overview
+** Overview
 Brain-Body AI is an intelligent health companion that blends AI-powered conversation with real-time body metrics tracking.
 From calculating your BMI to guiding you on health & wellness tips, it brings your brain and body together in one seamless digital experience.
 
 Whether you're tracking your fitness goals, asking health-related questions, or seeking instant lifestyle advice — Brain-Body AI is here to assist.
 
-# Key Features
+** Key Features
 AI Chatbot: Engage in natural, human-like conversations for health & fitness guidance, powered by intelligent prompt processing.
 Voice Input Support: Interact with the AI using your voice for a hands-free and accessible experience.
 BMI Calculator: Get instant BMI results with detailed health category classification and actionable recommendations.
@@ -52,24 +52,24 @@ cd frontend
 npm install
 
 # Install dependencies for backend
-cd ../backend
+cd ../Backend
 npm install
 
 # Run backend server
 npm start
 
 # Run frontend
-cd ../frontend
+cd ../Frontend
 npm run dev
 
 
-# Usage
+** Usage
 Open the app in your browser.
 Start by calculating your BMI or asking the AI chatbot a health-related question.
 Get instant, AI-powered insights & actionable advice.
 
-# Screenshots
-https://github.com/TEJASS-PATELL/Brain-Body-ai/Screenshot
+** Screenshots
+https://github.com/TEJASS-PATELL/Brain-Body-ai/tree/main/Screenshot
 
 Tejas Patel
 Email: tejasspatell2@gmail.com

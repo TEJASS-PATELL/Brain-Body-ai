@@ -57,7 +57,11 @@ const Signup: React.FC = () => {
       alert(res.data.msg || "Signup successful!");
       navigate('/chatbot', { replace: true });
     } catch (err: any) {
-      alert(err.response?.data?.msg || "Signup failed");
+      if (err.response?.status === 409) {
+        alert("Email already exists. Please login.");
+      } else {
+        console.error(err);
+      }
     }
   };
 

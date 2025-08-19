@@ -3,6 +3,8 @@ const express = require("express");
 const session = require("express-session");
 const passport = require("passport"); 
 require("./config/passport"); 
+require("./models/user");
+require("./models/chat_history");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routers/authroutes");
@@ -25,13 +27,14 @@ app.use(
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
+    store: sessionStore, 
     resave: false,
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: false, 
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 1000 * 60 * 60 * 24, 
+      maxAge: 1000 * 60 * 60 * 24,
     },
   })
 );

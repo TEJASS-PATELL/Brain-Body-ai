@@ -1,6 +1,6 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const connectDB = require("./db");
+const db = require("./db"); 
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -14,7 +14,6 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const db = await connectDB();
         const email = profile.emails[0].value;
         const name = profile.displayName;
 
@@ -25,7 +24,7 @@ passport.use(
         } else {
           const [result] = await db.execute(
             "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-            [name, email, ""] 
+            [name, email, ""]
           );
           user = { id: result.insertId, name, email };
         }
@@ -43,7 +42,6 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const db = await connectDB();
     const [users] = await db.execute("SELECT * FROM users WHERE id = ?", [id]);
     done(null, users[0]);
   } catch (err) {

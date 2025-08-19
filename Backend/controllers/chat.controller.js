@@ -1,10 +1,10 @@
 const { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } = require("@google/generative-ai");
-const connectDB = require("../config/db");
+const db = require("../config/db");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const generateSystemPrompt = (language, level) => {
-    return `
+  return `
 You are Body+Brain AI — an elite-level wellness and cognitive performance architect. Your mission is to guide users toward total human optimization by integrating physical mastery with mental acuity. You are a coach, a strategist, and a source of science-backed wisdom.
 ### CORE INSTRUCTIONS (VERY IMPORTANT) ###
 1.  **RESPONSE LANGUAGE:** Your ONLY response language MUST be **${language}**. Do not use any other language. If the user talks in English or any other language, your reply must still be strictly in ${language}. This is a non-negotiable rule.
@@ -76,12 +76,12 @@ If the user asks for a detailed explanation of anything related to the body or b
 };
 
 const getErrorMessage = (lang) => {
-    const messages = {
-        hindi: "माफ़ कीजिए, मैं इस समय आपकी सहायता नहीं कर सकता। कृपया स्वास्थ्य, फोकस या मस्तिष्क प्रशिक्षण से संबंधित प्रश्न पूछें।",
-        hinglish: "Sorry, main abhi aapki help nahi kar sakta. Please health, focus ya brain training se related sawal pucho.",
-        english: "Sorry, I cannot assist you at this moment. Please ask questions related to health, focus or brain training."
-    };
-    return messages[lang.toLowerCase()] || messages['english']; 
+  const messages = {
+    hindi: "माफ़ कीजिए, मैं इस समय आपकी सहायता नहीं कर सकता। कृपया स्वास्थ्य, फोकस या मस्तिष्क प्रशिक्षण से संबंधित प्रश्न पूछें।",
+    hinglish: "Sorry, main abhi aapki help nahi kar sakta. Please health, focus ya brain training se related sawal pucho.",
+    english: "Sorry, I cannot assist you at this moment. Please ask questions related to health, focus or brain training."
+  };
+  return messages[lang.toLowerCase()] || messages['english'];
 };
 
 const withRetry = async (fn, retries = 3, delay = 1000) => {
@@ -98,76 +98,50 @@ const withRetry = async (fn, retries = 3, delay = 1000) => {
 };
 
 exports.sendAndSaveChat = async (req, res) => {
-    try {
-        const userId = req.user.userid;
-        const { sessionId, message, language = 'english', level = 'beginner' } = req.body; 
+  try {
+    const userId = req.user.userid;
+    const { sessionId, message, language = 'english', level = 'beginner' } = req.body;
 
-        if (!userId || !sessionId || !message) {
-            return res.status(400).json({ msg: "Missing required fields" });
-        }
-
-        const db = await connectDB();
-
-        const [oldMessages] = await db.query(
-            `SELECT sender, message FROM chat_history WHERE user_id = ? AND session_id = ? ORDER BY timestamp ASC`,
-            [userId, sessionId]
-        );
-
-        const chatHistory = oldMessages.map((msg) => ({
-            role: msg.sender,
-            parts: [{ text: msg.message }],
-        }));
-
-        const chat = model.startChat({
-            history: chatHistory,
-            generationConfig: {
-                maxOutputTokens: 1200,
-            },
-            safetySettings: [
-                { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-                { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-                { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
-                { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
-            ],
-            systemInstruction: {
-                role: "system", 
-                parts: [{ text: generateSystemPrompt(language, level) }],
-            },
-        });
-
-        const result = await withRetry(() => chat.sendMessage(message));
-        const response = await result.response;
-        const reply = response.text();
-
-        let finalReply = reply;
-        if (!response.candidates || response.candidates.length === 0 || !reply) {
-            finalReply = getErrorMessage(language);
-            if (response.promptFeedback?.blockReason) {
-                console.log(`Blocked by AI due to: ${response.promptFeedback.blockReason}`);
-            }
-        }
-        
-        const insertQuery = `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?), (?, ?, ?, ?)`;
-        const values = [userId, sessionId, "user", message, userId, sessionId, "model", finalReply];
-        await db.query(insertQuery, values);
-
-        res.json({ reply: finalReply });
-
-    } catch (error) {
-        console.error("Gemini API Error:", error);
-        const language = req.body.language || 'english'; 
-        let errorMessage = 'An unexpected error occurred.';
-        if (error.message.includes("429") || error.message.includes("RESOURCE_EXHAUSTED")) {
-            errorMessage = "AI services limit reached. Please try again later.";
-        } else if (error.message.includes("API key not valid")) {
-            errorMessage = "Problem with AI Service: API key is invalid. Please contact admin.";
-        } else if (error.status === 503) {
-            errorMessage = "AI services are currently busy. Please try again in a few moments.";
-        } else {
-            errorMessage = `Sorry, I can't assist right now. Please ask about health or brain training in ${language}.`;
-        }
-        res.status(500).json({ reply: errorMessage });
+    if (!userId || !sessionId || !message) {
+      return res.status(400).json({ msg: "Missing required fields" });
     }
+
+    const [oldMessages] = await db.query(
+      `SELECT sender, message FROM chat_history WHERE user_id = ? AND session_id = ? ORDER BY timestamp ASC`,
+      [userId, sessionId]
+    );
+
+    const chatHistory = oldMessages.map((msg) => ({
+      role: msg.sender,
+      parts: [{ text: msg.message }],
+    }));
+
+    const chat = model.startChat({
+      history: chatHistory,
+      generationConfig: { maxOutputTokens: 1200 },
+      safetySettings: [
+        { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+        { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+        { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+        { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+      ],
+      systemInstruction: { role: "system", parts: [{ text: generateSystemPrompt(language, level) }] },
+    });
+
+    const result = await withRetry(() => chat.sendMessage(message));
+    const reply = result.response.text() || getErrorMessage(language);
+
+    await db.query(
+      `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?), (?, ?, ?, ?)`,
+      [userId, sessionId, "user", message, userId, sessionId, "model", reply]
+    );
+
+    res.json({ reply });
+  } catch (error) {
+    console.error("Gemini API Error:", error);
+    const language = req.body.language || 'english';
+    res.status(500).json({ reply: `Sorry, I can't assist right now in ${language}.` });
+  }
 };
 
 let cachedTasks = null;
@@ -198,8 +172,7 @@ Example:
   "List 5 red things you saw today\\nBoosts memory and visual recall",
   "Crawl across the room like a bear\\nActivates coordination and core strength",
   "Hold a pencil between your lips and hum a tune\\nRelaxes jaw and trains breath control"
-]
-`;
+]`;
     const result = await withRetry(() => model.generateContent(prompt));
     let rawText = result.response.text().trim();
 
@@ -207,77 +180,63 @@ Example:
       rawText = rawText.replace(/```(?:json)?/gi, "").replace(/```$/, "").trim();
     }
 
-    console.log("Gemini raw task text:", rawText);
-
     const match = rawText.match(/\[[\s\S]*?\]/);
-    if (!match || !match[0]) {
-      throw new Error("Gemini did not return a valid JSON array");
-    }
+    if (!match || !match[0]) throw new Error("Gemini did not return a valid JSON array");
 
     let tasks = JSON.parse(match[0]);
+    if (!Array.isArray(tasks)) throw new Error("Parsed tasks is not an array");
 
-    if (!Array.isArray(tasks)) {
-      throw new Error("Parsed tasks is not an array");
-    }
     tasks = tasks.filter(t => typeof t === 'string' && t.length <= 100).slice(0, 5);
-
-    if (tasks.length < 3) {
-      throw new Error("Too few valid tasks");
-    }
+    if (tasks.length < 3) throw new Error("Too few valid tasks");
 
     cachedTasks = tasks;
     lastGeneratedDate = today;
     return res.json({ tasks });
 
   } catch (error) {
-  if (error.message.includes("429")) {
-    console.log("Gemini API quota exceeded. Please try again tomorrow.");
-  } else {
     console.error("Gemini API error:", error);
+    res.status(500).json({ msg: "Failed to generate daily tasks" });
   }
-}
 };
 
 exports.getChatSessions = async (req, res) => {
-    const userId = req.user.userid;
-    if (!userId) {
-      return res.status(401).json({ msg: "User not authenticated" });
-    }
+  const userId = req.user.userid;
+  if (!userId) return res.status(401).json({ msg: "User not authenticated" });
 
-    try {
-        const db = await connectDB();
-        const [results] = await db.query(
-            `SELECT DISTINCT session_id, MIN(timestamp) AS started_at FROM chat_history WHERE user_id = ? GROUP BY session_id ORDER BY started_at DESC`,
-            [userId]
-        );
-        res.json({ history: results });
-    } catch (err) {
-        console.error("Error in getChatSessions:", err);
-        res.status(500).json({ msg: "Error getting sessions", err });
-    }
+  try {
+    const [results] = await db.query(
+      `SELECT DISTINCT session_id, MIN(timestamp) AS started_at 
+             FROM chat_history 
+             WHERE user_id = ? 
+             GROUP BY session_id 
+             ORDER BY started_at DESC`,
+      [userId]
+    );
+    res.json({ history: results });
+  } catch (err) {
+    console.error("Error in getChatSessions:", err);
+    res.status(500).json({ msg: "Error getting sessions", err });
+  }
 };
 
 exports.getChatBySession = async (req, res) => {
-    const { sessionId } = req.params;
-    const userId = req.user.userid;
+  const { sessionId } = req.params;
+  const userId = req.user.userid;
 
-    if (!userId) {
-      return res.status(401).json({ msg: "User not authenticated" });
-    }
-    
-    try {
-        const db = await connectDB();
-        const [results] = await db.query(
-            `SELECT sender, message, timestamp FROM chat_history WHERE user_id = ? AND session_id = ? ORDER BY timestamp ASC`,
-            [userId, sessionId]
-        );
-        const formatted = results.map((row) => ({
-            role: row.sender,
-            text: row.message,
-        }));
-        res.json({ messages: formatted });
-    } catch (err) {
-        console.error("Error getting chat:", err);
-        res.status(500).json({ msg: "Error getting chat", err });
-    }
+  if (!userId) return res.status(401).json({ msg: "User not authenticated" });
+
+  try {
+    const [results] = await db.query(
+      `SELECT sender, message, timestamp 
+             FROM chat_history 
+             WHERE user_id = ? AND session_id = ? 
+             ORDER BY timestamp ASC`,
+      [userId, sessionId]
+    );
+    const formatted = results.map(row => ({ role: row.sender, text: row.message }));
+    res.json({ messages: formatted });
+  } catch (err) {
+    console.error("Error getting chat:", err);
+    res.status(500).json({ msg: "Error getting chat", err });
+  }
 };

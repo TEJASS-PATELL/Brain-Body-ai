@@ -18,7 +18,7 @@ router.get(
   "/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
-    session: false, // No session stored, we’re using JWT
+    session: false, 
   })
 );
 

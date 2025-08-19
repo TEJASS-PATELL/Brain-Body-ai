@@ -25,7 +25,7 @@ passport.use(
         } else {
           const [result] = await db.execute(
             "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-            [name, email, ""] // Password is blank for Google sign-in
+            [name, email, ""] 
           );
           user = { id: result.insertId, name, email };
         }

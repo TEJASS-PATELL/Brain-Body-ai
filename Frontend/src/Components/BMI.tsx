@@ -38,16 +38,16 @@ const BMIPopup: React.FC<BMIPopupProps> = ({ show, onClose }) => {
     let baseTip = "";
     if (rounded < 18.5) {
       setMessage("Underweight");
-      baseTip = `For a ${a}-year-old, your BMI is ${rounded} (${message}). You are underweight. Focus on a nutrient-rich diet including proteins, healthy fats, and whole grains. Consider strength training to build muscle.`;
+      baseTip = `For a ${a}-year-old, your BMI is ${rounded}. You are underweight. Focus on a nutrient-rich diet including proteins, healthy fats, and whole grains. Consider strength training to build muscle.`;
     } else if (rounded >= 18.5 && rounded < 24.9) {
       setMessage("Normal weight");
-      baseTip = `For a ${a}-year-old, your BMI is ${rounded} (${message}). You have a healthy weight. Maintain it by eating balanced meals, staying active, and keeping a consistent fitness routine.`;
+      baseTip = `For a ${a}-year-old, your BMI is ${rounded}. You have a healthy weight. Maintain it by eating balanced meals, staying active, and keeping a consistent fitness routine.`;
     } else if (rounded >= 25 && rounded < 29.9) {
       setMessage("Overweight");
-      baseTip = `For a ${a}-year-old, your BMI is ${rounded} (${message}). You are slightly overweight. Reduce sugary and processed foods, include more vegetables and lean proteins, and exercise regularly.`;
+      baseTip = `For a ${a}-year-old, your BMI is ${rounded}. You are slightly overweight. Reduce sugary and processed foods, include more vegetables and lean proteins, and exercise regularly.`;
     } else {
       setMessage("Obese");
-      baseTip = `For a ${a}-year-old, your BMI is ${rounded} (${message}). You are in the obese range. Focus on a healthy diet, regular physical activity, and consider consulting a healthcare or fitness professional. `;
+      baseTip = `For a ${a}-year-old, your BMI is ${rounded}. You are in the obese range. Focus on a healthy diet, regular physical activity, and consider consulting a healthcare or fitness professional. `;
     }
     setTip(`${baseTip}`);
     setTips(` Ideal BMI for your age (${a} years) is ${idealRange}.`);
@@ -107,7 +107,7 @@ const BMIPopup: React.FC<BMIPopupProps> = ({ show, onClose }) => {
             <p>Status: <strong className={`bmi-status ${message.toLowerCase()}`}>{message}</strong></p>
             <p className="bmi-tip">{tips}</p>
             <p className="bmi-tips">{prompt}</p>
-            <p className="bmi-tips">{tip}</p>
+            <p className="bmi-prompt">{tip}</p>
           </div>
         )}
 

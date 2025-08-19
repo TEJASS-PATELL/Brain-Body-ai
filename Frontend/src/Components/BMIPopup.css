@@ -145,8 +145,20 @@
   text-align: left;
   margin-top: 6px;
   color: white;
-  background: #000000;  
+  background: #999999;  
 }
+
+.bmi-prompt{
+  padding: 10px 15px;
+  border-radius: 8px;
+  line-height: 1.5;
+  margin-top: 8px;
+  text-align: left;
+  margin-top: 6px;
+  color: rgb(255, 255, 255);
+ background: #000000;  
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }

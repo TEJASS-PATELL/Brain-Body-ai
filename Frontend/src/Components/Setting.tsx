@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Setting.css';
 import toast from 'react-hot-toast';
+import api from '../api';
 
 interface SettingProps {
   onComplete: (language: string, level: string) => void;
@@ -22,14 +23,13 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/auth/userinfo", {
-          credentials: "include",
-        });
-        const data = await res.json();
+        const res = await api.get("/auth/userinfo");
+        const data = res.data;
+
         setUserName(data.name);
         setEmail(data.email);
-      } catch (err) {
-        console.error("Failed to fetch user info");
+      } catch (err: any) {
+        console.error("Failed to fetch user info:", err.response?.data?.msg || err.message);
       }
     };
 
@@ -38,22 +38,20 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
 
   const handleSubmit = async () => {
     if (!language || !level) {
-      toast("Please select both language and level"); 
+      toast("Please select both language and level");
       return;
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/update_detail", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ language, level }),
+      const res = await api.post("/auth/update_detail", {
+        language,
+        level,
       });
 
-      const data = await res.json();
-      toast.success(data.message);
+      toast.success(res.data.message);
       onComplete(language, level);
-    } catch (err) {
+    } catch (err: any) {
+      console.error("Error setting preference:", err.response?.data?.msg || err.message);
       toast.error("Error setting preference");
     }
   };

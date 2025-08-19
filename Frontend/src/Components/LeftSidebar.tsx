@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./LeftSidebar.css";
+import api from "../api";
 import { MessageCircle, History } from "lucide-react";
 import toast from 'react-hot-toast';
 
@@ -13,7 +14,7 @@ interface LeftSidebarProps {
   handleNewChat: () => void;
   onSelectChat: (sessionId: string) => void;
   selectedSessionId: string | null;
-  historyRefreshTrigger: number; 
+  historyRefreshTrigger: number;
 }
 
 const LeftSidebar: React.FC<LeftSidebarProps> = ({
@@ -21,7 +22,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
   handleNewChat,
   onSelectChat,
   selectedSessionId,
-  historyRefreshTrigger, 
+  historyRefreshTrigger,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [chatHistory, setChatHistory] = useState<ChatSession[]>([]);
@@ -38,25 +39,18 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
 
     const fetchHistory = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/chats/history`, {
-          credentials: "include",
-        });
+        const res = await api.get("/chats/history");
+        const data = res.data;
 
-        if (!res.ok) {
-          const errorMsg = `Server error: ${res.status}`;
-          toast.error(errorMsg);
-          throw new Error(errorMsg);
-        }
-        const data = await res.json();
         setChatHistory(data.history || []);
-      } catch (err) {
-        console.error("Failed to load chat history:", err);
+      } catch (err: any) {
+        console.error("Failed to load chat history:", err.response?.data?.msg || err.message);
         toast.error("Chat history load nahi ho payi.");
       }
     };
 
     fetchHistory();
-  }, [userId, historyRefreshTrigger]); 
+  }, [userId, historyRefreshTrigger]);
 
   return (
     <div className={`left-bar ${isExpanded ? "expanded" : ""}`}>
@@ -64,10 +58,10 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
         <div className="circle-button" onClick={handleNewChat} title="New Chat">
           <MessageCircle className="messagecircle" />
         </div>
-        <div className="square-buttons">           
-          <button onClick={toggleHistory} title="History">             
-            <History size={22} />           
-            </button>        
+        <div className="square-buttons">
+          <button onClick={toggleHistory} title="History">
+            <History size={22} />
+          </button>
         </div>
       </div>
 

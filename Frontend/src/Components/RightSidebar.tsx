@@ -1,12 +1,6 @@
 import { useRef, useState, useEffect } from "react";
-import {
-  FaPlay,
-  FaPause,
-  FaUpload,
-  FaForward,
-  FaBackward,
-  FaSearch,
-} from "react-icons/fa";
+import { FaPlay, FaPause, FaUpload, FaForward, FaBackward, FaSearch } from "react-icons/fa";
+import api from '../api';
 import "./RightSidebar.css";
 
 const RightSidebar = () => {
@@ -22,7 +16,6 @@ const RightSidebar = () => {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [musicSrc, setMusicSrc] = useState<string>(musicTracks[0]);
   const [isCustomTrack, setIsCustomTrack] = useState(false);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [dailyTasks, setDailyTasks] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,8 +23,8 @@ const RightSidebar = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/chats/daily-tasks");
-        const data = await res.json();
+        const res = await api.get("/chats/daily-tasks");
+        const data = res.data;
 
         if (Array.isArray(data.tasks)) {
           setDailyTasks(data.tasks);
@@ -39,8 +32,8 @@ const RightSidebar = () => {
           console.error("Invalid task format", data);
           setDailyTasks([]);
         }
-      } catch (err) {
-        console.error("Failed to fetch daily tasks", err);
+      } catch (err: any) {
+        console.error("Failed to fetch daily tasks:", err.response?.data?.msg || err.message);
         setDailyTasks([]);
       } finally {
         setLoading(false);
@@ -87,7 +80,7 @@ const RightSidebar = () => {
   };
 
   const handleNextTrack = () => {
-    if (isCustomTrack) return; 
+    if (isCustomTrack) return;
     const nextIndex = (currentTrackIndex + 1) % musicTracks.length;
     setCurrentTrackIndex(nextIndex);
     setMusicSrc(musicTracks[nextIndex]);
@@ -99,7 +92,7 @@ const RightSidebar = () => {
   };
 
   const handlePrevTrack = () => {
-    if (isCustomTrack) return; 
+    if (isCustomTrack) return;
     const prevIndex =
       (currentTrackIndex - 1 + musicTracks.length) % musicTracks.length;
     setCurrentTrackIndex(prevIndex);

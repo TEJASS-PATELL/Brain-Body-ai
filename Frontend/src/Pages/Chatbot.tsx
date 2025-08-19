@@ -4,6 +4,7 @@ import LeftSidebar from "../Components/LeftSidebar";
 import RightSidebar from "../Components/RightSidebar";
 import SettingsModal from "../Components/SettingsModal";
 import BMIPopup from "../Components/BMI";
+import api from '../api';
 import { useNavigate } from 'react-router-dom';
 import ChatHeader from "../Components/ChatBotheader";
 import ChatWindow from "../Components/ChatWindow";
@@ -63,20 +64,21 @@ const Chatbot: React.FC = () => {
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/auth/get_detail", {
-                    credentials: "include",
-                });
-                const data = await res.json();
+                const res = await api.get("/auth/get_detail");
+                const data = res.data;
+
                 setUserId(data.id || null);
                 setLanguage(data.language || "english");
                 setLevel(data.level || "beginner");
-            } catch (err) {
-                console.error("Failed to fetch user details:", err);
-                setUserId(null); 
+            } catch (err: any) {
+                console.error("Failed to fetch user details:", err.response?.data?.msg || err.message);
+                setUserId(null);
             }
         };
+
         fetchUserDetails();
     }, []);
+
 
     useEffect(() => {
         if (userId) {
@@ -116,20 +118,17 @@ const Chatbot: React.FC = () => {
 
     const handleLogout = async () => {
         try {
-            const res = await fetch("http://localhost:5000/api/auth/logout", {
-                method: "POST",
-                credentials: "include",
-            });
-            if (res.ok) {
+            const res = await api.post("/auth/logout");
+            if (res.status === 200) {
                 if (userId) {
                     localStorage.removeItem(`selectedSessionId-${userId}`);
                 }
                 navigate("/login", { replace: true });
             } else {
-                console.error("Logout failed");
+                console.error("Logout failed:", res.data?.msg || "Unknown error");
             }
-        } catch (err) {
-            console.error("Logout error:", err);
+        } catch (err: any) {
+            console.error("Logout error:", err.response?.data?.msg || err.message);
         }
     };
 
@@ -144,44 +143,37 @@ const Chatbot: React.FC = () => {
         setMessages((prev) => [...prev, newUserMessage]);
         setUserInput("");
         setIsLoading(true);
+
         try {
-            const res = await fetch("http://localhost:5000/api/chats", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({
-                    sessionId: selectedSessionId,
-                    message: userMessageText,
-                    language,
-                    level,
-                }),
+            const res = await api.post("/chats", {
+                sessionId: selectedSessionId,
+                message: userMessageText,
+                language,
+                level,
             });
 
-            if (!res.ok) {
-                const errorData = await res.json();
-                throw new Error(errorData.reply || `HTTP error! status: ${res.status}`);
-            }
+            const reply = res.data.reply || "Sorry, I couldn't get a response.";
+            typeMessage(reply);
 
-            const data = await res.json();
-            const reply = data.reply || "Sorry, I couldn't get a response.";
-            typeMessage(reply); 
-            
-            setHistoryRefreshTrigger(prev => prev + 1);
+            setHistoryRefreshTrigger((prev) => prev + 1);
 
-        } catch (error) {
-            console.error("Error sending message:", error);
+        } catch (err: any) {
+            console.error("Error sending message:", err.response?.data?.reply || err.message);
+
             setMessages((prev) => {
-                const updatedMessages = prev.filter(msg => msg.role !== 'user' || msg.text !== userMessageText);
+                const updatedMessages = prev.filter(
+                    (msg) => msg.role !== "user" || msg.text !== userMessageText
+                );
                 return [
                     ...updatedMessages,
                     {
                         role: "model",
-                        text: `Error: ${error instanceof Error ? error.message : "Something went wrong."}`,
+                        text: `Error: ${err.response?.data?.reply || err.message}`,
                     },
                 ];
             });
         } finally {
-            setIsLoading(false); 
+            setIsLoading(false);
         }
     };
 
@@ -203,7 +195,7 @@ const Chatbot: React.FC = () => {
             localStorage.setItem(`selectedSessionId-${userId}`, newSessionId);
         }
         localStorage.setItem("showIntro", "false");
-        
+
         setHistoryRefreshTrigger(prev => prev + 1);
     };
 
@@ -217,26 +209,21 @@ const Chatbot: React.FC = () => {
         setMessages([]);
         setIsLoading(true);
 
-        if (userId) {
-            localStorage.setItem(`selectedSessionId-${userId}`, sessionId);
-        }
+        localStorage.setItem(`selectedSessionId-${userId}`, sessionId);
         localStorage.setItem("showIntro", "false");
+
         try {
-            const res = await fetch(`http://localhost:5000/api/chats/${sessionId}`, { credentials: "include", });
-            if (!res.ok) {
-                const errorData = await res.json();
-                throw new Error(errorData.msg || `HTTP error! status: ${res.status}`);
-            }
-            const data = await res.json();
-            
+            const res = await api.get(`/chats/${sessionId}`);
+            const data = res.data;
+
             const formattedMessages = data.messages.map((msg: any) => ({
-                role: msg.role, 
-                text: msg.text, 
+                role: msg.role,
+                text: msg.text,
             }));
 
             setMessages(formattedMessages || []);
-        } catch (err) {
-            console.error("Failed to fetch chat:", err);
+        } catch (err: any) {
+            console.error("Failed to fetch chat:", err.response?.data?.msg || err.message);
             setMessages([]);
         } finally {
             setIsLoading(false);
@@ -265,7 +252,7 @@ const Chatbot: React.FC = () => {
                         setShowSettingsModal={setShowSettingsModal}
                         handleLogout={handleLogout}
                         showRightSidebar={showRightSidebar}
-                        setShowRightSidebar={setShowRightSidebar}/>
+                        setShowRightSidebar={setShowRightSidebar} />
                     <ChatWindow messages={messages} displayedText={displayedText} isLoading={isLoading} />
                     <InputArea
                         userInput={userInput}
@@ -274,7 +261,7 @@ const Chatbot: React.FC = () => {
                         handleSendMessage={handleSendMessage}
                         isLoading={isLoading}
                         isListening={isListening}
-                        isReadyToChat={isReadyToChat}/>
+                        isReadyToChat={isReadyToChat} />
                 </div>
 
                 {showRightSidebar && <RightSidebar />}

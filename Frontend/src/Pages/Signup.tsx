@@ -55,7 +55,7 @@ const Signup: React.FC = () => {
         password: form.password,
       });
       alert(res.data.msg || "Signup successful!");
-      navigate('/chatbot');
+      navigate('/chatbot', { replace: true });
     } catch (err: any) {
       alert(err.response?.data?.msg || "Signup failed");
     }

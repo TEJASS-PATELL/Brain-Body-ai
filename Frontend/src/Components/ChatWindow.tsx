@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { FaBrain, FaDumbbell, FaAppleAlt, FaSmile, FaBullseye, FaCheckCircle, FaPlus } from "react-icons/fa";
 import '../Pages/Chatbot.css';
+import api from "../api";
 
 interface Message {
   role: "user" | "model";
@@ -21,17 +22,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoad
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/auth/userinfo", {
-          credentials: "include",
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setUserName(data.name);
-        } else {
-          console.error("Failed to fetch user info");
-        }
-      } catch (err) {
-        console.error("Failed to fetch user info:", err);
+        const res = await api.get("/auth/userinfo");
+        const data = res.data;
+
+        setUserName(data.name);
+      } catch (err: any) {
+        console.error("Failed to fetch user info:", err.response?.data?.msg || err.message);
       }
     };
 

@@ -39,7 +39,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
 
     const fetchHistory = async () => {
       try {
-        const res = await api.get("/chats/history");
+        const res = await api.get("/api/chats/history");
         const data = res.data;
 
         setChatHistory(data.history || []);

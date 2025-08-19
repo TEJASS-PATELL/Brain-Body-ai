@@ -22,7 +22,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoad
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const res = await api.get("/auth/userinfo");
+        const res = await api.get("/api/auth/userinfo");
         const data = res.data;
 
         setUserName(data.name);

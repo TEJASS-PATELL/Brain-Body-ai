@@ -23,7 +23,7 @@ const RightSidebar = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await api.get("/chats/daily-tasks");
+        const res = await api.get("/api/chats/daily-tasks");
         const data = res.data;
 
         if (Array.isArray(data.tasks)) {

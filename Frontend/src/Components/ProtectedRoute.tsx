@@ -9,7 +9,7 @@ const ProtectedRoute: React.FC = () => {
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        await api.get('/auth/check');
+        await api.get('/api/auth/check');
         setIsAuth(true);
       } catch (err) {
         setIsAuth(false);

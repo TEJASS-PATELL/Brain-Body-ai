@@ -64,7 +64,7 @@ const Chatbot: React.FC = () => {
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                const res = await api.get("/auth/get_detail");
+                const res = await api.get("/api/auth/get_detail");
                 const data = res.data;
 
                 setUserId(data.id || null);

@@ -23,7 +23,7 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const res = await api.get("/auth/userinfo");
+        const res = await api.get("/api/auth/userinfo");
         const data = res.data;
 
         setUserName(data.name);

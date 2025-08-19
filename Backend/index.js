@@ -20,11 +20,15 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "http://brain-body-ai.vercel.app"],
-    credentials: true,
-  })
-);
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://brain-body-ai.vercel.app"
+  ],
+  credentials: true,
+}));
 
 const sessionStore = new MySQLStore({}, db);
 
@@ -45,9 +49,14 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use("/api/auth", authRoutes);
 app.use("/api/chats", chatRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Backend is running!");
+});
+
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

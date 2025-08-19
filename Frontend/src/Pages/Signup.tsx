@@ -49,7 +49,7 @@ const Signup: React.FC = () => {
     e.preventDefault();
     if (!validate()) return;
     try {
-      const res = await axios.post('/auth/signup', {
+      const res = await axios.post('/api/auth/signup', {
         name: form.name,
         email: form.email,
         password: form.password,

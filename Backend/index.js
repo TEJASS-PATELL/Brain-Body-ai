@@ -23,11 +23,11 @@ app.use(cookieParser());
 
 app.use(cors({
   origin: [
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "https://brain-body-ai.vercel.app"
+    "http://localhost:5173",               
+    "https://brain-body-ai.vercel.app"     
   ],
-  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true, 
 }));
 
 const sessionStore = new MySQLStore({}, db);

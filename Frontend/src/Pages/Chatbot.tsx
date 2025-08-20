@@ -118,7 +118,7 @@ const Chatbot: React.FC = () => {
 
     const handleLogout = async () => {
         try {
-            const res = await api.post("/auth/logout");
+            const res = await api.post("/api/auth/logout");
             if (res.status === 200) {
                 if (userId) {
                     localStorage.removeItem(`selectedSessionId-${userId}`);
@@ -145,7 +145,7 @@ const Chatbot: React.FC = () => {
         setIsLoading(true);
 
         try {
-            const res = await api.post("/chats", {
+            const res = await api.post("/api/chats", {
                 sessionId: selectedSessionId,
                 message: userMessageText,
                 language,
@@ -213,7 +213,7 @@ const Chatbot: React.FC = () => {
         localStorage.setItem("showIntro", "false");
 
         try {
-            const res = await api.get(`/chats/${sessionId}`);
+            const res = await api.get(`/api/chats/${sessionId}`);
             const data = res.data;
 
             const formattedMessages = data.messages.map((msg: any) => ({

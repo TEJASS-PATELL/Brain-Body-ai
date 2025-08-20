@@ -42,7 +42,6 @@ exports.login = async (req, res) => {
     return res.status(400).json({ msg: "Email and password are required" });
 
   try {
-    // Query the user
     const [results] = await db.execute("SELECT * FROM users WHERE email = ?", [email]);
 
     if (results.length === 0)
@@ -50,22 +49,15 @@ exports.login = async (req, res) => {
 
     const user = results[0];
 
-    // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
-
-    // Create JWT token
     const token = jwt.sign({ userid: user.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-
-    // Set cookie
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "Lax",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-
-    // Send response
     res.json({
       msg: "Logged in successfully",
       user: { id: user.id, name: user.name, email: user.email },
@@ -77,7 +69,7 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  req.logout?.(() => {}); 
+  req.logout?.(() => { });
   req.session?.destroy((err) => {
     if (err) console.error("Session destroy error:", err);
   });

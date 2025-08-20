@@ -14,7 +14,6 @@ router.get("/userinfo", authMiddleware, authController.user_info);
 router.post("/update_detail", authMiddleware, authController.update_detail);
 router.get("/get_detail", authMiddleware, authController.get_detail);
 
-// Google OAuth
 router.get(
   "/google",
   passport.authenticate("google", {

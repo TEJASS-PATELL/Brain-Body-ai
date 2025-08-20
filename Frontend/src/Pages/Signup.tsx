@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Signup.css';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from '../api';
+import api from '../api';
 
 interface FormState {
   name: string;
@@ -49,7 +49,7 @@ const Signup: React.FC = () => {
     e.preventDefault();
     if (!validate()) return;
     try {
-      const res = await axios.post('/api/auth/signup', {
+      const res = await api.post('/api/auth/signup', {
         name: form.name,
         email: form.email,
         password: form.password,

@@ -7,7 +7,7 @@
   display: flex;
   position: relative;
   flex-direction: column;
-  border-radius: 20px;
+  border-radius: 15px;
   align-items: center;
   gap: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -15,7 +15,7 @@
 }
 
 .left-bar.expanded {
-  width: 200px;
+  width: 202px;
   align-items: flex-start;
 }
 
@@ -117,11 +117,10 @@
   width: 18px;
 }
 
-
   .circle-button {
     width: 35px;
     top: 15px;
-    left: 10px;
+    left: 13px;
     height: 35px;
   }
 

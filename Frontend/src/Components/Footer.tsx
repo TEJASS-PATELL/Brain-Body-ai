@@ -1,15 +1,15 @@
 import React from 'react';
 import './Footer.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope, faGlobe, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FaHeart } from 'react-icons/fa';
 
 const socialLinks = {
   github: 'https://github.com/TEJASS-PATELL',
-  instagram: 'https://instagram.com/yourusername',
   linkedin: 'https://www.linkedin.com/in/tejasspatell',
-  email: 'mailto:tejasspatell2@gmail.com'
+  email: 'mailto:tejasspatell2@gmail.com',
+  portfolio: 'dd'
 };
 
 const Footer: React.FC = () => {
@@ -27,8 +27,8 @@ const Footer: React.FC = () => {
           <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
             <FontAwesomeIcon icon={faLinkedin} />
           </a>
-          <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <FontAwesomeIcon icon={faInstagram} />
+          <a href={socialLinks.portfolio} target="_blank" rel="noopener noreferrer" aria-label="Portfolio">
+            <FontAwesomeIcon icon={faGlobe} /> 
           </a>
           <a href={socialLinks.email} aria-label="Email">
             <FontAwesomeIcon icon={faEnvelope} />

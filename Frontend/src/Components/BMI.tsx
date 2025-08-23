@@ -10,7 +10,7 @@ const BMIPopup: React.FC<BMIPopupProps> = ({ show, onClose }) => {
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [age, setAge] = useState('');
-  const[prompt, SetPrompt] = useState('');
+  const [prompt, SetPrompt] = useState('');
   const [bmi, setBmi] = useState<number | null>(null);
   const [message, setMessage] = useState('');
   const [tip, setTip] = useState('');
@@ -38,17 +38,34 @@ const BMIPopup: React.FC<BMIPopupProps> = ({ show, onClose }) => {
     let baseTip = "";
     if (rounded < 18.5) {
       setMessage("Underweight");
-      baseTip = `For a ${a}-year-old, your BMI is ${rounded}. You are underweight. Focus on a nutrient-rich diet including proteins, healthy fats, and whole grains. Consider strength training to build muscle.`;
+      baseTip = `You are a ${a}-year-old individual with a BMI of ${rounded}, which is classified as underweight. Act as an expert health & fitness coach. Create a detailed plan that includes:
+1. A personalized nutrient-rich diet (high in proteins, healthy fats, whole grains, micronutrients).
+2. A weekly strength training + light cardio schedule to build lean muscle.
+3. Lifestyle tips for improving energy, focus, and immunity.
+Give the plan in a structured format (Diet | Exercise | Lifestyle).`;
     } else if (rounded >= 18.5 && rounded < 24.9) {
       setMessage("Normal weight");
-      baseTip = `For a ${a}-year-old, your BMI is ${rounded}. You have a healthy weight. Maintain it by eating balanced meals, staying active, and keeping a consistent fitness routine.`;
+      baseTip = `You are a ${a}-year-old individual with a BMI of ${rounded}, which falls in the healthy range. Act as an expert health & fitness coach. Create a personalized **maintenance & performance plan** that includes:
+1. A balanced diet plan for sustained energy and focus.
+2. A fitness routine mixing strength, cardio, and flexibility to maintain optimal body + brain health.
+3. Daily lifestyle habits to improve productivity, sleep, and long-term wellness.
+Give the plan in a structured format (Diet | Exercise | Lifestyle).`;
     } else if (rounded >= 25 && rounded < 29.9) {
       setMessage("Overweight");
-      baseTip = `For a ${a}-year-old, your BMI is ${rounded}. You are slightly overweight. Reduce sugary and processed foods, include more vegetables and lean proteins, and exercise regularly.`;
+      baseTip = `You are a ${a}-year-old individual with a BMI of ${rounded}, which is in the overweight range. Act as an expert health & fitness coach. Create a safe and effective **weight-loss plan** that includes:
+1. A calorie-deficit diet with focus on high-protein meals, vegetables, and reduced processed/sugary foods.
+2. A progressive fitness routine combining cardio (HIIT/walking) and strength training.
+3. Lifestyle modifications for fat loss, stress control, and sleep improvement.
+Give the plan in a structured format (Diet | Exercise | Lifestyle).`;
     } else {
       setMessage("Obese");
-      baseTip = `For a ${a}-year-old, your BMI is ${rounded}. You are in the obese range. Focus on a healthy diet, regular physical activity, and consider consulting a healthcare or fitness professional. `;
+      baseTip = `You are a ${a}-year-old individual with a BMI of ${rounded}, which is in the obese range. Act as a highly experienced health & fitness expert. Create a **safe, step-by-step fat-loss and health improvement plan** that includes:
+1. A sustainable diet strategy focusing on portion control, high protein, low processed food, and hydration.
+2. A beginner-friendly fitness plan starting with low-impact exercises, then gradually progressing to strength & cardio.
+3. Lifestyle + mindset tips (sleep, stress, motivation) to support long-term transformation.
+Give the plan in a structured format (Diet | Exercise | Lifestyle).`;
     }
+
     setTip(`${baseTip}`);
     setTips(` Ideal BMI for your age (${a} years) is ${idealRange}.`);
     SetPrompt(`Copy the prompt and paste in the AI Chatbot for personalized guidance or a plan.`)
@@ -110,7 +127,6 @@ const BMIPopup: React.FC<BMIPopupProps> = ({ show, onClose }) => {
             <p className="bmi-prompt">{tip}</p>
           </div>
         )}
-
       </div>
     </div>
   );

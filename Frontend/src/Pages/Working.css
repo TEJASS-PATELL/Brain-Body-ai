@@ -19,7 +19,7 @@
 
 .htu-subtitle {
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   margin-bottom: 2rem;
   color: #555;
 }
@@ -67,12 +67,13 @@
   font-size: 22px;
 }
 
-/* Optional colors */
 .blue { color: #007bff; }
 .green { color: #28a745; }
 .orange { color: #ff9900; }
 .purple { color: #6f42c1; }
 .red { color: #dc3545; }
+.yellow{ color: rgb(255, 0, 251);}
+.grey { color: rgb(89, 0, 255);}
 
 .htu-final {
   margin-top: 2rem;
@@ -89,7 +90,6 @@
   text-decoration: underline;
 }
 
-/* Responsive Tweaks for Tablets & Phones */
 @media (max-width: 768px) {
   .htu-container {
     padding: 1.5rem 1rem;

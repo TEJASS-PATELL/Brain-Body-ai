@@ -7,8 +7,8 @@ import {
   MessageSquare,
   ShieldCheck,
   Search,
-  Sparkles,
   History,
+  Timer,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -31,12 +31,12 @@ const features = [
     description:
       "No confusion — Body + Brain gives sorted, actionable, and clean answers. Whether it's nutrition, focus, workouts, or habits — you'll get exactly what you need.",
   },
-{
-  title: "Google-Enhanced Search",
-  icon: <Search className="htu-icon purple" />,
-  description:
-    "Need to explore more? Use the built-in Google search tool alongside the AI to look up real-time results, articles, or resources — all in one place.",
-},
+  {
+    title: "Google-Enhanced Search",
+    icon: <Search className="htu-icon purple" />,
+    description:
+      "Need to explore more? Use the built-in Google search tool alongside the AI to look up real-time results, articles, or resources — all in one place.",
+  },
   {
     title: "Safe, Trusted & Clean",
     icon: <ShieldCheck className="htu-icon red" />,
@@ -50,14 +50,14 @@ const features = [
       "Get personalized daily tasks for mind and body — including workouts, focus drills, nutrition tips, and lifestyle goals. Stay consistent and build strong habits day by day.",
   },
   {
-    title: "Music for Mind Freshness",
-    icon: <Sparkles className="htu-icon" />,
+    title: "Focus Timer & Stopwatch",
+    icon: <Timer className="htu-icon yellow" />,
     description:
-      "Listen to soothing music or upload your own tracks to relax, refresh your mind, and boost focus during workouts.",
+      "Track your workouts or meditation with an in-built stopwatch and timer. Helps you improve focus, maintain consistency, and balance brain + body training.",
   },
   {
     title: "Continue Previous Chats",
-    icon: <History className="htu-icon" />,
+    icon: <History className="htu-icon grey" />,
     description:
       "Easily access your entire chat history and revisit any past conversation to continue from where you left off — your AI remembers your context, goals, and preferences for seamless continuation.",
   },
@@ -79,7 +79,7 @@ const Working: React.FC = () => {
             <div key={index} className="htu-card">
               <div className="htu-card-header">
                 {feature.icon}
-                <h2>{index + 1}. {feature.title}</h2>
+                <h2> {feature.title}</h2>
               </div>
               <p>{feature.description}</p>
             </div>

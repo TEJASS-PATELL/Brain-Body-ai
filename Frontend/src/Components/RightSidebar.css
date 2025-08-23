@@ -278,7 +278,7 @@
   align-items: center;
   background-color: white;
   border-radius: 20px;
-  height: 120px;
+  height: 140px;
   padding: 20px;
 }
 
@@ -299,21 +299,6 @@
   color: #e2e8f0;
   font-family: 'Poppins', sans-serif;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.music-player {
-  display: flex;
-  justify-content: center;
-  padding: 12px;
-  border-radius: 14px;
-}
-
-.music-text {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #93c5fd;
-  letter-spacing: 0.4px;
-  text-shadow: 0 0 3px rgba(147, 197, 253, 0.3);
 }
 
 .google-search {
@@ -345,6 +330,26 @@
   font-weight: 500;
 }
 
+.timer-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+}
 
+.timer-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
 
-
+.timer-card .buttons button {
+  margin: 5px;
+  margin-top: 10px;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  background: #000000;
+}

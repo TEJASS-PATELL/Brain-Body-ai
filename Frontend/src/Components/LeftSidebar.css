@@ -55,7 +55,7 @@
   background-color: #f0f0f0;
 }
 
-.messagecircle{
+.messagecircle {
   color: white;
   height: 24px;
   width: 24px;
@@ -101,7 +101,7 @@
     width: 60px;
   }
 
-  .left-bar.expanded{
+  .left-bar.expanded {
     width: 180px;
   }
 
@@ -111,11 +111,11 @@
     gap: 12px;
   }
 
-  .messagecircle{
-  color: white;
-  height: 18px;
-  width: 18px;
-}
+  .messagecircle {
+    color: white;
+    height: 18px;
+    width: 18px;
+  }
 
   .circle-button {
     width: 35px;

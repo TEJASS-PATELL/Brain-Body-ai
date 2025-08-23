@@ -5,7 +5,6 @@ import "./RightSidebar.css";
 import Timers from "./Timer";
 
 const RightSidebar = () => {
-
   const [searchQuery, setSearchQuery] = useState("");
   const [dailyTasks, setDailyTasks] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);

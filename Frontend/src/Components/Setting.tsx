@@ -43,7 +43,7 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
     }
 
     try {
-      const res = await api.post("/auth/update_detail", {
+      const res = await api.post("/api/auth/update_detail", {
         language,
         level,
       });

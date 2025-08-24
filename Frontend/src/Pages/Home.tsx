@@ -28,10 +28,11 @@ const HomePage = () => {
               </h1>
 
               <p className="description">
-                Experience personalized AI guidance designed to sharpen your mental focus, strengthen workout habits, reduce stress, and keep you consistently motivated.
+                Experience highly personalized AI guidance carefully designed to sharpen your mental focus, strengthen your workout habits, effectively reduce daily stress, and keep you consistently motivated every single day.
               </p>
+
               <p className="second-description">
-                Tailored for modern lifestyles and powered by neuroscience, real-time behavioral insights, actionable recommendations, and deeply personalized strategies.
+                Tailored for modern lifestyles and powered by neuroscience, real-time behavioral insights, practical actionable recommendations, and deeply personalized strategies.
               </p>
 
               <div className="cta-buttons">

@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import api from '../api';
 
 interface SettingProps {
-  onComplete: (language: string, level: string) => void;
+  onComplete: (language: string, level: string, yogaMode: boolean) => void;
   currentLanguage: string;
   currentLevel: string;
 }
@@ -14,6 +14,7 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
   const [level, setLevel] = useState(currentLevel);
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
+  const [yogaMode, setYogaMode] = useState(false);
 
   useEffect(() => {
     setLanguage(currentLanguage);
@@ -28,6 +29,7 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
 
         setUserName(data.name);
         setEmail(data.email);
+        if (data.yogaMode !== undefined) setYogaMode(data.yogaMode);
       } catch (err: any) {
         console.error("Failed to fetch user info:", err.response?.data?.msg || err.message);
       }
@@ -46,10 +48,11 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
       const res = await api.post("/api/auth/update_detail", {
         language,
         level,
+        yogaMode,
       });
 
       toast.success(res.data.message);
-      onComplete(language, level);
+      onComplete(language, level, yogaMode);
     } catch (err: any) {
       console.error("Error setting preference:", err.response?.data?.msg || err.message);
       toast.error("Error setting preference");
@@ -94,9 +97,22 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
         </select>
       </div>
 
+      <div className="form-group toggle-wrap">
+        <label>Yoga & Meditation Mode</label>
+        <label className="switch">
+          <input
+            type="checkbox"
+            checked={yogaMode}
+            onChange={(e) => setYogaMode(e.target.checked)}
+          />
+          <span className="slider"></span>
+        </label>
+      </div>
+
       <div className="preview">
         <p>Language: <strong>{language.toLowerCase()}</strong></p>
         <p>Level: <strong>{level.toLowerCase()}</strong></p>
+        <p>Yoga Mode: <strong>{yogaMode ? "ON" : "OFF"}</strong></p>
       </div>
 
       <button className='sett-button' onClick={handleSubmit}>Set</button>

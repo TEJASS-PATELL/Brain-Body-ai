@@ -9,6 +9,7 @@ import {
   Search,
   History,
   Timer,
+  LucideOctagonPause,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -60,6 +61,12 @@ const features = [
     icon: <History className="htu-icon grey" />,
     description:
       "Easily access your entire chat history and revisit any past conversation to continue from where you left off — your AI remembers your context, goals, and preferences for seamless continuation.",
+  },
+  {
+    title: "Yoga / Meditation Mode",
+    icon: <LucideOctagonPause className="htu-icon grey" />,
+    description:
+      "Switch to a calm, mindful mode where your AI guides you through yoga poses, breathing exercises, and meditation practices — helping you relax, focus, and find inner peace anytime.",
   },
 ];
 

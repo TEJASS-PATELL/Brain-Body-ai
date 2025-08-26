@@ -1,4 +1,4 @@
-const db = require("../config/db"); // this is your pool
+const db = require("../config/db"); 
 
 async function ChatHistory() {
   try {

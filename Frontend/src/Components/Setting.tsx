@@ -70,7 +70,6 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
       toast.success(res.data.message);
       onComplete(language, level, yogaMode);
 
-      setSaved(true);
     } catch (err: any) {
       console.error("Error setting preference:", err.response?.data?.msg || err.message);
       toast.error("Error setting preference");

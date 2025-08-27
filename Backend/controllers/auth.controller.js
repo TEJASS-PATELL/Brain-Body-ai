@@ -92,10 +92,13 @@ exports.update_detail = (req, res) => {
   if (!req.user)
     return res.status(401).json({ message: "Not authenticated" });
 
+  const yogaModeValue = (yogaMode === true || yogaMode === "true");
+
   req.session.language = language;
   req.session.level = level;
-  req.session.yogaMode = yogaMode === true;
+  req.session.yogaMode = yogaModeValue;
   req.session.userId = req.user.userid;
+
   req.session.save();
 
   console.log("Session updated:", {
@@ -106,8 +109,7 @@ exports.update_detail = (req, res) => {
   });
 
   res.json({
-    message: `Preferences set: ${language} (${level}), YogaMode: ${req.session.yogaMode ? "ON" : "OFF"
-      }`,
+    message: `Preferences set: ${language} (${level}), YogaMode: ${req.session.yogaMode ? "ON" : "OFF"}`,
     language,
     level,
     yogaMode: req.session.yogaMode,
@@ -146,12 +148,15 @@ exports.user_info = async (req, res) => {
     if (rows.length === 0)
       return res.status(404).json({ error: "User not found" });
 
+    const yogaModeValue =
+      req.session?.yogaMode === true || req.session?.yogaMode === "true";
+
     res.json({
       name: rows[0].name,
       email: rows[0].email,
       language: req.session?.language || "",
       level: req.session?.level || "",
-      yogaMode: req.session?.yogaMode === true
+      yogaMode: yogaModeValue
     });
   } catch (err) {
     console.error("User fetch error:", err.message);

@@ -75,10 +75,10 @@ exports.logout = (req, res) => {
   });
 
   res.clearCookie("token", {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-});
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+  });
 
   res.status(200).json({ msg: "Logged out successfully" });
 };
@@ -94,31 +94,38 @@ exports.update_detail = (req, res) => {
 
   req.session.language = language;
   req.session.level = level;
-  req.session.yogaMode = yogaMode || false; 
+  req.session.yogaMode = yogaMode === true;
   req.session.userId = req.user.userid;
+  req.session.save();
 
   console.log("Session updated:", {
     userId: req.user.userid,
     language,
     level,
-    yogaMode,
+    yogaMode: req.session.yogaMode,
   });
 
-  res.json({ message: `Preferences set: ${language} (${level}), YogaMode: ${yogaMode ? "ON" : "OFF"}` });
+  res.json({
+    message: `Preferences set: ${language} (${level}), YogaMode: ${req.session.yogaMode ? "ON" : "OFF"
+      }`,
+    language,
+    level,
+    yogaMode: req.session.yogaMode,
+  });
 };
 
 exports.get_detail = (req, res) => {
   if (!req.user) {
     console.log("Not authenticated, returning default details.");
-    return res.json({ id: null, language: "", level: "" });
+    return res.json({ id: null, language: "", level: "", yogaMode: false });
   }
 
   const userId = req.user.userid;
   const language = req.session?.language || "";
   const level = req.session?.level || "";
-  const yogaMode = req.session?.yogaMode;
+  const yogaMode = req.session?.yogaMode === true;
 
-  console.log("User details fetched:", { userId, language, level });
+  console.log("User details fetched:", { userId, language, level, yogaMode });
   res.json({ id: userId, language, level, yogaMode });
 };
 
@@ -139,7 +146,13 @@ exports.user_info = async (req, res) => {
     if (rows.length === 0)
       return res.status(404).json({ error: "User not found" });
 
-    res.json({ name: rows[0].name, email: rows[0].email });
+    res.json({
+      name: rows[0].name,
+      email: rows[0].email,
+      language: req.session?.language || "",
+      level: req.session?.level || "",
+      yogaMode: req.session?.yogaMode === true
+    });
   } catch (err) {
     console.error("User fetch error:", err.message);
     res.status(500).json({ error: "Failed to fetch user info" });

@@ -15,10 +15,14 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [yogaMode, setYogaMode] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [saved, setSaved] = useState(false);
 
+  // ✅ update states when props change (when modal opens fresh)
   useEffect(() => {
     setLanguage(currentLanguage);
     setLevel(currentLevel);
+    setSaved(false); // reset saved status jab modal dobara open ho
   }, [currentLanguage, currentLevel]);
 
   useEffect(() => {
@@ -29,7 +33,12 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
 
         setUserName(data.name);
         setEmail(data.email);
+
+        if (data.language) setLanguage(data.language);
+        if (data.level) setLevel(data.level);
         if (data.yogaMode !== undefined) setYogaMode(data.yogaMode);
+
+        setSaved(true); // already saved values hain
       } catch (err: any) {
         console.error("Failed to fetch user info:", err.response?.data?.msg || err.message);
       }
@@ -44,6 +53,9 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
       return;
     }
 
+    setLoading(true);
+    setSaved(false);
+
     try {
       const res = await api.post("/api/auth/update_detail", {
         language,
@@ -51,13 +63,22 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
         yogaMode,
       });
 
+      if (res.data.language) setLanguage(res.data.language);
+      if (res.data.level) setLevel(res.data.level);
+      if (res.data.yogaMode !== undefined) setYogaMode(res.data.yogaMode);
+
       toast.success(res.data.message);
       onComplete(language, level, yogaMode);
+
+      setSaved(true); // ✅ show Saved after success
     } catch (err: any) {
       console.error("Error setting preference:", err.response?.data?.msg || err.message);
       toast.error("Error setting preference");
+    } finally {
+      setLoading(false);
     }
   };
+
 
   return (
     <div className="language-selector">
@@ -68,7 +89,7 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
 
       <div className="form-group">
         <label>Select Language</label>
-        <select value={language} onChange={(e) => setLanguage(e.target.value)}>
+        <select value={language} onChange={(e) => { setLanguage(e.target.value); setSaved(false); }}>
           <option value="">-- Choose Language --</option>
           <option value="english">English</option>
           <option value="hinglish">Hinglish</option>
@@ -89,7 +110,7 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
 
       <div className="form-group">
         <label>Select Level</label>
-        <select value={level} onChange={(e) => setLevel(e.target.value)}>
+        <select value={level} onChange={(e) => { setLevel(e.target.value); setSaved(false); }}>
           <option value="">-- Choose Level --</option>
           <option value="beginner">Beginner</option>
           <option value="intermediate">Intermediate</option>
@@ -103,7 +124,7 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
           <input
             type="checkbox"
             checked={yogaMode}
-            onChange={(e) => setYogaMode(e.target.checked)}
+            onChange={(e) => { setYogaMode(e.target.checked); setSaved(false); }}
           />
           <span className="slider"></span>
         </label>
@@ -115,7 +136,13 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
         <p>Yoga Mode: <strong>{yogaMode ? "ON" : "OFF"}</strong></p>
       </div>
 
-      <button className='sett-button' onClick={handleSubmit}>Set</button>
+      <button
+        className='sett-button'
+        onClick={handleSubmit}
+        disabled={loading}
+      >
+        {loading ? "Saving..." : saved ? "✅ Saved" : "Set"}
+      </button>
     </div>
   );
 };

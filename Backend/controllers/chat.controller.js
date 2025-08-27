@@ -37,6 +37,13 @@ exports.sendAndSaveChat = async (req, res) => {
       parts: [{ text: msg.message }],
     }));
 
+    let systemPrompt;
+    if (req.session?.yogaMode) {
+      systemPrompt = yogaPrompt(language,level);  
+    } else {
+      systemPrompt = generateSystemPrompt(language, level);
+    }
+
     const chat = model.startChat({
       history: chatHistory,
       generationConfig: { maxOutputTokens: 1500 },
@@ -46,14 +53,14 @@ exports.sendAndSaveChat = async (req, res) => {
         { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
         { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
       ],
-      systemInstruction: { role: "system", parts: [{ text: generateSystemPrompt(language, level) }] },
+      systemInstruction: { role: "system", parts: [{ text: systemPrompt }] },
     });
 
     const result = await withRetry(() => chat.sendMessage(message));
     const reply = result.response.text() || getErrorMessage(language);
 
     await db.query(
-      `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?), (?, ?, ?, ?)`,
+      `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?), (?, ?, ?, ?)` ,
       [userId, sessionId, "user", message, userId, sessionId, "model", reply]
     );
 

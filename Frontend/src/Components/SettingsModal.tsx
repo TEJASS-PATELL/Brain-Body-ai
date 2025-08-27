@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Setting from './Setting';
 import './SettingsModal.css';
 
@@ -10,8 +10,6 @@ interface SettingsModalProps {
 }
 
 const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, currentLanguage, currentLevel, onSave }) => {
-  const [yogaMode, setYogaMode] = useState(false);
-
   const handleComplete = (language: string, level: string, isYogaMode: boolean) => {
     onSave(language, level, isYogaMode); 
     onClose();

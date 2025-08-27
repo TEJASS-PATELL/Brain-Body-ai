@@ -84,7 +84,7 @@ exports.logout = (req, res) => {
 };
 
 exports.update_detail = (req, res) => {
-  const { language, level } = req.body;
+  const { language, level, yogaMode } = req.body;
 
   if (!language || !level)
     return res.status(400).json({ message: "Language and level are required" });
@@ -94,15 +94,17 @@ exports.update_detail = (req, res) => {
 
   req.session.language = language;
   req.session.level = level;
+  req.session.yogaMode = yogaMode || false; 
   req.session.userId = req.user.userid;
 
   console.log("Session updated:", {
     userId: req.user.userid,
     language,
     level,
+    yogaMode,
   });
 
-  res.json({ message: `Preferences set: ${language} (${level})` });
+  res.json({ message: `Preferences set: ${language} (${level}), YogaMode: ${yogaMode ? "ON" : "OFF"}` });
 };
 
 exports.get_detail = (req, res) => {
@@ -114,9 +116,10 @@ exports.get_detail = (req, res) => {
   const userId = req.user.userid;
   const language = req.session?.language || "";
   const level = req.session?.level || "";
+  const yogaMode = req.session?.yogaMode;
 
   console.log("User details fetched:", { userId, language, level });
-  res.json({ id: userId, language, level });
+  res.json({ id: userId, language, level, yogaMode });
 };
 
 exports.check_session = (req, res) => {

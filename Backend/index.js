@@ -15,12 +15,11 @@ const chatRoutes = require("./routers/chatRoutes");
 const db = require("./config/db");
 
 const app = express();
-const DBPORT = process.env.DBPORT;
+const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 app.use(cors({
   origin: [
     "http://localhost:5173",
@@ -40,7 +39,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", 
+      secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 1000 * 60 * 60 * 24,
     },
@@ -57,6 +56,6 @@ app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
 
-app.listen(DBPORT, () => {
-  console.log(`Server running on port ${DBPORT}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

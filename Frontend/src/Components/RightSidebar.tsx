@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
-import api from '../api';
+import api from "../api";
 import "./RightSidebar.css";
 import Timers from "./Timer";
 
@@ -8,6 +8,7 @@ const RightSidebar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [dailyTasks, setDailyTasks] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -17,12 +18,15 @@ const RightSidebar = () => {
 
         if (Array.isArray(data.tasks)) {
           setDailyTasks(data.tasks);
+          setError("");
         } else {
-          console.error("Invalid task format", data);
+          console.error("Invalid task format:", data);
           setDailyTasks([]);
+          setError("Invalid data format from server.");
         }
       } catch (err: any) {
-        console.error("Failed to fetch daily tasks:", err.response?.data?.msg || err.message);
+        console.error("Failed to fetch daily tasks:", err.response?.data?.error || err.message);
+        setError("Failed to fetch daily tasks.");
         setDailyTasks([]);
       } finally {
         setLoading(false);
@@ -41,7 +45,6 @@ const RightSidebar = () => {
 
   return (
     <div className="right-bar">
-
       <div className="info-box">
         <div className="info-header">
           <h4 className="info-title">
@@ -52,12 +55,17 @@ const RightSidebar = () => {
         <ul className="task-list">
           {loading ? (
             <li className="loading">Loading tasks...</li>
+          ) : error ? (
+            <li className="loading">{error}</li>
           ) : dailyTasks.length ? (
             dailyTasks.map((task, index) => (
               <li key={index} className="task-item">
-                {task.split("\n").map((line, i) => (
-                  <div key={i}>{line}</div>
-                ))}
+                {String(task)
+                  .split("\n")
+                  .filter((line) => line.trim() !== "")
+                  .map((line, i) => (
+                    <div key={i}>{line}</div>
+                  ))}
               </li>
             ))
           ) : (
@@ -77,11 +85,7 @@ const RightSidebar = () => {
           className="search-input"
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
-        <button
-          onClick={handleSearch}
-          className="search-btn"
-          title="Search"
-        >
+        <button onClick={handleSearch} className="search-btn" title="Search">
           <FaSearch />
         </button>
       </div>

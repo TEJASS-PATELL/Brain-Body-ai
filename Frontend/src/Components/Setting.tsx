@@ -7,22 +7,27 @@ interface SettingProps {
   onComplete: (language: string, level: string, yogaMode: boolean) => void;
   currentLanguage: string;
   currentLevel: string;
-  currentYogaMode: boolean; 
+  currentYogaMode: boolean;
 }
 
-const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentLevel, currentYogaMode }) => {
-  const [language, setLanguage] = useState(currentLanguage);
-  const [level, setLevel] = useState(currentLevel);
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [yogaMode, setYogaMode] = useState(currentYogaMode);
+const Setting: React.FC<SettingProps> = ({
+  onComplete,
+  currentLanguage = "",
+  currentLevel = "",
+  currentYogaMode = false,
+}) => {
+  const [language, setLanguage] = useState<string>(currentLanguage || "");
+  const [level, setLevel] = useState<string>(currentLevel || "");
+  const [userName, setUserName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [yogaMode, setYogaMode] = useState<boolean>(currentYogaMode || false);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    setLanguage(currentLanguage);
-    setLevel(currentLevel);
-    setYogaMode(currentYogaMode); 
+    setLanguage(currentLanguage || "");
+    setLevel(currentLevel || "");
+    setYogaMode(currentYogaMode || false);
     setSaved(false);
   }, [currentLanguage, currentLevel, currentYogaMode]);
 
@@ -32,12 +37,12 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
         const res = await api.get("/api/auth/userinfo");
         const data = res.data;
 
-        setUserName(data.name);
-        setEmail(data.email);
+        setUserName(data.name ?? "");
+        setEmail(data.email ?? "");
 
         if (data.language) setLanguage(data.language);
         if (data.level) setLevel(data.level);
-        if (data.yogaMode !== undefined) setYogaMode(data.yogaMode);
+        if (typeof data.yogaMode === "boolean") setYogaMode(data.yogaMode);
 
         setSaved(true);
       } catch (err: any) {
@@ -66,11 +71,11 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
 
       if (res.data.language) setLanguage(res.data.language);
       if (res.data.level) setLevel(res.data.level);
-      if (res.data.yogaMode !== undefined) setYogaMode(res.data.yogaMode);
+      if (typeof res.data.yogaMode === "boolean") setYogaMode(res.data.yogaMode);
 
       toast.success(res.data.message);
       onComplete(language, level, yogaMode);
-
+      setSaved(true);
     } catch (err: any) {
       console.error("Error setting preference:", err.response?.data?.msg || err.message);
       toast.error("Error setting preference");
@@ -82,13 +87,19 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
   return (
     <div className="language-selector">
       <div className="user-info">
-        <p>Name:- <strong>{userName}</strong></p>
-        <p>Gmail:- <strong>{email}</strong></p>
+        <p>Name:- <strong>{userName || "N/A"}</strong></p>
+        <p>Gmail:- <strong>{email || "N/A"}</strong></p>
       </div>
 
       <div className="form-group">
         <label>Select Language</label>
-        <select value={language} onChange={(e) => { setLanguage(e.target.value); setSaved(false); }}>
+        <select
+          value={language}
+          onChange={(e) => {
+            setLanguage(e.target.value);
+            setSaved(false);
+          }}
+        >
           <option value="">-- Choose Language --</option>
           <option value="english">English</option>
           <option value="hinglish">Hinglish</option>
@@ -109,7 +120,13 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
 
       <div className="form-group">
         <label>Select Level</label>
-        <select value={level} onChange={(e) => { setLevel(e.target.value); setSaved(false); }}>
+        <select
+          value={level}
+          onChange={(e) => {
+            setLevel(e.target.value);
+            setSaved(false);
+          }}
+        >
           <option value="">-- Choose Level --</option>
           <option value="beginner">Beginner</option>
           <option value="intermediate">Intermediate</option>
@@ -122,25 +139,28 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
         <label className="switch">
           <input
             type="checkbox"
-            checked={yogaMode}
-            onChange={(e) => { setYogaMode(e.target.checked); setSaved(false); }}
+            checked={!!yogaMode}
+            onChange={(e) => {
+              setYogaMode(e.target.checked);
+              setSaved(false);
+            }}
           />
           <span className="slider"></span>
         </label>
       </div>
 
       <div className="preview">
-        <p>Language: <strong>{language.toLowerCase()}</strong></p>
-        <p>Level: <strong>{level.toLowerCase()}</strong></p>
+        <p>Language: <strong>{language ? language.toLowerCase() : "-"}</strong></p>
+        <p>Level: <strong>{level ? level.toLowerCase() : "-"}</strong></p>
         <p>Yoga Mode: <strong>{yogaMode ? "ON" : "OFF"}</strong></p>
       </div>
 
       <button
-        className='sett-button'
+        className="sett-button"
         onClick={handleSubmit}
         disabled={loading}
       >
-        {loading ? "Saving..." : saved ? " Saved" : "Set"}
+        {loading ? "Saving..." : saved ? "Saved" : "Set"}
       </button>
     </div>
   );

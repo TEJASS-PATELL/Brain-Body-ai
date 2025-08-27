@@ -6,10 +6,17 @@ interface SettingsModalProps {
   onClose: () => void;
   currentLanguage: string;
   currentLevel: string;
+  currentYogaMode: boolean;  
   onSave: (language: string, level: string, yogaMode: boolean) => void;
 }
 
-const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, currentLanguage, currentLevel, onSave }) => {
+const SettingsModal: React.FC<SettingsModalProps> = ({
+  onClose,
+  currentLanguage,
+  currentLevel,
+  currentYogaMode, 
+  onSave
+}) => {
   const handleComplete = (language: string, level: string, isYogaMode: boolean) => {
     onSave(language, level, isYogaMode); 
     onClose();
@@ -24,6 +31,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, currentLanguage,
           onComplete={handleComplete}
           currentLanguage={currentLanguage}
           currentLevel={currentLevel}
+          currentYogaMode={currentYogaMode}   
         />
       </div>
     </div>

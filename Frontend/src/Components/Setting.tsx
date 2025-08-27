@@ -7,23 +7,24 @@ interface SettingProps {
   onComplete: (language: string, level: string, yogaMode: boolean) => void;
   currentLanguage: string;
   currentLevel: string;
+  currentYogaMode: boolean; 
 }
 
-const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentLevel }) => {
+const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentLevel, currentYogaMode }) => {
   const [language, setLanguage] = useState(currentLanguage);
   const [level, setLevel] = useState(currentLevel);
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
-  const [yogaMode, setYogaMode] = useState(false);
+  const [yogaMode, setYogaMode] = useState(currentYogaMode);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  // ✅ update states when props change (when modal opens fresh)
   useEffect(() => {
     setLanguage(currentLanguage);
     setLevel(currentLevel);
-    setSaved(false); // reset saved status jab modal dobara open ho
-  }, [currentLanguage, currentLevel]);
+    setYogaMode(currentYogaMode); 
+    setSaved(false);
+  }, [currentLanguage, currentLevel, currentYogaMode]);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -38,7 +39,7 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
         if (data.level) setLevel(data.level);
         if (data.yogaMode !== undefined) setYogaMode(data.yogaMode);
 
-        setSaved(true); // already saved values hain
+        setSaved(true);
       } catch (err: any) {
         console.error("Failed to fetch user info:", err.response?.data?.msg || err.message);
       }
@@ -77,7 +78,6 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
       setLoading(false);
     }
   };
-
 
   return (
     <div className="language-selector">

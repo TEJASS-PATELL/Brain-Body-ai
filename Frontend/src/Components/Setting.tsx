@@ -70,7 +70,7 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
       toast.success(res.data.message);
       onComplete(language, level, yogaMode);
 
-      setSaved(true); // ✅ show Saved after success
+      setSaved(true);
     } catch (err: any) {
       console.error("Error setting preference:", err.response?.data?.msg || err.message);
       toast.error("Error setting preference");
@@ -141,7 +141,7 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage, currentL
         onClick={handleSubmit}
         disabled={loading}
       >
-        {loading ? "Saving..." : saved ? "✅ Saved" : "Set"}
+        {loading ? "Saving..." : saved ? " Saved" : "Set"}
       </button>
     </div>
   );

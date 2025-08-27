@@ -25,6 +25,7 @@ const Chatbot: React.FC = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [userInput, setUserInput] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [yogaMode, setYogaMode] = useState<boolean>(false);
     const [showRightSidebar, setShowRightSidebar] = useState(true);
     const [displayedText, setDisplayedText] = useState<string>("");
     const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
@@ -230,11 +231,13 @@ const Chatbot: React.FC = () => {
         }
     };
 
-    const handleSettingsUpdate = (newLanguage: string, newLevel: string) => {
+    const handleSettingsUpdate = (newLanguage: string, newLevel: string, newYogaMode: boolean) => {
         setLanguage(newLanguage);
         setLevel(newLevel);
+        setYogaMode(newYogaMode);
         setShowSettingsModal(false);
     };
+
 
     return (
         <div className="container">
@@ -273,6 +276,7 @@ const Chatbot: React.FC = () => {
                     onSave={handleSettingsUpdate}
                     currentLanguage={language}
                     currentLevel={level}
+                    currentYogaMode={yogaMode}
                 />
             )}
             <BMIPopup show={showBMIPopup} onClose={toggleBMIPopup} />

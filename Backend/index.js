@@ -15,7 +15,7 @@ const chatRoutes = require("./routers/chatRoutes");
 const db = require("./config/db");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const DBPORT = process.env.DBPORT;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -57,6 +57,6 @@ app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(DBPORT, () => {
+  console.log(`Server running on port ${DBPORT}`);
 });

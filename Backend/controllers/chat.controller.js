@@ -93,14 +93,7 @@ Instructions:
 - Don't include boring tips like "drink water" or "go for a walk"
 - Mix it up! Use ideas like balance, memory, focus, body control, posture, breathing, voice, etc.
 - Respond with a **pure JSON array** of exactly 5 strings — no extra text or explanation
-Example:
-[
-  "Stand on one leg with eyes closed\\nBuilds balance and sharpens focus",
-  "Say a tongue twister in a robot voice\\nImproves voice control and mental agility",
-  "List 5 red things you saw today\\nBoosts memory and visual recall",
-  "Crawl across the room like a bear\\nActivates coordination and core strength",
-  "Hold a pencil between your lips and hum a tune\\nRelaxes jaw and trains breath control"
-]`;
+`;
 
     const result = await withRetry(() => model.generateContent(prompt));
     let rawText = result.response.text().trim();
@@ -109,13 +102,23 @@ Example:
       rawText = rawText.replace(/```(?:json)?/gi, "").replace(/```$/, "").trim();
     }
 
-    const match = rawText.match(/\[[\s\S]*?\]/);
-    if (!match || !match[0]) throw new Error("Gemini did not return a valid JSON array");
+    const match = rawText.match(/\[[\s\S]*\]/);
+    if (!match) throw new Error("Gemini did not return valid JSON");
 
-    let tasks = JSON.parse(match[0]);
-    if (!Array.isArray(tasks)) throw new Error("Parsed tasks is not an array");
+    let tasks;
+    try {
+      tasks = JSON.parse(match[0]);
+    } catch (parseErr) {
+      console.error("JSON.parse failed, rawText:", rawText);
+      throw new Error("Failed to parse Gemini JSON");
+    }
 
-    tasks = tasks.filter(t => typeof t === "string" && t.length <= 100).slice(0, 5);
+    if (!Array.isArray(tasks)) throw new Error("Tasks is not an array");
+
+    tasks = tasks
+      .filter(t => typeof t === "string" && t.length > 5 && t.length <= 120)
+      .slice(0, 5);
+
     if (tasks.length < 3) throw new Error("Too few valid tasks");
 
     cachedTasks = tasks;
@@ -123,8 +126,15 @@ Example:
 
     return res.json({ tasks });
   } catch (error) {
-    console.error("Gemini API error:", error);
-    res.status(500).json({ msg: "Failed to generate daily tasks" });
+    console.error("Daily tasks generation failed:", error.message, error.stack);
+    return res.status(500).json({
+      msg: "Failed to generate daily tasks",
+      fallback: [
+        "Stand tall and take 10 deep breaths\nCalms mind and energizes body",
+        "Balance a book on your head for 1 min\nImproves posture and focus",
+        "Name 5 things you are grateful for\nBoosts positivity and mindfulness",
+      ]
+    });
   }
 };
 

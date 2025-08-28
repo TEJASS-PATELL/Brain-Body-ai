@@ -2,8 +2,9 @@ const { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } = require("@googl
 const db = require("../config/db");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const dayjs = require("dayjs");
+const { generateSystemPrompt, yogaPrompt } = require("../Prompt/BrainBody");
+
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-const { generateSystemPrompt, yogaPrompt } = require("../Prompt/BrainBody")
 
 const withRetry = async (fn, retries = 3, delay = 1000) => {
   try {
@@ -20,8 +21,8 @@ const withRetry = async (fn, retries = 3, delay = 1000) => {
 
 exports.sendAndSaveChat = async (req, res) => {
   try {
-    const userId = req.user.userid;
-    const { sessionId, message, language = 'english', level = 'beginner', isYogaMode } = req.body;
+    const userId = req.user?.userid;
+    const { sessionId, message, language = 'english', level = 'beginner' } = req.body;
 
     if (!userId || !sessionId || !message) {
       return res.status(400).json({ msg: "Missing required fields" });
@@ -32,17 +33,16 @@ exports.sendAndSaveChat = async (req, res) => {
       [userId, sessionId]
     );
 
-    const chatHistory = oldMessages.map((msg) => ({
+    const chatHistory = oldMessages.map(msg => ({
       role: msg.sender,
       parts: [{ text: msg.message }],
     }));
 
+    const yogaModeActive = req.session?.yogaMode === true || req.session?.yogaMode === "true";
+    console.log("YogaMode in session:", req.session?.yogaMode, "Type:", typeof req.session?.yogaMode);
+
     let systemPrompt;
-    isYogaMode = req.session?.yogaMode === true || req.session?.yogaMode === "true";
-
-    console.log(" YogaMode in session:", req.session?.yogaMode, "Type:", typeof req.session?.yogaMode);
-
-    if (isYogaMode) {
+    if (yogaModeActive) {
       console.log("Yoga Prompt SELECTED");
       systemPrompt = yogaPrompt(req.session.language || language, req.session.level || level);
     } else {
@@ -65,7 +65,7 @@ exports.sendAndSaveChat = async (req, res) => {
     });
 
     const result = await withRetry(() => chat.sendMessage(message));
-    const reply = result.response.text() || getErrorMessage(language);
+    const reply = result.response?.text() || "Sorry, I couldn't generate a response.";
 
     await db.query(
       `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?), (?, ?, ?, ?)`,

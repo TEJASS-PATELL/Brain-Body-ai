@@ -92,10 +92,11 @@ exports.update_detail = (req, res) => {
   if (!req.user)
     return res.status(401).json({ message: "Not authenticated" });
 
+  const yogaModeBool = yogaMode === true || yogaMode === "true";
+
   req.session.language = language;
   req.session.level = level;
-  req.session.yogaMode = yogaMode === true || yogaMode === "true";
-
+  req.session.yogaMode = yogaModeBool;
   req.session.save((err) => {
     if (err) console.error("Session save error:", err);
 

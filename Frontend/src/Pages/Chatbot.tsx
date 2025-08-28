@@ -71,6 +71,7 @@ const Chatbot: React.FC = () => {
                 setUserId(data.id || null);
                 setLanguage(data.language || "english");
                 setLevel(data.level || "beginner");
+                setYogaMode(data.yogaMode || false);
             } catch (err: any) {
                 console.error("Failed to fetch user details:", err.response?.data?.msg || err.message);
                 setUserId(null);
@@ -150,6 +151,7 @@ const Chatbot: React.FC = () => {
                 message: userMessageText,
                 language,
                 level,
+                yogaMode
             });
 
             const reply = res.data.reply || "Sorry, I couldn't get a response.";

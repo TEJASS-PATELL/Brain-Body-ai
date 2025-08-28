@@ -39,13 +39,13 @@ const Setting: React.FC<SettingProps> = ({
         setEmail(data.email || "");
         setLanguage(data.language || currentLanguage);
         setLevel(data.level || currentLevel);
-        setYogaMode(!!data.yogaMode);
+        setYogaMode(!!data.yogaMode || currentYogaMode);
       } catch (err: any) {
         console.error("Failed to fetch user info:", err.response?.data?.msg || err.message);
       }
     };
     fetchUserInfo();
-  }, [currentLanguage, currentLevel]);
+  }, [currentLanguage, currentLevel, currentYogaMode]);
 
   const handleSubmit = async () => {
     if (!language || !level) {

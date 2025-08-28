@@ -46,6 +46,9 @@ exports.sendAndSaveChat = async (req, res) => {
       systemPrompt = generateSystemPrompt(language, level);
     }
 
+    console.log("👉 Final system prompt being used:");
+    console.log(systemPrompt.substring(0, 300));
+
     const chat = model.startChat({
       history: chatHistory,
       generationConfig: { maxOutputTokens: 1500 },

@@ -21,7 +21,7 @@ const withRetry = async (fn, retries = 3, delay = 1000) => {
 exports.sendAndSaveChat = async (req, res) => {
     try {
         const userId = req.user?.userid;
-        const { sessionId, message, language = 'english', level = 'beginner' } = req.body;
+        const { sessionId, message, language = 'english', level = 'beginner', yogaMode } = req.body;
 
         if (!userId || !sessionId || !message) {
             return res.status(400).json({ msg: "Missing required fields" });
@@ -36,13 +36,11 @@ exports.sendAndSaveChat = async (req, res) => {
             role: msg.sender,
             parts: [{ text: msg.message }],
         }));
-        
-        const yogaModeActive = !!req.session?.yogaMode;
 
         console.log("YogaMode in session:", req.session?.yogaMode, "Type:", typeof req.session?.yogaMode);
         
         let systemPrompt;
-        if (yogaModeActive) {
+        if (yogaMode) {
             console.log("Yoga Prompt SELECTED");
             systemPrompt = yogaPrompt(req.session.language || language, req.session.level || level);
         } else {

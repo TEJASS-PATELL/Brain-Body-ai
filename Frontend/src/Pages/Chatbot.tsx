@@ -80,7 +80,6 @@ const Chatbot: React.FC = () => {
         fetchUserDetails();
     }, []);
 
-
     useEffect(() => {
         if (userId) {
             const savedSessionId = localStorage.getItem(`selectedSessionId-${userId}`);
@@ -231,13 +230,22 @@ const Chatbot: React.FC = () => {
         }
     };
 
-    const handleSettingsUpdate = (newLanguage: string, newLevel: string, newYogaMode: boolean) => {
-        setLanguage(newLanguage);
-        setLevel(newLevel);
-        setYogaMode(newYogaMode);
-        setShowSettingsModal(false);
+    const handleSettingsUpdate = async (newLanguage: string, newLevel: string, newYogaMode: boolean) => {
+        try {
+            await api.post("/api/auth/update_detail", {
+                language: newLanguage,
+                level: newLevel,
+                yogaMode: newYogaMode,
+            });
+            setLanguage(newLanguage);
+            setLevel(newLevel);
+            setYogaMode(newYogaMode);
+        } catch (err) {
+            console.error("Failed to update settings", err);
+        } finally {
+            setShowSettingsModal(false);
+        }
     };
-
 
     return (
         <div className="container">

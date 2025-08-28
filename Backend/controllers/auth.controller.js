@@ -94,22 +94,25 @@ exports.update_detail = (req, res) => {
 
   req.session.language = language;
   req.session.level = level;
-  req.session.yogaMode = Boolean(yogaMode);
+  req.session.yogaMode = yogaMode === true || yogaMode === "true";
 
-  req.session.save();
+  req.session.save((err) => {
+    if (err) console.error("Session save error:", err);
 
-  console.log("Session updated:", {
-    userId: req.user.userid,
-    language,
-    level,
-    yogaMode: req.session.yogaMode,
-  });
+    console.log("Session updated:", {
+      userId: req.user.userid,
+      language,
+      level,
+      yogaMode: req.session.yogaMode,
+      type: typeof req.session.yogaMode,
+    });
 
-  res.json({
-    message: `Preferences set: ${language} (${level}), YogaMode: ${req.session.yogaMode ? "ON" : "OFF"}`,
-    language,
-    level,
-    yogaMode: !!req.session.yogaMode,
+    res.json({
+      message: `Preferences set: ${language} (${level}), YogaMode: ${req.session.yogaMode ? "ON" : "OFF"}`,
+      language,
+      level,
+      yogaMode: req.session.yogaMode,
+    });
   });
 };
 

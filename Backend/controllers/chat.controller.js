@@ -38,16 +38,19 @@ exports.sendAndSaveChat = async (req, res) => {
     }));
 
     let systemPrompt;
-    const isYogaMode = Boolean(req.session?.yogaMode);
+    const isYogaMode = req.session?.yogaMode === true || req.session?.yogaMode === "true";
+
+    console.log(" YogaMode in session:", req.session?.yogaMode, "Type:", typeof req.session?.yogaMode);
 
     if (isYogaMode) {
-      systemPrompt = yogaPrompt(language, level);
+      console.log("Yoga Prompt SELECTED");
+      systemPrompt = yogaPrompt(req.session.language || language, req.session.level || level);
     } else {
-      systemPrompt = generateSystemPrompt(language, level);
+      console.log("BrainBody Prompt SELECTED");
+      systemPrompt = generateSystemPrompt(req.session.language || language, req.session.level || level);
     }
 
-    console.log("👉 Final system prompt being used:");
-    console.log(systemPrompt.substring(0, 300));
+    console.log("Final system prompt preview:", systemPrompt.substring(0, 300));
 
     const chat = model.startChat({
       history: chatHistory,

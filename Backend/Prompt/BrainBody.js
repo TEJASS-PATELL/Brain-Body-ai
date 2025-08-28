@@ -125,4 +125,4 @@ Remember, you are a **Guru**. Your goal is to help users connect body, mind, and
   `;
 };
 
-module.exports = generateSystemPrompt, yogaPrompt;
+module.exports = { generateSystemPrompt, yogaPrompt };

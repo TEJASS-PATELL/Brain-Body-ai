@@ -20,14 +20,20 @@ const Setting: React.FC<SettingProps> = ({
   const [level, setLevel] = useState<string>(currentLevel || "");
   const [userName, setUserName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [yogaMode, setYogaMode] = useState<boolean>(currentYogaMode || false);
+  const [yogaMode, setYogaMode] = useState<boolean>(!!currentYogaMode);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  const parseYogaMode = (value: any): boolean => {
+    if (typeof value === "boolean") return value;
+    if (typeof value === "string") return value === "true";
+    return false;
+  };
 
   useEffect(() => {
     setLanguage(currentLanguage || "");
     setLevel(currentLevel || "");
-    setYogaMode(currentYogaMode || false);
+    setYogaMode(!!currentYogaMode);
     setSaved(false);
   }, [currentLanguage, currentLevel, currentYogaMode]);
 
@@ -42,7 +48,7 @@ const Setting: React.FC<SettingProps> = ({
 
         if (data.language) setLanguage(data.language);
         if (data.level) setLevel(data.level);
-        if (typeof data.yogaMode === "boolean") setYogaMode(data.yogaMode);
+        if (data.yogaMode !== undefined) setYogaMode(parseYogaMode(data.yogaMode));
 
         setSaved(true);
       } catch (err: any) {
@@ -69,12 +75,17 @@ const Setting: React.FC<SettingProps> = ({
         yogaMode,
       });
 
-      if (res.data.language) setLanguage(res.data.language);
-      if (res.data.level) setLevel(res.data.level);
-      if (typeof res.data.yogaMode === "boolean") setYogaMode(res.data.yogaMode);
+      const updatedLanguage = res.data.language || language;
+      const updatedLevel = res.data.level || level;
+      const updatedYogaMode = parseYogaMode(res.data.yogaMode ?? yogaMode);
+
+      setLanguage(updatedLanguage);
+      setLevel(updatedLevel);
+      setYogaMode(updatedYogaMode);
 
       toast.success(res.data.message);
-      onComplete(language, level, yogaMode);
+      onComplete(updatedLanguage, updatedLevel, updatedYogaMode);
+
       setSaved(true);
     } catch (err: any) {
       console.error("Error setting preference:", err.response?.data?.msg || err.message);

@@ -3,7 +3,7 @@ const db = require("../config/db");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const dayjs = require("dayjs");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-const generateSystemPrompt = require("../Prompt/BrainBody")
+const { generateSystemPrompt, yogaPrompt } = require("../Prompt/BrainBody")
 
 const withRetry = async (fn, retries = 3, delay = 1000) => {
   try {
@@ -38,8 +38,10 @@ exports.sendAndSaveChat = async (req, res) => {
     }));
 
     let systemPrompt;
-    if (req.session?.yogaMode) {
-      systemPrompt = yogaPrompt(language,level);  
+    const isYogaMode = Boolean(req.session?.yogaMode);
+
+    if (isYogaMode) {
+      systemPrompt = yogaPrompt(language, level);
     } else {
       systemPrompt = generateSystemPrompt(language, level);
     }
@@ -60,7 +62,7 @@ exports.sendAndSaveChat = async (req, res) => {
     const reply = result.response.text() || getErrorMessage(language);
 
     await db.query(
-      `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?), (?, ?, ?, ?)` ,
+      `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?), (?, ?, ?, ?)`,
       [userId, sessionId, "user", message, userId, sessionId, "model", reply]
     );
 

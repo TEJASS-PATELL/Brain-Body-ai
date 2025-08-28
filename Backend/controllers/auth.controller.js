@@ -92,12 +92,9 @@ exports.update_detail = (req, res) => {
   if (!req.user)
     return res.status(401).json({ message: "Not authenticated" });
 
-  const yogaModeValue = (yogaMode === true || yogaMode === "true");
-
   req.session.language = language;
   req.session.level = level;
-  req.session.yogaMode = yogaModeValue;
-  req.session.userId = req.user.userid;
+  req.session.yogaMode = Boolean(yogaMode);
 
   req.session.save();
 
@@ -112,7 +109,7 @@ exports.update_detail = (req, res) => {
     message: `Preferences set: ${language} (${level}), YogaMode: ${req.session.yogaMode ? "ON" : "OFF"}`,
     language,
     level,
-    yogaMode: req.session.yogaMode,
+    yogaMode: !!req.session.yogaMode,
   });
 };
 
@@ -122,19 +119,18 @@ exports.get_detail = (req, res) => {
     return res.json({ id: null, language: "", level: "", yogaMode: false });
   }
 
-  const userId = req.user.userid;
-  const language = req.session?.language || "";
-  const level = req.session?.level || "";
-  const yogaMode = req.session?.yogaMode === true;
+  const language = req.session.language || "";
+  const level = req.session.level || "";
+  const yogaMode = Boolean(req.session.yogaMode);
 
-  console.log("User details fetched:", { userId, language, level, yogaMode });
-  res.json({ id: userId, language, level, yogaMode });
+  res.json({ id: req.user.userid, language, level, yogaMode });
 };
 
 exports.check_session = (req, res) => {
   res.json({
-    language: req.session?.language || "",
-    level: req.session?.level || "",
+    language: req.session.language || "",
+    level: req.session.level || "",
+    yogaMode: Boolean(req.session.yogaMode),
   });
 };
 
@@ -148,15 +144,12 @@ exports.user_info = async (req, res) => {
     if (rows.length === 0)
       return res.status(404).json({ error: "User not found" });
 
-    const yogaModeValue =
-      req.session?.yogaMode === true || req.session?.yogaMode === "true";
-
     res.json({
       name: rows[0].name,
       email: rows[0].email,
-      language: req.session?.language || "",
-      level: req.session?.level || "",
-      yogaMode: yogaModeValue
+      language: req.session.language || "",
+      level: req.session.level || "",
+      yogaMode: Boolean(req.session.yogaMode),
     });
   } catch (err) {
     console.error("User fetch error:", err.message);

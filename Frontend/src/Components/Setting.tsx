@@ -16,25 +16,17 @@ const Setting: React.FC<SettingProps> = ({
   currentLevel = "",
   currentYogaMode = false,
 }) => {
-  const [language, setLanguage] = useState<string>(currentLanguage || "");
-  const [level, setLevel] = useState<string>(currentLevel || "");
-  const [userName, setUserName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [yogaMode, setYogaMode] = useState<boolean>(!!currentYogaMode);
+  const [language, setLanguage] = useState(currentLanguage);
+  const [level, setLevel] = useState(currentLevel);
+  const [yogaMode, setYogaMode] = useState(currentYogaMode);
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [saved, setSaved] = useState(false);
-
-  const parseYogaMode = (value: any): boolean => {
-    if (typeof value === "boolean") return value;
-    if (typeof value === "string") return value === "true";
-    return false;
-  };
 
   useEffect(() => {
-    setLanguage(currentLanguage || "");
-    setLevel(currentLevel || "");
+    setLanguage(currentLanguage);
+    setLevel(currentLevel);
     setYogaMode(!!currentYogaMode);
-    setSaved(false);
   }, [currentLanguage, currentLevel, currentYogaMode]);
 
   useEffect(() => {
@@ -43,30 +35,25 @@ const Setting: React.FC<SettingProps> = ({
         const res = await api.get("/api/auth/userinfo");
         const data = res.data;
 
-        setUserName(data.name ?? "");
-        setEmail(data.email ?? "");
-
-        if (data.language) setLanguage(data.language);
-        if (data.level) setLevel(data.level);
-        if (data.yogaMode !== undefined) setYogaMode(parseYogaMode(data.yogaMode));
-
-        setSaved(true);
+        setUserName(data.name || "");
+        setEmail(data.email || "");
+        setLanguage(data.language || currentLanguage);
+        setLevel(data.level || currentLevel);
+        setYogaMode(!!data.yogaMode);
       } catch (err: any) {
         console.error("Failed to fetch user info:", err.response?.data?.msg || err.message);
       }
     };
-
     fetchUserInfo();
-  }, []);
+  }, [currentLanguage, currentLevel]);
 
   const handleSubmit = async () => {
     if (!language || !level) {
-      toast("Please select both language and level");
+      toast.error("Please select both language and level");
       return;
     }
 
     setLoading(true);
-    setSaved(false);
 
     try {
       const res = await api.post("/api/auth/update_detail", {
@@ -77,19 +64,19 @@ const Setting: React.FC<SettingProps> = ({
 
       const updatedLanguage = res.data.language || language;
       const updatedLevel = res.data.level || level;
-      const updatedYogaMode = parseYogaMode(res.data.yogaMode ?? yogaMode);
+      const updatedYogaMode = typeof res.data.yogaMode === "boolean" 
+        ? res.data.yogaMode 
+        : yogaMode;
 
       setLanguage(updatedLanguage);
       setLevel(updatedLevel);
       setYogaMode(updatedYogaMode);
 
-      toast.success(res.data.message);
+      toast.success(res.data.message || "Preferences updated");
       onComplete(updatedLanguage, updatedLevel, updatedYogaMode);
-
-      setSaved(true);
     } catch (err: any) {
-      console.error("Error setting preference:", err.response?.data?.msg || err.message);
-      toast.error("Error setting preference");
+      console.error("Error updating preferences:", err.response?.data?.msg || err.message);
+      toast.error("Error updating preferences");
     } finally {
       setLoading(false);
     }
@@ -98,19 +85,13 @@ const Setting: React.FC<SettingProps> = ({
   return (
     <div className="language-selector">
       <div className="user-info">
-        <p>Name:- <strong>{userName || "N/A"}</strong></p>
-        <p>Gmail:- <strong>{email || "N/A"}</strong></p>
+        <p>Name: <strong>{userName || "N/A"}</strong></p>
+        <p>Email: <strong>{email || "N/A"}</strong></p>
       </div>
 
       <div className="form-group">
         <label>Select Language</label>
-        <select
-          value={language}
-          onChange={(e) => {
-            setLanguage(e.target.value);
-            setSaved(false);
-          }}
-        >
+        <select value={language} onChange={(e) => setLanguage(e.target.value)}>
           <option value="">-- Choose Language --</option>
           <option value="english">English</option>
           <option value="hinglish">Hinglish</option>
@@ -131,13 +112,7 @@ const Setting: React.FC<SettingProps> = ({
 
       <div className="form-group">
         <label>Select Level</label>
-        <select
-          value={level}
-          onChange={(e) => {
-            setLevel(e.target.value);
-            setSaved(false);
-          }}
-        >
+        <select value={level} onChange={(e) => setLevel(e.target.value)}>
           <option value="">-- Choose Level --</option>
           <option value="beginner">Beginner</option>
           <option value="intermediate">Intermediate</option>
@@ -150,28 +125,21 @@ const Setting: React.FC<SettingProps> = ({
         <label className="switch">
           <input
             type="checkbox"
-            checked={!!yogaMode}
-            onChange={(e) => {
-              setYogaMode(e.target.checked);
-              setSaved(false);
-            }}
+            checked={yogaMode}
+            onChange={(e) => setYogaMode(e.target.checked)}
           />
           <span className="slider"></span>
         </label>
       </div>
 
       <div className="preview">
-        <p>Language: <strong>{language ? language.toLowerCase() : "-"}</strong></p>
-        <p>Level: <strong>{level ? level.toLowerCase() : "-"}</strong></p>
+        <p>Language: <strong>{language || "-"}</strong></p>
+        <p>Level: <strong>{level || "-"}</strong></p>
         <p>Yoga Mode: <strong>{yogaMode ? "ON" : "OFF"}</strong></p>
       </div>
 
-      <button
-        className="sett-button"
-        onClick={handleSubmit}
-        disabled={loading}
-      >
-        {loading ? "Saving..." : saved ? "Saved" : "Set"}
+      <button className="sett-button" onClick={handleSubmit} disabled={loading}>
+        {loading ? "Saving..." : "Set Preferences"}
       </button>
     </div>
   );

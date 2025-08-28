@@ -38,7 +38,12 @@ exports.sendAndSaveChat = async (req, res) => {
       parts: [{ text: msg.message }],
     }));
 
-    const yogaModeActive = req.session?.yogaMode === true || req.session?.yogaMode === "true";
+    const parseYogaMode = (value) => {
+      return value === true || value === "true" || value === 1 || value === "1";
+    };
+
+    const yogaModeActive = parseYogaMode(req.session?.yogaMode);
+
     console.log("YogaMode in session:", req.session?.yogaMode, "Type:", typeof req.session?.yogaMode);
 
     let systemPrompt;

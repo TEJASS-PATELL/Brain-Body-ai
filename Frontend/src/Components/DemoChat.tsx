@@ -76,8 +76,8 @@ const DemoChat: React.FC = () => {
             It’s simple, strengthens your legs, and builds a strong foundation. `;
     } else if (message.includes('focus')) {
       return "Try the Pomodoro Technique for better focus.";
-    } else if (message.includes('food') || message.includes('nutrition')) {
-      return "Foods like fatty fish, blueberries, and turmeric boost brain power.";
+    } else if (message.includes('food') || message.includes('nutrition')) { 
+      return "Foods like blueberries, walnuts, turmeric, and leafy greens boost brain power.";
     } else if (message.includes('hello') || message.includes('hi')) {
       return "Hello! What would you like to work on today?";
     } else if (message.includes('stress') || message.includes('anxiety')) {

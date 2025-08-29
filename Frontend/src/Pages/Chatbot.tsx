@@ -106,16 +106,21 @@ const Chatbot: React.FC = () => {
     const typeMessage = (fullText: string) => {
         setDisplayedText("");
         let index = 0;
-        const interval = setInterval(() => {
+
+        const step = () => {
             setDisplayedText((prev) => prev + fullText[index]);
             index++;
-            if (index === fullText.length) {
-                clearInterval(interval);
+            if (index < fullText.length) {
+                requestAnimationFrame(step);
+            } else {
                 setMessages((prev) => [...prev, { role: "model", text: fullText }]);
                 setDisplayedText("");
             }
-        }, 30);
+        };
+
+        requestAnimationFrame(step);
     };
+
 
     const handleLogout = async () => {
         try {

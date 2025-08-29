@@ -22,8 +22,8 @@ const features = [
 
 const suggestionsList = [
   'I need a quick brain exercise',
-  'Recommend a simple 10-minute workout',
-  'How can I improve my focus?',
+  'What’s a quick beginner workout?',
+  'What are some tips to sharpen my focus?',
   'Foods that boost brain power'
 ];
 
@@ -71,7 +71,9 @@ const DemoChat: React.FC = () => {
     if (message.includes('brain exercise')) {
       return "Here's a quick brain exercise: Try counting backward from 100 by 7s... Login for full access.";
     } else if (message.includes('workout')) {
-      return "I recommend this 10-minute full-body workout...";
+      return `Here’s a quick beginner workout:\n\n
+            Bodyweight Squats – Do 3 sets of 10 reps.\n\n
+            It’s simple, strengthens your legs, and builds a strong foundation. `;
     } else if (message.includes('focus')) {
       return "Try the Pomodoro Technique for better focus.";
     } else if (message.includes('food') || message.includes('nutrition')) {

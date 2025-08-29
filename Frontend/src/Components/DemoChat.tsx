@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaRobot, FaUser, FaTrashAlt, FaShareAlt, FaPaperPlane, FaHeartbeat } from 'react-icons/fa';
 import './DemoChat.css';
-import { FaBrain, FaDumbbell, FaAppleAlt, FaSmile, FaClock, FaBed } from "react-icons/fa";
+import { FaBrain, FaDumbbell, FaAppleAlt, FaSmile, FaClock } from "react-icons/fa";
 
 
 type Sender = 'ai' | 'user';

@@ -63,7 +63,7 @@ const DemoChat: React.FC = () => {
       const aiReply: Message = { sender: 'ai', text: generateResponse(messageText) };
       setTyping(false);
       setMessages(prev => [...prev, aiReply]);
-    }, 1200);
+    }, 2000);
   };
 
   const generateResponse = (msg: string): string => {

@@ -108,7 +108,6 @@ Instructions:
         try {
             tasks = JSON.parse(match[0]);
         } catch (parseErr) {
-            console.error("JSON.parse failed, rawText:", rawText);
             throw new Error("Failed to parse Gemini JSON");
         }
 
@@ -152,7 +151,6 @@ exports.getChatSessions = async (req, res) => {
         );
         res.json({ history: results });
     } catch (err) {
-        console.error("Error in getChatSessions:", err);
         res.status(500).json({ msg: "Error getting sessions", err });
     }
 };
@@ -174,7 +172,6 @@ exports.getChatBySession = async (req, res) => {
         const formatted = results.map(row => ({ role: row.sender, text: row.message }));
         res.json({ messages: formatted });
     } catch (err) {
-        console.error("Error getting chat:", err);
         res.status(500).json({ msg: "Error getting chat", err });
     }
 };

@@ -1,21 +1,19 @@
-require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
 const MySQLStore = require("express-mysql-session")(session);
 const cors = require("cors");
+const db = require("./config/db");
+const chatRoutes = require("./routers/chatRoutes");
+const authRoutes = require("./routers/authroutes");
 const cookieParser = require("cookie-parser");
+const PORT = process.env.PORT || 5000;
+const app = express();
+require("dotenv").config();
 
 require("./config/passport");
 require("./models/user");
 require("./models/chat_history");
-
-const authRoutes = require("./routers/authroutes");
-const chatRoutes = require("./routers/chatRoutes");
-const db = require("./config/db");
-
-const app = express();
-const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -51,10 +49,6 @@ app.use(passport.session());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/chats", chatRoutes);
-
-app.get("/", (req, res) => {
-  res.send("Backend is running!");
-});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

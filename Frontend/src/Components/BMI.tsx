@@ -134,11 +134,10 @@ const BMIPopup: React.FC<BMIPopupProps> = ({ show, onClose }) => {
         {bmi !== null && (
           <div className="bmi-result">
             <p>
-              Your BMI is: <strong>{bmi}</strong>
+              Your BMI is: <strong className={`bmi-status ${message.toLowerCase()}`}>{bmi}</strong>
             </p>
             <p>
-              Status:
-              <strong className={`bmi-status ${message.toLowerCase()}`}>{message}</strong>
+              Status: <strong className={`bmi-status ${message.toLowerCase()}`}>{message}</strong>
             </p>
             <p className="bmi-tip">{tips}</p>
 

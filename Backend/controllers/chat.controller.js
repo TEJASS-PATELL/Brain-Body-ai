@@ -36,19 +36,13 @@ exports.sendAndSaveChat = async (req, res) => {
             role: msg.sender,
             parts: [{ text: msg.message }],
         }));
-
-        console.log("YogaMode in session:", req.session?.yogaMode, "Type:", typeof req.session?.yogaMode);
         
         let systemPrompt;
         if (yogaMode) {
-            console.log("Yoga Prompt SELECTED");
-            systemPrompt = yogaPrompt(req.session.language || language, req.session.level || level);
+            systemPrompt = yogaPrompt(language, level);
         } else {
-            console.log("BrainBody Prompt SELECTED");
-            systemPrompt = generateSystemPrompt(req.session.language || language, req.session.level || level);
+            systemPrompt = generateSystemPrompt(language, level);
         }
-
-        console.log("Final system prompt preview:", systemPrompt.substring(0, 300));
 
         const chat = model.startChat({
             history: chatHistory,
@@ -73,7 +67,6 @@ exports.sendAndSaveChat = async (req, res) => {
         res.json({ reply });
     } catch (error) {
         console.error("Gemini API Error:", error);
-        const language = req.body.language || 'english';
         res.status(500).json({ reply: `Sorry, I can't assist right now in ${language}.` });
     }
 };

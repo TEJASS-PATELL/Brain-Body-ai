@@ -20,7 +20,6 @@ const features = [
   { name: 'Sleep', icon: <FaBed /> },
 ];
 
-
 const suggestionsList = [
   'I need a quick brain exercise',
   'Recommend a 10-minute workout',
@@ -70,7 +69,7 @@ const DemoChat: React.FC = () => {
   const generateResponse = (msg: string): string => {
     const message = msg.toLowerCase();
     if (message.includes('brain exercise')) {
-      return "Here's a quick brain exercise: Try counting backward from 100 by 7s...";
+      return "Here's a quick brain exercise: Try counting backward from 100 by 7s... Login for full access.";
     } else if (message.includes('workout')) {
       return "I recommend this 10-minute full-body workout...";
     } else if (message.includes('focus')) {
@@ -86,7 +85,7 @@ const DemoChat: React.FC = () => {
     } else if (message.includes('memory')) {
       return "Try memory games, get good sleep, and reduce stress.";
     } else {
-      return "Full access requires login. You’re currently viewing a demo version."
+      return "You’re currently viewing the demo version. To unlock full access, please log in — it’s free!"
     }
   };
 

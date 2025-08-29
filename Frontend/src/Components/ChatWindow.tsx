@@ -60,7 +60,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoad
             <span className="tag more"><FaPlus style={{ marginRight: '6px' }} /> More</span>
           </div>
         </div>
-
       )}
 
       {messages.map((msg, index) => (

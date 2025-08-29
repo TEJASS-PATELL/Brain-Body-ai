@@ -35,7 +35,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
           <button className="main" onClick={() => setShowSettingsModal(true)} title="Setting">
             <Settings size={22} />
           </button>
-          <Link to="/features" className="main">
+          <Link to="/features" className="main" title='Features'>
             <HelpCircle size={22} />
           </Link>
           <button className="logout" onClick={handleLogout} title="logout">

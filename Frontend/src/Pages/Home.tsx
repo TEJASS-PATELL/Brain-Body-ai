@@ -55,7 +55,6 @@ const HomePage = () => {
                 )}
               </div>
             </main>
-
           </div>
           <Demo />
         </div>

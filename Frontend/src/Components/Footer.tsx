@@ -9,7 +9,7 @@ const socialLinks = {
   github: 'https://github.com/TEJASS-PATELL',
   linkedin: 'https://www.linkedin.com/in/tejasspatell',
   email: 'mailto:tejasspatell2@gmail.com',
-  portfolio: 'dd'
+  portfolio: 'https://portfolio-sooty-six-82.vercel.app/'
 };
 
 const Footer: React.FC = () => {

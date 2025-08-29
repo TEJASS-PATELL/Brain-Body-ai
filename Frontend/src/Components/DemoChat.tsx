@@ -22,7 +22,7 @@ const features = [
 
 const suggestionsList = [
   'I need a quick brain exercise',
-  'Recommend a 10-minute workout',
+  'Recommend a simple 10-minute workout',
   'How can I improve my focus?',
   'Foods that boost brain power'
 ];

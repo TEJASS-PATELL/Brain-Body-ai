@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaRobot, FaUser, FaTrashAlt, FaShareAlt, FaPaperPlane } from 'react-icons/fa';
+import { FaRobot, FaUser, FaTrashAlt, FaShareAlt, FaPaperPlane, FaHeartbeat } from 'react-icons/fa';
 import './DemoChat.css';
 import { FaBrain, FaDumbbell, FaAppleAlt, FaSmile, FaClock, FaBed } from "react-icons/fa";
 
@@ -15,9 +15,9 @@ const features = [
   { name: 'Mental fitness', icon: <FaBrain /> },
   { name: 'Workout routines', icon: <FaDumbbell /> },
   { name: 'Nutrition', icon: <FaAppleAlt /> },
+  { name: 'Heart Health', icon: <FaHeartbeat /> },
   { name: 'Stress management', icon: <FaSmile /> },
   { name: 'Daily productivity', icon: <FaClock /> },
-  { name: 'Sleep', icon: <FaBed /> },
 ];
 
 const suggestionsList = [

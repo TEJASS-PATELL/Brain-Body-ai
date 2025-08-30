@@ -414,8 +414,9 @@
 }
 
 @media (max-width: 900px) {
-  .message-bubble {
+  .user-message .message-bubble {
     font-size: 1em;
+    max-width: 70%;
   }
 
   .chat-intro {
@@ -430,6 +431,11 @@
 
   .title {
     display: none;
+  }
+
+    .user-message .message-bubble {
+    font-size: 1em;
+    max-width: 70%;
   }
 
   .status {
@@ -474,7 +480,6 @@
   background-color: #f4f4f4;
   text-align: left;
 }
-
 
 .chat-intro h2 {
   font-weight: 700;

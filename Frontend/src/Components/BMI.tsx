@@ -39,44 +39,42 @@ const BMIPopup: React.FC<BMIPopupProps> = ({ show, onClose }) => {
     if (rounded < 18.5) {
       setMessage('Underweight');
       baseTip = [
-        `You are a ${a}-year-old individual with a BMI of ${rounded}, which is classified as underweight. Act as an expert health & fitness coach. Create a detailed plan that includes:`,
-        '1. A personalized nutrient-rich diet (high in proteins, healthy fats, whole grains, micronutrients).',
-        '2. A weekly strength training + light cardio schedule to build lean muscle.',
-        '3. Lifestyle tips for improving energy, focus, and immunity.',
-        'Give the plan in a structured format (Diet | Exercise | Lifestyle).',
+        `I am a ${a}-year-old individual with a BMI of ${rounded}, which is classified as underweight. Act as an elite health, nutrition, and fitness coach. Create a world-class optimization plan that includes:`,
+        '1. A nutrient-dense, high-calorie meal plan (rich in proteins, healthy fats, complex carbs, and essential micronutrients) to promote healthy weight gain.',
+        '2. A progressive weekly workout schedule focused on strength training (muscle building) combined with light cardio for stamina and heart health.',
+        '3. Lifestyle recommendations to enhance energy, focus, mood stability, and immune resilience.',
+        'Format the response under clear sections: **Diet | Exercise | Lifestyle**.',
       ];
     } else if (rounded >= 18.5 && rounded < 24.9) {
       setMessage('Normal weight');
       baseTip = [
-        `You are a ${a}-year-old individual with a BMI of ${rounded}, which falls in the healthy range. Act as an expert health & fitness coach. Create a personalized maintenance & performance plan that includes:`,
-        '1. A balanced diet plan for sustained energy and focus.',
-        '2. A fitness routine mixing strength, cardio, and flexibility to maintain optimal body + brain health.',
-        '3. Daily lifestyle habits to improve productivity, sleep, and long-term wellness.',
-        'Give the plan in a structured format (Diet | Exercise | Lifestyle).',
+        `I am a ${a}-year-old individual with a BMI of ${rounded}, which falls within the healthy range. Act as a top-tier performance and wellness coach. Design a premium maintenance & optimization plan that includes:`,
+        '1. A balanced and performance-driven diet plan to sustain energy, focus, and long-term vitality.',
+        '2. A fitness program blending strength, cardio, mobility, and flexibility for holistic body-brain health.',
+        '3. Daily lifestyle practices for productivity, quality sleep, mental clarity, and long-term wellness.',
+        'Format the response under clear sections: **Diet | Exercise | Lifestyle**.',
       ];
     } else if (rounded >= 25 && rounded < 29.9) {
       setMessage('Overweight');
       baseTip = [
-        `You are a ${a}-year-old individual with a BMI of ${rounded}, which is in the overweight range. Act as an expert health & fitness coach. Create a safe and effective weight-loss plan that includes:`,
-        '1. A calorie-deficit diet with focus on high-protein meals, vegetables, and reduced processed/sugary foods.',
-        '2. A progressive fitness routine combining cardio (HIIT/walking) and strength training.',
-        '3. Lifestyle modifications for fat loss, stress control, and sleep improvement.',
-        'Give the plan in a structured format (Diet | Exercise | Lifestyle).',
+        `I am a ${a}-year-old individual with a BMI of ${rounded}, which falls in the overweight category. Act as a world-class health strategist and fitness expert. Create a safe, highly effective fat-loss plan that includes:`,
+        '1. A calorie-controlled, protein-rich nutrition plan emphasizing vegetables, whole foods, and minimal processed sugars.',
+        '2. A progressive exercise routine that combines fat-burning cardio (HIIT, brisk walking) with strength training to preserve muscle mass.',
+        '3. Lifestyle shifts that optimize metabolism, regulate stress, and improve sleep quality.',
+        'Format the response under clear sections: **Diet | Exercise | Lifestyle**.',
       ];
     } else {
       setMessage('Obese');
       baseTip = [
-        `You are a ${a}-year-old individual with a BMI of ${rounded}, which is in the obese range. Act as a highly experienced health & fitness expert. Create a safe, step-by-step fat-loss and health improvement plan that includes:`,
-        '1. A sustainable diet strategy focusing on portion control, high protein, low processed food, and hydration.',
-        '2. A beginner-friendly fitness plan starting with low-impact exercises, then gradually progressing to strength & cardio.',
-        '3. Lifestyle + mindset tips (sleep, stress, motivation) to support long-term transformation.',
-        'Give the plan in a structured format (Diet | Exercise | Lifestyle).',
+        `I am a ${a}-year-old individual with a BMI of ${rounded}, which falls in the obese category. Act as a highly experienced transformation coach. Build a safe, step-by-step long-term fat-loss and health improvement blueprint that includes:`,
+        '1. A sustainable nutrition framework based on portion control, protein prioritization, whole foods, hydration, and reduced processed foods.',
+        '2. A beginner-friendly fitness plan starting with low-impact movements, gradually advancing to structured strength and cardio training.',
+        '3. Lifestyle and mindset mastery tips covering sleep hygiene, stress reduction, motivation, and habit formation.',
+        'Format the response under clear sections: **Diet | Exercise | Lifestyle**.',
       ];
     }
-
     setTip(baseTip);
     setTips(` Ideal BMI for your age (${a} years) is ${idealRange}.`);
-
   };
 
   const reset = () => {
@@ -93,9 +91,7 @@ const BMIPopup: React.FC<BMIPopupProps> = ({ show, onClose }) => {
   return (
     <div className="bmi-overlay">
       <div className="bmi-popup">
-        <button className="close-btnn" onClick={onClose}>
-          ×
-        </button>
+        <button className="close-btnn" onClick={onClose}> × </button>
 
         <div className="bmi-header">
           <h2>BMI Calculator</h2>

@@ -73,7 +73,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoad
             </div>
           )}
           <div className="message-bubble">
-            <ReactMarkdown>{msg.text}</ReactMarkdown>
+            {msg.role === "model" ? (
+              <ReactMarkdown>{msg.text}</ReactMarkdown>
+            ) : (
+              <p style={{ whiteSpace: "pre-line", textAlign: "left" }}>{msg.text}</p>
+            )}
           </div>
         </div>
       ))}

@@ -198,6 +198,7 @@
 .user-message {
   flex-direction: row-reverse;
   text-align: right;
+  
 }
 
 .icon {
@@ -223,12 +224,17 @@
 
 .message-bubble {
   max-width: 85%;
+  
   border-radius: 18px;
   font-size: 18px;
   line-height: 1.5;
   font-weight: 500;
   letter-spacing: 1px;
   word-wrap: break-word;
+}
+
+.message-bubble strong{
+  color: red;
 }
 
 .user-message .message-bubble {
@@ -255,22 +261,24 @@
   border-radius: 0 0 16px 16px;
 }
 
-.input-area input {
+.input-area textarea {
   flex-grow: 1;
+  height: 50px;
   width: 100%;
   padding: 0.75rem;
   font-weight: 500;
   border: 1px solid #d6d6d6;
   border-radius: 8px;
   color: #000;
-  font-family: 'Montserrat';
+  font-family: 'Montserrat', sans-serif;
   font-size: 1rem;
   margin-right: 0.5rem;
   outline: none;
   box-sizing: border-box;
+  resize: none; 
 }
 
-.input-area input:focus {
+.input-area textarea:focus {
   border-color: black;
 }
 
@@ -368,6 +376,7 @@
 
 .ai-message strong {
   font-weight: bold;
+  margin-top: 80px;
   color: #0b3aba;
 }
 

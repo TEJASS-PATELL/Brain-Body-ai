@@ -43,7 +43,7 @@ const BMIPopup: React.FC<BMIPopupProps> = ({ show, onClose }) => {
         '1. A nutrient-dense, high-calorie meal plan (rich in proteins, healthy fats, complex carbs, and essential micronutrients) to promote healthy weight gain.',
         '2. A progressive weekly workout schedule focused on strength training (muscle building) combined with light cardio for stamina and heart health.',
         '3. Lifestyle recommendations to enhance energy, focus, mood stability, and immune resilience.',
-        'Format the response under clear sections: **Diet | Exercise | Lifestyle**.',
+        'Format the response under clear sections: [ Diet | Exercise | Lifestyle | Yoga ].',
       ];
     } else if (rounded >= 18.5 && rounded < 24.9) {
       setMessage('Normal weight');
@@ -52,7 +52,7 @@ const BMIPopup: React.FC<BMIPopupProps> = ({ show, onClose }) => {
         '1. A balanced and performance-driven diet plan to sustain energy, focus, and long-term vitality.',
         '2. A fitness program blending strength, cardio, mobility, and flexibility for holistic body-brain health.',
         '3. Daily lifestyle practices for productivity, quality sleep, mental clarity, and long-term wellness.',
-        'Format the response under clear sections: **Diet | Exercise | Lifestyle**.',
+        'Format the response under clear sections: [ Diet | Exercise | Lifestyle | Yoga ].',
       ];
     } else if (rounded >= 25 && rounded < 29.9) {
       setMessage('Overweight');
@@ -61,7 +61,7 @@ const BMIPopup: React.FC<BMIPopupProps> = ({ show, onClose }) => {
         '1. A calorie-controlled, protein-rich nutrition plan emphasizing vegetables, whole foods, and minimal processed sugars.',
         '2. A progressive exercise routine that combines fat-burning cardio (HIIT, brisk walking) with strength training to preserve muscle mass.',
         '3. Lifestyle shifts that optimize metabolism, regulate stress, and improve sleep quality.',
-        'Format the response under clear sections: **Diet | Exercise | Lifestyle**.',
+        'Format the response under clear sections: [ Diet | Exercise | Lifestyle | Yoga ].',
       ];
     } else {
       setMessage('Obese');
@@ -70,7 +70,7 @@ const BMIPopup: React.FC<BMIPopupProps> = ({ show, onClose }) => {
         '1. A sustainable nutrition framework based on portion control, protein prioritization, whole foods, hydration, and reduced processed foods.',
         '2. A beginner-friendly fitness plan starting with low-impact movements, gradually advancing to structured strength and cardio training.',
         '3. Lifestyle and mindset mastery tips covering sleep hygiene, stress reduction, motivation, and habit formation.',
-        'Format the response under clear sections: **Diet | Exercise | Lifestyle**.',
+        'Format the response under clear sections: [ Diet | Exercise | Lifestyle | Yoga ].',
       ];
     }
     setTip(baseTip);

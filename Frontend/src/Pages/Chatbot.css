@@ -438,6 +438,10 @@
     max-width: 70%;
   }
 
+    .ai-message .message-bubble {
+    font-size: 1em;
+  }
+
   .status {
     display: none;
   }

@@ -34,7 +34,6 @@ const Setting: React.FC<SettingProps> = ({
       try {
         const res = await api.get("/api/auth/userinfo");
         const data = res.data;
-
         setUserName(data.name || "");
         setEmail(data.email || "");
         setLanguage(data.language || currentLanguage);
@@ -67,15 +66,12 @@ const Setting: React.FC<SettingProps> = ({
       const updatedYogaMode = typeof res.data.yogaMode === "boolean" 
         ? res.data.yogaMode 
         : yogaMode;
-
       setLanguage(updatedLanguage);
       setLevel(updatedLevel);
       setYogaMode(updatedYogaMode);
-
       toast.success(res.data.message || "Preferences updated");
       onComplete(updatedLanguage, updatedLevel, updatedYogaMode);
     } catch (err: any) {
-      console.error("Error updating preferences:", err.response?.data?.msg || err.message);
       toast.error("Error updating preferences");
     } finally {
       setLoading(false);

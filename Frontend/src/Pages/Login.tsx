@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import './Login.css';
+import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
 
@@ -12,12 +13,11 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await api.post('/api/auth/login', { email, password });
-      console.log('Login success:', res.data);
+      await api.post('/api/auth/login', { email, password });
+      toast.success("Login successful! Welcome back");
       navigate("/chatbot", { replace: true });
     } catch (error: any) {
-      console.error('Login failed:', error.response?.data?.msg || error.message);
-      alert('Login failed: ' + (error.response?.data?.msg || error.message));
+      toast.error('Login failed: ' + (error.response?.data?.msg || error.message));
     }
   };
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Signup.css';
+import toast from 'react-hot-toast';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../api';
 
@@ -8,7 +9,6 @@ interface FormState {
   email: string;
   password: string;
   confirmPassword: string;
-  agreeTerms: boolean;
 }
 
 const Signup: React.FC = () => {
@@ -17,17 +17,16 @@ const Signup: React.FC = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    agreeTerms: false,
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setForm(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: value,
     }));
     setErrors(prev => ({ ...prev, [name]: '' }));
   };
@@ -49,18 +48,18 @@ const Signup: React.FC = () => {
     e.preventDefault();
     if (!validate()) return;
     try {
-      const res = await api.post('/api/auth/signup', {
-        name: form.name,
-        email: form.email,
-        password: form.password,
+      const res = await api.post('/api/auth/signup', { 
+        name: form.name, 
+        email: form.email, 
+        password: form.password 
       });
-      alert(res.data.msg || "Signup successful!");
+      toast.success(res.data.msg || "Signup successful!");
       navigate('/chatbot', { replace: true });
     } catch (err: any) {
       if (err.response?.status === 409) {
-        alert("Email already exists. Please login.");
+        toast.error("Email already exists. Please login.");
       } else {
-        console.error(err);
+        toast.error("Something went wrong. Please try again.");
       }
     }
   };

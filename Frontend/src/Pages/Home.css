@@ -3,20 +3,94 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #fff;
   align-items: center;
+  background: #fff;
+}
+
+.navbar-container {
+  max-width: 1300px;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.hero-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.header-text {
+  font-size: 0.85rem;
+  background: #000;
+  margin-top: 100px;
+  padding: 5px 18px;
+  border-radius: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 0.2em;
+  color: #fff;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1200px;
+  padding: 1rem;
+}
+
+.content h1 {
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.content h1 span {
+  font-family: 'Orbitron', Tahoma, sans-serif;
+  color: #00a2ff;
+}
+
+.description,
+.second-description {
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: #1a1a1a;
+  margin: 0 auto 1.5rem;
+  padding: 0 1rem;
+}
+
+.second-description {
+  opacity: 0.9;
+}
+
+.cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 1rem;
+}
+
+.create-account {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
 }
 
 .login,
 .signup {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   padding: 10px 16px;
   font-size: 1rem;
+  font-weight: 600;
   text-decoration: none;
   color: #fff;
   border-radius: 8px;
+  transition: 0.3s ease;
 }
 
 .login {
@@ -27,268 +101,76 @@
   background: #00a2ff;
 }
 
-.hero-container {
-  display: grid;
-  grid-template-areas:
-    "header"
-    "content"
-    "globe"
-    "footer";
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto auto auto;
-  min-height: 50vh;
-  align-items: center;
-  justify-items: center;
-  text-align: center;
+.login:hover {
+  background: #222;
 }
 
-.navbar-container {
-  max-width: 1400px;
-  width: 100%;
+.signup:hover {
+  background: #0080cc;
 }
 
-.header-text {
-  font-size: 0.85rem;
-  background-color: #000000;
-  margin-top: 100px;
-  padding: 5px 18px;
-  border-radius: 20px;
-  font-weight: 700;
-  margin-bottom: 5px;
-  letter-spacing: 0.2em;
-  color: #ffffff;
-}
-
-.chatbot {
-  margin-right: 20px;
-}
-
-.content {
-  grid-area: content;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 1400px;
-}
-
-.content h1 {
-  font-size: 5rem;
-  font-weight: 700;
-  line-height: 1.2;
-  max-width: 1400px;
-  letter-spacing: 0.5px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.content h1 span {
-  font-family: 'Orbitron', Tahoma, Geneva, Verdana, sans-serif;
-  color: #00a2ff;
-}
-
-.description,
-.second-description {
-  font-size: 1.4rem;
-  color: #1a1a1a; 
-  font-weight: 500;
-  line-height: 1.75;
-  text-align: center;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.description{
-  max-width: 90%;
-}
-
-.second-description {
-  max-width: 75%;
-  margin-bottom: 2rem;
-  opacity: 0.95;
-}
-
-.cta-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.btn {
-  padding: 12px 24px;
-  font-size: 1rem;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.create-account {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-}
-
-.btn-primary {
-  background: #000;
-  color: #fff;
-}
-
-.btn-secondary {
-  background: transparent;
-  color: #000;
-  border: 1px solid #ccc;
-}
-
-.arrow {
-  margin-left: 6px;
-}
-
-.globe-container {
-  grid-area: globe;
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-}
-
-.globe {
-  width: 100%;
-  max-width: 1000px;
-  opacity: 0.6;
-}
-
-.footer {
-  grid-area: footer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0;
-  border-top: 1px solid #ccc;
-  width: 100%;
-}
-
-.footer-left,
-.footer-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-}
-
-.logo-icon {
-  width: 20px;
-  height: 20px;
-  background: #fff;
+.chatbot img {
   border-radius: 50%;
-  margin-right: 10px;
+  transition: transform 0.3s ease;
 }
 
-.logo-text {
-  font-size: 1.1rem;
+.chatbot img:hover {
+  transform: scale(1.05);
 }
 
-.dashboard-link {
-  color: #888;
-}
-
-.dashboard-link:hover {
-  color: #000;
-}
-
-.search-bar {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.search-icon {
-  position: absolute;
-  left: 10px;
-  width: 18px;
-  height: 18px;
-  fill: #999;
-}
-
-.search-bar input {
-  background: transparent;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  color: #000;
-  padding: 8px 10px 8px 36px;
-  font-size: 0.95rem;
-  width: 220px;
-}
-
-.search-bar input::placeholder {
-  color: #999;
-}
-
-.search-bar input:focus {
-  outline: none;
-  border-color: #000;
-}
-
-.btn-footer {
-  background: transparent;
-  color: #000;
-  border: 1px solid #ccc;
-  padding: 8px 16px;
-  border-radius: 4px;
-}
-
-.btn-footer:hover {
-  background: #000;
-  color: #fff;
-}
-
-
-@media (max-width: 900px) {
-
-  .content h1,
-  .description {
-    max-width: 100%;
+@media (max-width: 1024px) {
+  .content h1 {
+    font-size: 2.5rem;
   }
 
-  .globe {
-    max-width: 300px;
-    margin-top: 20px;
-  }
-
-  .cta-buttons {
-    align-items: center;
+  .description,
+  .second-description {
+    font-size: 1.05rem;
+    max-width: 90%;
   }
 }
 
 @media (max-width: 768px) {
-  .footer {
+  .header-text {
+    font-size: 0.7rem;
+    margin-top: 80px;
+    padding: 4px 14px;
+  }
+
+  .content h1 {
+    font-size: 1.8rem;
+  }
+
+  .description,
+  .second-description {
+    font-size: 1rem;
+    max-width: 95%;
+  }
+
+  .create-account {
     flex-direction: column;
-    gap: 16px;
+    gap: 10px;
+  }
+
+  .login,
+  .signup {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .content h1 {
+    font-size: 1.5rem;
+  }
+
+  .description,
+  .second-description {
+    font-size: 0.95rem;
   }
 
   .header-text {
     font-size: 0.65rem;
-    background-color: #000000;
-    margin-top: 120px;
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    letter-spacing: 0.2em;
-    color: #ffffff;
-  }
-
-  .description, .second-description {
-    font-size: 1rem;
-    width: 480px;
-  }
-
-
-  .content h1 {
-    font-size: 2rem;
+    margin-top: 60px;
   }
 }

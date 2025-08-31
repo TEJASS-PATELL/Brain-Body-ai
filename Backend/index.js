@@ -3,6 +3,7 @@ const session = require("express-session");
 const passport = require("passport");
 const MySQLStore = require("express-mysql-session")(session);
 const cors = require("cors");
+const helmet = require("helmet"); 
 const db = require("./config/db");
 const chatRoutes = require("./routers/chatRoutes");
 const authRoutes = require("./routers/authroutes");
@@ -28,6 +29,13 @@ app.use(cors({
 }));
 
 const sessionStore = new MySQLStore({}, db);
+
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+  })
+);
 
 app.use(
   session({

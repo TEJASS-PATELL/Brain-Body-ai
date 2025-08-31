@@ -2,11 +2,17 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/auth.controller");
 const passport = require("passport");
+const rateLimit = require("express-rate-limit");
 const authMiddleware = require("../middleware/auth.middleware");
 const jwt = require("jsonwebtoken");
+const loginLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 5, 
+  message: "Too many login attempts. Try again after 10 minutes.",
+});
 
 router.post("/signup", authController.signup);
-router.post("/login", authController.login);
+router.post("/login", loginLimiter,  authController.login);
 router.get("/check", authController.check);
 router.post("/logout", authMiddleware, authController.logout);
 router.get("/check-session", authController.check_session);

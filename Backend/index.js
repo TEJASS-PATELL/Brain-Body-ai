@@ -31,7 +31,6 @@ app.use(cors({
 
 const sessionStore = new MySQLStore({}, db);
 
-
 app.use(
   session({
     secret: process.env.SESSION_SECRET,

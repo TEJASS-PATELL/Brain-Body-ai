@@ -55,6 +55,7 @@ Brain-Body AI is deployed on scalable cloud platforms to ensure smooth performan
 - **Frontend (React.js + CSS):** Deployed on Vercel for fast, global, and reliable delivery.
 - **Backend (Node.js + Express):** Deployed on Render with auto-deployment support from GitHub.
 - **Database (MySQL):** Hosted on Railway, providing a secure and scalable relational database service.
+
 This setup ensures a fully cloud-hosted, production-ready environment with seamless communication between frontend, backend, and database.
 
 ## Installation Guide

@@ -33,20 +33,21 @@ exports.sendAndSaveChat = async (req, res) => {
         );
 
         const chatHistory = oldMessages.map(msg => ({
-            role: msg.sender,
+            role: msg.sender === "model" ? "assistant" : "user",
             parts: [{ text: msg.message }],
         }));
-        
-        let systemPrompt;
-        if (yogaMode) {
-            systemPrompt = yogaPrompt(language, level);
-        } else {
-            systemPrompt = generateSystemPrompt(language, level);
+
+        if (!chatHistory.length || chatHistory[0].role !== "user") {
+            chatHistory.unshift({ role: "user", parts: [{ text: message }] });
         }
+
+        const systemPrompt = yogaMode 
+            ? yogaPrompt(language, level) 
+            : generateSystemPrompt(language, level);
 
         const chat = model.startChat({
             history: chatHistory,
-            generationConfig: { maxOutputTokens: 1500 },
+            generationConfig: { maxOutputTokens: 2500 },
             safetySettings: [
                 { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
                 { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
@@ -60,14 +61,20 @@ exports.sendAndSaveChat = async (req, res) => {
         const reply = result.response?.text() || "Sorry, I couldn't generate a response.";
 
         await db.query(
-            `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?), (?, ?, ?, ?)`,
-            [userId, sessionId, "user", message, userId, sessionId, "model", reply]
+            `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)`,
+            [userId, sessionId, "user", message]
+        );
+
+        await db.query(
+            `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)`,
+            [userId, sessionId, "model", reply]
         );
 
         res.json({ reply });
+
     } catch (error) {
         console.error("Gemini API Error:", error);
-        res.status(500).json({ reply: `Sorry, I can't assist right now in ${language}.` });
+        res.status(500).json({ reply: `Sorry, I can't assist right now in ${req.body.language || 'english'}.` });
     }
 };
 

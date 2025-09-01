@@ -63,9 +63,7 @@ const Setting: React.FC<SettingProps> = ({
 
       const updatedLanguage = res.data.language || language;
       const updatedLevel = res.data.level || level;
-      const updatedYogaMode = typeof res.data.yogaMode === "boolean" 
-        ? res.data.yogaMode 
-        : yogaMode;
+      const updatedYogaMode = typeof res.data.yogaMode === "boolean" ? res.data.yogaMode : yogaMode;
       setLanguage(updatedLanguage);
       setLevel(updatedLevel);
       setYogaMode(updatedYogaMode);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import api from '../api';
-import { OrbitProgress } from 'react-loading-indicators';
+import Loader from './Loader';
 
 const ProtectedRoute: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -22,10 +22,8 @@ const ProtectedRoute: React.FC = () => {
     checkLogin();
   }, []);
 
-  if (isLoading) 
-  return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-    <OrbitProgress variant="dotted" color="black" size="large" />
-  </div>
+  if (isLoading)
+    return <Loader text="Loading Brain+Body AI...." />
   return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
 };
 

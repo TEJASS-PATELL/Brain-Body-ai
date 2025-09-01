@@ -8,8 +8,8 @@ import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import ErrorPage from './Pages/ErrorPage';
 import ProtectedRoute from './Components/ProtectedRoute';
-import { OrbitProgress } from 'react-loading-indicators';
 import Features from './Pages/Features';
+import Loader from './Components/Loader';
 
 const LazyChatbot = React.lazy(() => import('./Pages/Chatbot'));
 
@@ -30,15 +30,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: (
-              <Suspense
-                fallback={
-                  <div className="loader-container">
-                    <div className="loader-content">
-                      <OrbitProgress variant="dotted" color="black" size="large" />
-                      <p className="loader-text">Loading your experience...</p>
-                    </div>
-                  </div>
-                }>
+              <Suspense fallback={<Loader text="Loading Brain+Body AI...." />}>
                 <LazyChatbot />
               </Suspense>
             ),

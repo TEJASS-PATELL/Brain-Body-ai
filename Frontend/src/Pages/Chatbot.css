@@ -90,7 +90,7 @@
   align-items: center;
 }
 
-.round-button .main {
+.round-button .main, .bmi-button {
   background-color: transparent;
   border: none;
   color: #000;
@@ -101,6 +101,10 @@
 }
 
 .round-button .main:hover {
+  transform: scale(1.1);
+}
+
+.round-button .bmi-button:hover {
   transform: scale(1.1);
 }
 
@@ -120,7 +124,6 @@
 .tag svg {
   vertical-align: middle;
 }
-
 
 .send-button {
   padding: 0.5rem 1rem;

@@ -1,5 +1,5 @@
 import React from "react";
-import "./Working.css";
+import "./Features.css";
 import {
   Languages,
   Activity,
@@ -70,7 +70,7 @@ const features = [
   },
 ];
 
-const Working: React.FC = () => {
+const Features: React.FC = () => {
   return (
     <div className="htu-container">
       <div className="htu-inner">
@@ -103,4 +103,4 @@ const Working: React.FC = () => {
   );
 };
 
-export default Working;
+export default Features;

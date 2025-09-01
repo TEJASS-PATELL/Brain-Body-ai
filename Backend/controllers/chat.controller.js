@@ -27,24 +27,29 @@ exports.sendAndSaveChat = async (req, res) => {
             return res.status(400).json({ msg: "Missing required fields" });
         }
 
+        // Fetch previous chat messages
         const [oldMessages] = await db.query(
             `SELECT sender, message FROM chat_history WHERE user_id = ? AND session_id = ? ORDER BY timestamp ASC`,
             [userId, sessionId]
         );
 
+        // Map to Gemini-valid roles
         const chatHistory = oldMessages.map(msg => ({
-            role: msg.sender === "model" ? "assistant" : "user",
+            role: msg.sender === "model" ? "model" : "user",
             parts: [{ text: msg.message }],
         }));
 
+        // Ensure first message is always "user"
         if (!chatHistory.length || chatHistory[0].role !== "user") {
             chatHistory.unshift({ role: "user", parts: [{ text: message }] });
         }
 
-        const systemPrompt = yogaMode 
-            ? yogaPrompt(language, level) 
+        // Generate system prompt
+        const systemPrompt = yogaMode
+            ? yogaPrompt(language, level)
             : generateSystemPrompt(language, level);
 
+        // Start Gemini chat session
         const chat = model.startChat({
             history: chatHistory,
             generationConfig: { maxOutputTokens: 2500 },
@@ -57,23 +62,27 @@ exports.sendAndSaveChat = async (req, res) => {
             systemInstruction: { role: "system", parts: [{ text: systemPrompt }] },
         });
 
+        // Send user message and get AI response
         const result = await withRetry(() => chat.sendMessage(message));
         const reply = result.response?.text() || "Sorry, I couldn't generate a response.";
 
+        // Save user message
         await db.query(
             `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)`,
             [userId, sessionId, "user", message]
         );
 
+        // Save AI reply
         await db.query(
             `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)`,
             [userId, sessionId, "model", reply]
         );
 
+        // Return AI reply
         res.json({ reply });
 
     } catch (error) {
-        console.error("Gemini API Error:", error);
+        console.error("Gemini API Error full:", error);
         res.status(500).json({ reply: `Sorry, I can't assist right now in ${req.body.language || 'english'}.` });
     }
 };
@@ -83,7 +92,9 @@ let lastGeneratedKey = null;
 
 exports.generateDailytask = async (req, res) => {
     const now = dayjs();
-    const taskKey = now.hour() >= 5 ? now.format("YYYY-MM-DD") : now.subtract(1, "day").format("YYYY-MM-DD");
+    const taskKey = now.hour() >= 5 
+        ? now.format("YYYY-MM-DD") 
+        : now.subtract(1, "day").format("YYYY-MM-DD");
 
     if (taskKey === lastGeneratedKey && cachedTasks) {
         return res.json({ tasks: cachedTasks });
@@ -92,13 +103,13 @@ exports.generateDailytask = async (req, res) => {
     try {
         const prompt = `
 You are a fun and creative wellness coach AI.
-Your job is to create 6 to 8 short, unique daily challenges that wake up both the mind and the body.
+Your job is to create 5 to 6 short, unique daily challenges that wake up both the mind and the body.
 Instructions:
 - Each task must be short, practical, and exciting
 - Format each task as a single string with 2 lines — use \\n to break the lines
 - Don't include boring tips like "drink water" or "go for a walk"
 - Mix it up! Use ideas like balance, memory, focus, body control, posture, breathing, voice, etc.
-- Respond with a **pure JSON array** of exactly 5 strings — no extra text or explanation
+- Respond with a **pure JSON array** of exactly 5 or 6 strings — no extra text or explanation
 `;
 
         const result = await withRetry(() => model.generateContent(prompt));
@@ -109,37 +120,51 @@ Instructions:
         }
 
         const match = rawText.match(/\[[\s\S]*\]/);
-        if (!match) throw new Error("Gemini did not return valid JSON");
-
-        let tasks;
-        try {
-            tasks = JSON.parse(match[0]);
-        } catch (parseErr) {
-            throw new Error("Failed to parse Gemini JSON");
+        let tasks = [];
+        if (match) {
+            try {
+                tasks = JSON.parse(match[0]);
+            } catch {
+                console.warn("Gemini JSON parse failed, using fallback");
+            }
         }
 
-        if (!Array.isArray(tasks)) throw new Error("Tasks is not an array");
-
-        tasks = tasks
+        tasks = (Array.isArray(tasks) ? tasks : [])
             .filter(t => typeof t === "string" && t.length > 5 && t.length <= 120)
-            .slice(0, 5);
+            .slice(0, 6); 
 
-        if (tasks.length < 3) throw new Error("Too few valid tasks");
+        if (tasks.length < 5) {
+            console.warn("Too few valid tasks from Gemini, using fallback");
+            tasks = [
+                "Stand tall and take 10 deep breaths\nCalms mind and energizes body",
+                "Balance a book on your head for 1 min\nImproves posture and focus",
+                "Name 5 things you are grateful for\nBoosts positivity and mindfulness",
+                "Close your eyes and focus on 3 sounds\nEnhances awareness and focus",
+                "Stretch arms overhead and rotate shoulders\nLoosens tension and improves posture",
+                "Speak a positive affirmation aloud 3 times\nBoosts confidence and energy",
+            ].slice(0, 6);
+        }
 
         cachedTasks = tasks;
         lastGeneratedKey = taskKey;
 
         return res.json({ tasks });
+
     } catch (error) {
         console.error("Daily tasks generation failed:", error.message, error.stack);
-        return res.status(500).json({
-            msg: "Failed to generate daily tasks",
-            fallback: [
-                "Stand tall and take 10 deep breaths\nCalms mind and energizes body",
-                "Balance a book on your head for 1 min\nImproves posture and focus",
-                "Name 5 things you are grateful for\nBoosts positivity and mindfulness",
-            ]
-        });
+        const fallbackTasks = [
+            "Stand tall and take 10 deep breaths\nCalms mind and energizes body",
+            "Balance a book on your head for 1 min\nImproves posture and focus",
+            "Name 5 things you are grateful for\nBoosts positivity and mindfulness",
+            "Close your eyes and focus on 3 sounds\nEnhances awareness and focus",
+            "Stretch arms overhead and rotate shoulders\nLoosens tension and improves posture",
+            "Speak a positive affirmation aloud 3 times\nBoosts confidence and energy",
+        ].slice(0, 6);
+
+        cachedTasks = fallbackTasks;
+        lastGeneratedKey = taskKey;
+
+        return res.status(200).json({ tasks: fallbackTasks });
     }
 };
 

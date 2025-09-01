@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./LeftSidebar.css";
 import api from "../api";
-import { MessageCircle, History } from "lucide-react";
-import toast from 'react-hot-toast';
+import { MessageCircle, History, Trash2 } from "lucide-react"; // Using Trash2 icon
+import toast from "react-hot-toast";
 
 interface ChatSession {
   session_id: string;
@@ -31,26 +31,34 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
     setIsExpanded((prev) => !prev);
   };
 
-  useEffect(() => {
+  const fetchHistory = async () => {
     if (!userId) {
       setChatHistory([]);
       return;
     }
+    try {
+      const res = await api.get("/api/chats/history");
+      const data = res.data;
+      setChatHistory(data.history || []);
+    } catch (err: any) {
+      console.error("Failed to load chat history:", err.response?.data?.msg || err.message);
+      toast.error("Chat history load nahi ho payi.");
+    }
+  };
 
-    const fetchHistory = async () => {
-      try {
-        const res = await api.get("/api/chats/history");
-        const data = res.data;
-
-        setChatHistory(data.history || []);
-      } catch (err: any) {
-        console.error("Failed to load chat history:", err.response?.data?.msg || err.message);
-        toast.error("Chat history load nahi ho payi.");
-      }
-    };
-
+  useEffect(() => {
     fetchHistory();
   }, [userId, historyRefreshTrigger]);
+
+  const onDeleteChat = async (sessionId: string) => {
+    try {
+      await api.delete(`/api/chats/${sessionId}`);
+      toast.success("Chat deleted successfully");
+      fetchHistory();
+    } catch (err: any) {
+      toast.error("Failed to delete chat:", err.response?.data?.msg || err.message);
+    }
+  };
 
   return (
     <div className={`left-bar ${isExpanded ? "expanded" : ""}`}>
@@ -75,20 +83,25 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
               chatHistory.map((chat) => {
                 const formattedDate = chat.started_at
                   ? new Date(chat.started_at).toLocaleString(undefined, {
-                    month: "short",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
-                    hour12: true,
-                  })
+                      month: "short",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
+                      hour12: true,
+                    })
                   : "Unknown time";
+
                 return (
                   <li
                     key={chat.session_id}
                     className={chat.session_id === selectedSessionId ? "selected" : ""}
-                    onClick={() => onSelectChat(chat.session_id)}
+                    style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
                   >
-                    <strong className="history">
+                    <strong
+                      className="history"
+                      onClick={() => onSelectChat(chat.session_id)}
+                      style={{ cursor: "pointer", flexGrow: 1 }}
+                    >
                       {chat.session_id.slice(0, 8)}
                       <span
                         style={{
@@ -101,6 +114,13 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
                         {formattedDate}
                       </span>
                     </strong>
+
+                    <Trash2
+                      size={16}
+                      color="black"
+                      style={{ cursor: "pointer", marginLeft: "8px" }}
+                      onClick={() => onDeleteChat(chat.session_id)}
+                    />
                   </li>
                 );
               })

@@ -14,7 +14,7 @@
 }
 
 .left-bar.expanded {
-  width: 210px;
+  width: 240px;
   align-items: flex-start;
 }
 
@@ -102,7 +102,7 @@
   }
 
   .left-bar.expanded {
-    width: 180px;
+    width: 220px;
   }
 
   .square-buttons {

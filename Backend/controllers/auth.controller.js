@@ -101,14 +101,6 @@ exports.update_detail = (req, res) => {
   req.session.save((err) => {
     if (err) console.error("Session save error:", err);
 
-    console.log("Session updated:", {
-      userId: req.user.userid,
-      language,
-      level,
-      yogaMode: req.session.yogaMode,
-      type: typeof req.session.yogaMode,
-    });
-
     res.json({
       message: `Preferences set: ${language} (${level}), YogaMode: ${req.session.yogaMode ? "ON" : "OFF"}`,
       language,
@@ -129,14 +121,6 @@ exports.get_detail = (req, res) => {
   const yogaMode = !!req.session.yogaMode;
 
   res.json({ id: req.user.userid, language, level, yogaMode });
-};
-
-exports.check_session = (req, res) => {
-  res.json({
-    language: req.session.language || "",
-    level: req.session.level || "",
-    yogaMode: Boolean(req.session.yogaMode),
-  });
 };
 
 exports.user_info = async (req, res) => {

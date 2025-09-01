@@ -113,7 +113,7 @@ const DemoChat: React.FC = () => {
 
       <div className="chat-messages">
         <div className="welcome-message">
-          <h2>Welcome to <strong>BrainBody AI</strong> !!</h2>
+          <h2>Welcome to <strong>BrainBody</strong> AI !!</h2>
           <p>I'm your personal brain and body training assistant.</p>
           <p>Ask me about:</p>
           <div className="ai-features-grid">

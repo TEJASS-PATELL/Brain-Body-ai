@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #f9f9f9, #eaeaea);
+  background: linear-gradient(135deg, #ffffff, #ffffff);
 }
 
 .loader-content {
@@ -16,7 +16,7 @@
 .loader-text {
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: #000000;
   animation: pulse 1.5s infinite;
 }
 

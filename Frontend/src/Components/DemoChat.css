@@ -217,12 +217,12 @@
   flex-wrap: wrap;
   gap: 10px;
   padding: 0 1rem;
-  margin-bottom: 10px;
 }
 
 .suggestion-btn {
   background-color: #d9d9d9;
   border: 1px solid #bbb;
+  box-sizing: border-box;
   border-radius: 8px;
   padding: 0.3rem 0.8rem;
   font-size: 0.8rem;
@@ -240,7 +240,6 @@
   gap: 8px;
   padding: .6rem 1rem;
   background-color: #fff;
-  border-top: 1px solid #e0e0e0;
 }
 
 .input-box {

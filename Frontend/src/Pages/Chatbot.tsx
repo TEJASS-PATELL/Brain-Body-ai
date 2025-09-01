@@ -121,7 +121,6 @@ const Chatbot: React.FC = () => {
         requestAnimationFrame(step);
     };
 
-
     const handleLogout = async () => {
         try {
             const res = await api.post("/api/auth/logout");
@@ -141,7 +140,6 @@ const Chatbot: React.FC = () => {
     const handleSendMessage = async () => {
         const userMessageText = userInput.trim();
         if (!userMessageText || isLoading || !selectedSessionId || !userId) {
-            console.log("Message send nahi ho paya, missing required fields.");
             return;
         }
 
@@ -151,7 +149,7 @@ const Chatbot: React.FC = () => {
         setIsLoading(true);
 
         try {
-            const res = await api.post("/api/chats", {
+            const res = await api.post("/api/chats/start_chat", {
                 sessionId: selectedSessionId,
                 message: userMessageText,
                 language,

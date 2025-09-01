@@ -175,3 +175,23 @@ exports.getChatBySession = async (req, res) => {
         res.status(500).json({ msg: "Error getting chat", err });
     }
 };
+
+exports.deleteChatSession = async (req, res) => {
+    const userId = req.user.userid;
+    const { sessionId } = req.params;
+
+    if (!userId) return res.status(401).json({ msg: "User not authenticated" });
+    if (!sessionId) return res.status(400).json({ msg: "Session ID is required" });
+
+    try {
+        await db.query(
+            "DELETE FROM chat_history WHERE user_id = ? AND session_id = ?",
+            [userId, sessionId]
+        );
+
+        res.json({ msg: "Chat session deleted successfully" });
+    } catch (err) {
+        console.error("Failed to delete chat session:", err);
+        res.status(500).json({ msg: "Failed to delete chat session", err });
+    }
+};

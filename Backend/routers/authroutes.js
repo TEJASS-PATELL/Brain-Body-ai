@@ -15,7 +15,6 @@ router.post("/signup", authController.signup);
 router.post("/login", loginLimiter,  authController.login);
 router.get("/check", authController.check);
 router.post("/logout", authMiddleware, authController.logout);
-router.get("/check-session", authController.check_session);
 router.get("/userinfo", authMiddleware, authController.user_info);
 router.post("/update_detail", authMiddleware, authController.update_detail);
 router.get("/get_detail", authMiddleware, authController.get_detail);

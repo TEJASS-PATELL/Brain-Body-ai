@@ -81,7 +81,7 @@ const Signup: React.FC = () => {
             id="name"
             type="text"
             name="name"
-            placeholder="John Doe"
+            placeholder="Name"
             value={form.name}
             onChange={handleChange}
             aria-describedby="name-error"

@@ -355,6 +355,14 @@
   animation-delay: 0.8s;
 }
 
+.typing-indicator span:nth-child(6) {
+  animation-delay: 1s;
+}
+
+.typing-indicator span:nth-child(7) {
+  animation-delay: 1.2s;
+}
+
 @keyframes blink {
 
   0%,

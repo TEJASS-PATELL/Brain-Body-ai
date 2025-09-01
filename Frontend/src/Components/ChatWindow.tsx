@@ -24,7 +24,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoad
       try {
         const res = await api.get("/api/auth/userinfo");
         const data = res.data;
-
         setUserName(data.name);
       } catch (err: any) {
         console.error("Failed to fetch user info:", err.response?.data?.msg || err.message);
@@ -96,6 +95,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoad
       {isLoading && !displayedText && (
         <div className="message model-message">
           <div className="message-bubble typing-indicator">
+            <span></span>
+            <span></span>
             <span></span>
             <span></span>
             <span></span>

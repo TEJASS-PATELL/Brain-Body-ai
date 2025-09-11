@@ -28,6 +28,8 @@ app.use(cors({
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["set-cookie"], 
 }));
 
 const sessionStore = new MySQLStore({}, db);

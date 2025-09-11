@@ -4,10 +4,11 @@
 ---
 
 ## Overview
-Brain-Body AI is an intelligent health companion that blends AI-powered conversation with real-time body metrics tracking.  
-From calculating your BMI to guiding you on health & wellness tips, it brings your brain and body together in one seamless digital experience.  
+Brain-Body AI is an intelligent health companion that blends AI-powered conversation with real-time body metrics tracking.
+From calculating your BMI to guiding you on health & wellness tips, it brings your brain and body together in one seamless digital experience.
 
-Whether you're tracking your fitness goals, asking health-related questions, or seeking instant lifestyle advice — **Brain-Body AI is here to assist**.
+Whether you're tracking your fitness goals, asking health-related questions, or seeking instant lifestyle advice — **Brain-Body AI is here to assist.**
+It also offers a dedicated yoga and meditation option, where you can ask questions and learn how to relax your brain.
 
 ---
 
@@ -15,10 +16,11 @@ Whether you're tracking your fitness goals, asking health-related questions, or 
 - **AI Chatbot:** Engage in natural, human-like conversations for health & fitness guidance, powered by intelligent prompt processing.  
 - **Voice Input Support:** Interact with the AI using your voice for a hands-free and accessible experience.  
 - **BMI Calculator:** Get instant BMI results with detailed health category classification and actionable recommendations.  
-- **Chat & Data History:** All interactions and BMI results are stored, allowing users (or visitors) to view their history anytime and continue previous conversations seamlessly.  
+- **Chat & Data History:** All interactions and BMI results are stored, allowing users (or visitors) to view their history anytime and continue previous conversations seamlessly.
+- **History Management:** Option to delete past chat/data history for privacy and clean tracking. 
 - **Daily Task & Habit Tracking:** Create and manage daily health or fitness goals with AI assistance to help you stay consistent.  
-- **Interactive UI:** Sleek, responsive, and mobile-friendly interface built with React.js & Tailwind CSS for a premium user experience.  
-- **Mind Relaxation Mode:** Play soothing background sounds or music to help users relax and improve focus during workouts or meditation.  
+- **Interactive UI:** Sleek, simple, responsive, and mobile-friendly interface built with React.js & CSS for a premium user experience.
+- **Yoga & Meditation Section:** A dedicated module for guided yoga and meditation sessions. Includes a stopwatch timer to track session duration effectively.
 - **Google Search Integration:** Instantly find additional health tips, exercises, diet plans, or related information.  
 - **Full-Stack Application:** Seamless integration between React.js frontend, Node.js/Express backend, and MySQL database.  
 - **Scalable Architecture:** Modular and extensible codebase for advanced health metrics, wearable device integration, and AI-driven insights.  
@@ -29,7 +31,7 @@ Whether you're tracking your fitness goals, asking health-related questions, or 
 
 ## Frontend
 - **React.js (Vite):** Fast & modular frontend framework  
-- **Tailwind CSS:** Utility-first, responsive styling  
+- **CSS:** Utility-first, responsive styling  
 - **Axios:** Efficient HTTP requests & API integration  
 
 ---
@@ -47,6 +49,14 @@ Whether you're tracking your fitness goals, asking health-related questions, or 
 - **Prompt-based AI Responses:** Intelligent and context-aware replies  
 
 ---
+
+## Deployment
+Brain-Body AI is deployed on scalable cloud platforms to ensure smooth performance and accessibility:
+- **Frontend (React.js + CSS):** Deployed on Vercel for fast, global, and reliable delivery.
+- **Backend (Node.js + Express):** Deployed on Render with auto-deployment support from GitHub.
+- **Database (MySQL):** Hosted on Railway, providing a secure and scalable relational database service.
+
+This setup ensures a fully cloud-hosted, production-ready environment with seamless communication between frontend, backend, and database.
 
 ## Installation Guide
 
@@ -81,6 +91,8 @@ npm run dev
 
 # Screenshots
 https://github.com/TEJASS-PATELL/Brain-Body-ai/tree/main/Screenshot
+
+# Live Demo (Frontend on Vercel): https://brain-body-ai.vercel.app
 
 Tejas Patel
 - **Email:** tejasspatell2@gmail.com

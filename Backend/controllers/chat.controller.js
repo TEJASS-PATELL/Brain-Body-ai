@@ -22,34 +22,31 @@ exports.sendAndSaveChat = async (req, res) => {
     try {
         const userId = req.user?.userid;
         const { sessionId, message, language = 'english', level = 'beginner', yogaMode } = req.body;
+        console.log("Current user from token:", req.user);  
+        console.log("userId extracted:", userId);  
 
         if (!userId || !sessionId || !message) {
             return res.status(400).json({ msg: "Missing required fields" });
         }
 
-        // Fetch previous chat messages
         const [oldMessages] = await db.query(
             `SELECT sender, message FROM chat_history WHERE user_id = ? AND session_id = ? ORDER BY timestamp ASC`,
             [userId, sessionId]
         );
 
-        // Map to Gemini-valid roles
         const chatHistory = oldMessages.map(msg => ({
             role: msg.sender === "model" ? "model" : "user",
             parts: [{ text: msg.message }],
         }));
 
-        // Ensure first message is always "user"
         if (!chatHistory.length || chatHistory[0].role !== "user") {
             chatHistory.unshift({ role: "user", parts: [{ text: message }] });
         }
 
-        // Generate system prompt
         const systemPrompt = yogaMode
             ? yogaPrompt(language, level)
             : generateSystemPrompt(language, level);
 
-        // Start Gemini chat session
         const chat = model.startChat({
             history: chatHistory,
             generationConfig: { maxOutputTokens: 2500 },
@@ -62,23 +59,19 @@ exports.sendAndSaveChat = async (req, res) => {
             systemInstruction: { role: "system", parts: [{ text: systemPrompt }] },
         });
 
-        // Send user message and get AI response
         const result = await withRetry(() => chat.sendMessage(message));
         const reply = result.response?.text() || "Sorry, I couldn't generate a response.";
 
-        // Save user message
         await db.query(
             `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)`,
             [userId, sessionId, "user", message]
         );
 
-        // Save AI reply
         await db.query(
             `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)`,
             [userId, sessionId, "model", reply]
         );
 
-        // Return AI reply
         res.json({ reply });
 
     } catch (error) {

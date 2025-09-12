@@ -5,14 +5,15 @@ const passport = require("passport");
 const rateLimit = require("express-rate-limit");
 const authMiddleware = require("../middleware/auth.middleware");
 const jwt = require("jsonwebtoken");
+
 const loginLimiter = rateLimit({
   windowMs: 10 * 60 * 1000,
-  max: 5, 
+  max: 5,
   message: "Too many login attempts. Try again after 10 minutes.",
 });
 
 router.post("/signup", authController.signup);
-router.post("/login", loginLimiter,  authController.login);
+router.post("/login", loginLimiter, authController.login);
 router.get("/check", authController.check);
 router.post("/logout", authMiddleware, authController.logout);
 router.get("/userinfo", authMiddleware, authController.user_info);
@@ -27,7 +28,8 @@ router.get(
   })
 );
 
-router.get( "/google/callback",
+router.get(
+  "/google/callback",
   passport.authenticate("google", {
     failureRedirect: process.env.CLIENT_URL + "/login",
     session: false,
@@ -39,7 +41,7 @@ router.get( "/google/callback",
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", 
+      secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });

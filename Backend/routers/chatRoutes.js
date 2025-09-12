@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const chatController = require("../controllers/chat.controller");
-const authMiddleware = require("../middleware/auth.middleware"); 
+const authMiddleware = require("../middleware/auth.middleware");
 
 router.post("/start_chat", authMiddleware, chatController.sendAndSaveChat);
 router.get("/daily-tasks", chatController.generateDailytask);

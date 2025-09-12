@@ -10,7 +10,6 @@ const withRetry = async (fn, retries = 3, delay = 1000) => {
         return await fn();
     } catch (error) {
         if (retries > 0 && error.status === 503) {
-            console.warn(`Retrying due to 503 Service Unavailable. Retries left: ${retries}`);
             await new Promise(res => setTimeout(res, delay));
             return withRetry(fn, retries - 1, delay * 2);
         }
@@ -22,8 +21,6 @@ exports.sendAndSaveChat = async (req, res) => {
     try {
         const userId = req.user?.userid;
         const { sessionId, message, language = 'english', level = 'beginner', yogaMode } = req.body;
-        console.log("Current user from token:", req.user);  
-        console.log("userId extracted:", userId);  
 
         if (!userId || !sessionId || !message) {
             return res.status(400).json({ msg: "Missing required fields" });
@@ -75,7 +72,6 @@ exports.sendAndSaveChat = async (req, res) => {
         res.json({ reply });
 
     } catch (error) {
-        console.error("Gemini API Error full:", error);
         res.status(500).json({ reply: `Sorry, I can't assist right now in ${req.body.language || 'english'}.` });
     }
 };
@@ -117,9 +113,7 @@ Instructions:
         if (match) {
             try {
                 tasks = JSON.parse(match[0]);
-            } catch {
-                console.warn("Gemini JSON parse failed, using fallback");
-            }
+            } catch {}
         }
 
         tasks = (Array.isArray(tasks) ? tasks : [])
@@ -127,7 +121,6 @@ Instructions:
             .slice(0, 6); 
 
         if (tasks.length < 5) {
-            console.warn("Too few valid tasks from Gemini, using fallback");
             tasks = [
                 "Stand tall and take 10 deep breaths\nCalms mind and energizes body",
                 "Balance a book on your head for 1 min\nImproves posture and focus",
@@ -143,8 +136,7 @@ Instructions:
 
         return res.json({ tasks });
 
-    } catch (error) {
-        console.error("Daily tasks generation failed:", error.message, error.stack);
+    } catch {
         const fallbackTasks = [
             "Stand tall and take 10 deep breaths\nCalms mind and energizes body",
             "Balance a book on your head for 1 min\nImproves posture and focus",
@@ -216,7 +208,6 @@ exports.deleteChatSession = async (req, res) => {
 
         res.json({ msg: "Chat session deleted successfully" });
     } catch (err) {
-        console.error("Failed to delete chat session:", err);
         res.status(500).json({ msg: "Failed to delete chat session", err });
     }
 };

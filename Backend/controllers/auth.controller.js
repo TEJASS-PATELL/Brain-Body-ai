@@ -51,13 +51,16 @@ exports.login = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
+
     const token = jwt.sign({ userid: user.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+
     res.json({
       msg: "Logged in successfully",
       user: { id: user.id, name: user.name, email: user.email },
@@ -69,7 +72,7 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  req.logout?.(() => { });
+  req.logout?.(() => {});
   req.session?.destroy((err) => {
     if (err) console.error("Session destroy error:", err);
   });
@@ -112,7 +115,6 @@ exports.update_detail = (req, res) => {
 
 exports.get_detail = (req, res) => {
   if (!req.user) {
-    console.log("Not authenticated, returning default details.");
     return res.json({ id: null, language: "", level: "", yogaMode: false });
   }
 
@@ -158,5 +160,3 @@ exports.check = (req, res) => {
     res.status(401).json({ msg: "Invalid token" });
   }
 };
-
-

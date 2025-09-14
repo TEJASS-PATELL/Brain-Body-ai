@@ -8,26 +8,26 @@ const db = require("./config/db");
 const chatRoutes = require("./routers/chatRoutes");
 const authRoutes = require("./routers/authroutes");
 const cookieParser = require("cookie-parser");
+require("dotenv").config();
+
 const PORT = process.env.PORT || 5000;
 const app = express();
-require("dotenv").config();
 
 require("./config/passport");
 require("./models/user");
 require("./models/chat_history");
 
 app.set("trust proxy", 1);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(helmetConfig);
+
 app.use(
   cors({
     origin: ["http://localhost:5173", "https://brain-body-ai.vercel.app"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-    exposedHeaders: ["set-cookie"],
   })
 );
 
@@ -41,8 +41,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      secure: process.env.NODE_ENV === "production", 
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     },
   })

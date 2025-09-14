@@ -2,6 +2,13 @@ const db = require("../config/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000, 
+};
+
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password)
@@ -21,12 +28,7 @@ exports.signup = async (req, res) => {
 
     const token = jwt.sign({ userid: result.insertId }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie("token", token, cookieOptions);
 
     res.status(201).json({ msg: "User Created", userId: result.insertId });
   } catch (err) {
@@ -54,12 +56,7 @@ exports.login = async (req, res) => {
 
     const token = jwt.sign({ userid: user.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie("token", token, cookieOptions);
 
     res.json({
       msg: "Logged in successfully",
@@ -77,11 +74,7 @@ exports.logout = (req, res) => {
     if (err) console.error("Session destroy error:", err);
   });
 
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "None",
-  });
+  res.clearCookie("token", cookieOptions);
 
   res.status(200).json({ msg: "Logged out successfully" });
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './Setting.css';
 import toast from 'react-hot-toast';
 import api from '../api';
@@ -46,6 +46,9 @@ const Setting: React.FC<SettingProps> = ({
     fetchUserInfo();
   }, [currentLanguage, currentLevel, currentYogaMode]);
 
+  const UserName = useMemo(() => userName || "N/A", [userName]);
+  const Email = useMemo(() => email || "N/A", [email]);
+
   const handleSubmit = async () => {
     if (!language || !level) {
       toast.error("Please select both language and level");
@@ -64,9 +67,11 @@ const Setting: React.FC<SettingProps> = ({
       const updatedLanguage = res.data.language || language;
       const updatedLevel = res.data.level || level;
       const updatedYogaMode = typeof res.data.yogaMode === "boolean" ? res.data.yogaMode : yogaMode;
+
       setLanguage(updatedLanguage);
       setLevel(updatedLevel);
       setYogaMode(updatedYogaMode);
+
       toast.success(res.data.message || "Preferences updated");
       onComplete(updatedLanguage, updatedLevel, updatedYogaMode);
     } catch (err: any) {
@@ -79,8 +84,12 @@ const Setting: React.FC<SettingProps> = ({
   return (
     <div className="language-selector">
       <div className="user-info">
-        <p>Name: <strong>{userName || "N/A"}</strong></p>
-        <p>Email: <strong>{email || "N/A"}</strong></p>
+        <p>
+          Name: <strong>{UserName}</strong>
+        </p>
+        <p>
+          Email: <strong>{Email}</strong>
+        </p>
       </div>
 
       <div className="form-group">

@@ -5,6 +5,8 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #ffffff;
   transition: all 0.3s ease-in-out;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .user-info {
@@ -60,7 +62,8 @@ select:focus {
 }
 
 .sett-button {
-  margin-top: 16px;
+  display: block;
+  margin: 16px auto 0 auto;
   padding: 8px 20px;
   background-color: #000000;
   border: none;
@@ -75,6 +78,8 @@ select:focus {
 .toggle-wrap {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .switch input {
@@ -126,3 +131,60 @@ select:focus {
   color: #000;
 }
 
+@media screen and (max-width: 600px) {
+  .language-selector {
+    padding: 0.8rem;
+  }
+
+  .user-info {
+    padding: 10px 12px;
+  }
+
+  .user-info p {
+    font-size: 14px;
+  }
+
+  label {
+    font-size: 14px;
+  }
+
+  select {
+    font-size: 0.95rem;
+    padding: 8px 10px;
+  }
+
+  .preview p {
+    font-size: 1rem;
+  }
+
+  .sett-button {
+    font-size: 0.95rem;
+    padding: 6px 16px;
+  }
+
+  .toggle-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .toggle-text {
+    font-size: 13px;
+  }
+
+  .switch {
+    width: 45px;
+    height: 22px;
+  }
+
+  .slider:before {
+    height: 18px;
+    width: 18px;
+    left: 2px;
+    bottom: 2px;
+  }
+
+  .switch input:checked + .slider:before {
+    transform: translateX(23px);
+  }
+}

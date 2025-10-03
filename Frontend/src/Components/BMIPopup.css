@@ -44,6 +44,11 @@
   outline: none;
 }
 
+.input-fields{
+  display: flex;
+  gap: 20px;
+}
+
 .bmi-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -82,6 +87,7 @@
   cursor: pointer;
   line-height: 1;
 }
+
 .bmi-result {
   margin-top: 20px;
   padding: 15px;
@@ -94,11 +100,6 @@
 .bmi-result p {
   margin: 8px 0;
   font-size: 16px;
-}
-
-.input-fields{
-  display: flex;
-  gap: 20px;
 }
 
 .bmi-definition{
@@ -145,8 +146,6 @@
   padding: 10px 15px;
   border-radius: 8px;
   line-height: 1.5;
-  margin-top: 8px;
-  text-align: left;
   margin-top: 6px;
   color: white;
   background: #999999;  
@@ -156,11 +155,9 @@
   padding: 10px 15px;
   border-radius: 8px;
   line-height: 1.5;
-  margin-top: 8px;
-  text-align: left;
   margin-top: 6px;
   color: rgb(255, 255, 255);
- background: #000000;  
+  background: #000000;  
 }
 
 @keyframes fadeIn {
@@ -171,4 +168,36 @@
 @keyframes slideUp {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+@media screen and (max-width: 600px) {
+  .bmi-popup {
+    padding: 1.5rem;
+    width: 95%;
+  }
+
+  .bmi-popup h2 {
+    font-size: 22px;
+  }
+
+  .bmi-buttons button {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+
+  .input-fields {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .bmi-result p, .bmi-tip, .bmi-tips, .bmi-prompt {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .close-btnn {
+    top: 8px;
+    right: 12px;
+    font-size: 24px;
+  }
 }

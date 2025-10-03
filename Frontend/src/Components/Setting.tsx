@@ -135,12 +135,6 @@ const Setting: React.FC<SettingProps> = ({
         </label>
       </div>
 
-      <div className="preview">
-        <p>Language: <strong>{language || "-"}</strong></p>
-        <p>Level: <strong>{level || "-"}</strong></p>
-        <p>Yoga Mode: <strong>{yogaMode ? "ON" : "OFF"}</strong></p>
-      </div>
-
       <button className="sett-button" onClick={handleSubmit} disabled={loading}>
         {loading ? "Saving..." : "Set Preferences"}
       </button>

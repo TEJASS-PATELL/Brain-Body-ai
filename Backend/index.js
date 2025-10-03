@@ -18,7 +18,6 @@ require("./models/user");
 require("./models/chat_history");
 
 app.set("trust proxy", 1);
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

@@ -1,213 +1,186 @@
 const { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } = require("@google/generative-ai");
 const db = require("../config/db");
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const dayjs = require("dayjs");
 const { generateSystemPrompt, yogaPrompt } = require("../Prompt/BrainBody");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 const withRetry = async (fn, retries = 3, delay = 1000) => {
-    try {
-        return await fn();
-    } catch (error) {
-        if (retries > 0 && error.status === 503) {
-            await new Promise(res => setTimeout(res, delay));
-            return withRetry(fn, retries - 1, delay * 2);
-        }
-        throw error;
+  try {
+    return await fn();
+  } catch (error) {
+    if (retries > 0 && error.status === 503) {
+      await new Promise(res => setTimeout(res, delay));
+      return withRetry(fn, retries - 1, delay * 2);
     }
+    throw error;
+  }
 };
 
 exports.sendAndSaveChat = async (req, res) => {
-    try {
-        const userId = req.user?.userid;
-        const { sessionId, message, language = 'english', level = 'beginner', yogaMode } = req.body;
+  try {
+    const userId = req.user?.userid;
+    const { sessionId, message, language = "english", level = "beginner", yogaMode } = req.body;
 
-        if (!userId || !sessionId || !message) {
-            return res.status(400).json({ msg: "Missing required fields" });
-        }
+    if (!userId) return res.status(401).json({ msg: "User not authenticated" });
+    if (!sessionId || !message) return res.status(400).json({ msg: "Missing required fields: sessionId or message" });
 
-        const [oldMessages] = await db.query(
-            `SELECT sender, message FROM chat_history WHERE user_id = ? AND session_id = ? ORDER BY timestamp ASC`,
-            [userId, sessionId]
-        );
+    const [oldMessages] = await db.query(
+      "SELECT sender, message FROM chat_history WHERE user_id = ? AND session_id = ? ORDER BY timestamp ASC",
+      [userId, sessionId]
+    );
 
-        const chatHistory = oldMessages.map(msg => ({
-            role: msg.sender === "model" ? "model" : "user",
-            parts: [{ text: msg.message }],
-        }));
+    const chatHistory = oldMessages.map(msg => ({
+      role: msg.sender === "model" ? "model" : "user",
+      parts: [{ text: msg.message }],
+    }));
 
-        if (!chatHistory.length || chatHistory[0].role !== "user") {
-            chatHistory.unshift({ role: "user", parts: [{ text: message }] });
-        }
+    const systemInstruction = yogaMode ? yogaPrompt(language, level) : generateSystemPrompt(language, level);
 
-        const systemPrompt = yogaMode
-            ? yogaPrompt(language, level)
-            : generateSystemPrompt(language, level);
+    const contents = [
+      ...chatHistory,
+      { role: "user", parts: [{ text: message }] }
+    ];
 
-        const chat = model.startChat({
-            history: chatHistory,
-            generationConfig: { maxOutputTokens: 2500 },
-            safetySettings: [
-                { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-                { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-                { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
-                { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
-            ],
-            systemInstruction: { role: "system", parts: [{ text: systemPrompt }] },
-        });
+    const result = await withRetry(() =>
+      model.generateContent({
+        contents: contents,
+        systemInstruction: systemInstruction,
+        generationConfig: { maxOutputTokens: 2500 },
+        safetySettings: [
+          { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+          { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+          { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+          { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+        ]
+      })
+    );
 
-        const result = await withRetry(() => chat.sendMessage(message));
-        const reply = result.response?.text() || "Sorry, I couldn't generate a response.";
+    const reply = result.response?.text() || "Sorry, I couldn't generate a response.";
 
-        await db.query(
-            `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)`,
-            [userId, sessionId, "user", message]
-        );
+    await db.query(
+      "INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)",
+      [userId, sessionId, "user", message]
+    );
+    await db.query(
+      "INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)",
+      [userId, sessionId, "model", reply]
+    );
 
-        await db.query(
-            `INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)`,
-            [userId, sessionId, "model", reply]
-        );
-
-        res.json({ reply });
-
-    } catch (error) {
-        res.status(500).json({ reply: `Sorry, I can't assist right now in ${req.body.language || 'english'}.` });
-    }
+    res.json({ reply });
+  } catch (error) {
+    console.error("500 Internal Server Error in sendAndSaveChat:", error);
+    res.status(500).json({
+      reply: `Sorry, I can't assist right now in ${req.body.language || "english"}.`,
+      error: error.message
+    });
+  }
 };
 
 let cachedTasks = null;
-let lastGeneratedKey = null;
+let lastGeneratedTask = null;
 
 exports.generateDailytask = async (req, res) => {
-    const now = dayjs();
-    const taskKey = now.hour() >= 5 
-        ? now.format("YYYY-MM-DD") 
-        : now.subtract(1, "day").format("YYYY-MM-DD");
+  const todayTask = dayjs().format("YYYY-MM-DD");
 
-    if (taskKey === lastGeneratedKey && cachedTasks) {
-        return res.json({ tasks: cachedTasks });
-    }
+  if (cachedTasks && lastGeneratedTask === todayTask) {
+    return res.json({ tasks: cachedTasks });
+  }
 
+  const defaultTasks = [
+    "Take 10 deep breaths to energize your body and mind, improving focus and calm",
+    "Balance a book on your head for 1 minute to improve posture and concentration",
+    "Name 5 things you are grateful for to boost positivity and mental clarity",
+    "Close your eyes and focus on 3 sounds to enhance awareness and inner calm",
+    "Stretch arms overhead and rotate shoulders to loosen tension and increase flexibility",
+    "Speak a positive affirmation aloud 3 times to boost confidence and motivation"
+  ];
+
+  try {
+    const prompt = `
+      You are a creative wellness coach AI.
+      Create 5-6 short daily challenges for mind and body.
+      Each task should be a single line, simple, practical, and slightly longer.
+      Respond with a JSON array of strings only.
+    `;
+
+    const result = await withRetry(() =>
+      model.generateContent({ contents: [{ role: "user", parts: [{ text: prompt }] }] })
+    );
+
+    let tasks = [];
     try {
-        const prompt = `
-You are a fun and creative wellness coach AI.
-Your job is to create 5 to 6 short, unique daily challenges that wake up both the mind and the body.
-Instructions:
-- Each task must be short, practical, and exciting
-- Format each task as a single string with 2 lines — use \\n to break the lines
-- Don't include boring tips like "drink water" or "go for a walk"
-- Mix it up! Use ideas like balance, memory, focus, body control, posture, breathing, voice, etc.
-- Respond with a **pure JSON array** of exactly 5 or 6 strings — no extra text or explanation
-`;
-
-        const result = await withRetry(() => model.generateContent(prompt));
-        let rawText = result.response.text().trim();
-
-        if (rawText.startsWith("```")) {
-            rawText = rawText.replace(/```(?:json)?/gi, "").replace(/```$/, "").trim();
-        }
-
-        const match = rawText.match(/\[[\s\S]*\]/);
-        let tasks = [];
-        if (match) {
-            try {
-                tasks = JSON.parse(match[0]);
-            } catch {}
-        }
-
-        tasks = (Array.isArray(tasks) ? tasks : [])
-            .filter(t => typeof t === "string" && t.length > 5 && t.length <= 120)
-            .slice(0, 6); 
-
-        if (tasks.length < 5) {
-            tasks = [
-                "Stand tall and take 10 deep breaths\nCalms mind and energizes body",
-                "Balance a book on your head for 1 min\nImproves posture and focus",
-                "Name 5 things you are grateful for\nBoosts positivity and mindfulness",
-                "Close your eyes and focus on 3 sounds\nEnhances awareness and focus",
-                "Stretch arms overhead and rotate shoulders\nLoosens tension and improves posture",
-                "Speak a positive affirmation aloud 3 times\nBoosts confidence and energy",
-            ].slice(0, 6);
-        }
-
-        cachedTasks = tasks;
-        lastGeneratedKey = taskKey;
-
-        return res.json({ tasks });
-
+      tasks = JSON.parse(result.response.text());
+      if (!Array.isArray(tasks)) tasks = defaultTasks;
     } catch {
-        const fallbackTasks = [
-            "Stand tall and take 10 deep breaths\nCalms mind and energizes body",
-            "Balance a book on your head for 1 min\nImproves posture and focus",
-            "Name 5 things you are grateful for\nBoosts positivity and mindfulness",
-            "Close your eyes and focus on 3 sounds\nEnhances awareness and focus",
-            "Stretch arms overhead and rotate shoulders\nLoosens tension and improves posture",
-            "Speak a positive affirmation aloud 3 times\nBoosts confidence and energy",
-        ].slice(0, 6);
-
-        cachedTasks = fallbackTasks;
-        lastGeneratedKey = taskKey;
-
-        return res.status(200).json({ tasks: fallbackTasks });
+      tasks = defaultTasks;
     }
+
+    tasks = tasks.slice(0, 6);
+    cachedTasks = tasks;
+    lastGeneratedTask = todayTask;
+    res.json({ tasks });
+  } catch (err) {
+    console.error("Error generating daily tasks:", err);
+    cachedTasks = defaultTasks;
+    lastGeneratedTask = todayTask;
+    res.json({ tasks: defaultTasks });
+  }
 };
 
 exports.getChatSessions = async (req, res) => {
-    const userId = req.user.userid;
-    if (!userId) return res.status(401).json({ msg: "User not authenticated" });
+  const userId = req.user.userid;
+  if (!userId) return res.status(401).json({ msg: "User not authenticated" });
 
-    try {
-        const [results] = await db.query(
-            `SELECT DISTINCT session_id, MIN(timestamp) AS started_at 
-                FROM chat_history 
-                WHERE user_id = ? 
-                GROUP BY session_id 
-                ORDER BY started_at DESC`,
-            [userId]
-        );
-        res.json({ history: results });
-    } catch (err) {
-        res.status(500).json({ msg: "Error getting sessions", err });
-    }
+  try {
+    const [results] = await db.query(
+      `SELECT DISTINCT session_id, MIN(timestamp) AS started_at
+       FROM chat_history
+       WHERE user_id = ?
+       GROUP BY session_id
+       ORDER BY started_at DESC`,
+      [userId]
+    );
+    res.json({ history: results });
+  } catch (err) {
+    res.status(500).json({ msg: "Error getting sessions", err });
+  }
 };
 
 exports.getChatBySession = async (req, res) => {
-    const { sessionId } = req.params;
-    const userId = req.user.userid;
+  const { sessionId } = req.params;
+  const userId = req.user.userid;
+  if (!userId) return res.status(401).json({ msg: "User not authenticated" });
 
-    if (!userId) return res.status(401).json({ msg: "User not authenticated" });
-
-    try {
-        const [results] = await db.query(
-            `SELECT sender, message, timestamp 
-                FROM chat_history 
-                WHERE user_id = ? AND session_id = ? 
-                ORDER BY timestamp ASC`,
-            [userId, sessionId]
-        );
-        const formatted = results.map(row => ({ role: row.sender, text: row.message }));
-        res.json({ messages: formatted });
-    } catch (err) {
-        res.status(500).json({ msg: "Error getting chat", err });
-    }
+  try {
+    const [results] = await db.query(
+      `SELECT sender, message, timestamp
+       FROM chat_history
+       WHERE user_id = ? AND session_id = ?
+       ORDER BY timestamp ASC`,
+      [userId, sessionId]
+    );
+    const formatted = results.map(row => ({ role: row.sender, text: row.message }));
+    res.json({ messages: formatted });
+  } catch (err) {
+    res.status(500).json({ msg: "Error getting chat", err });
+  }
 };
 
 exports.deleteChatSession = async (req, res) => {
-    const userId = req.user.userid;
-    const { sessionId } = req.params;
+  const userId = req.user.userid;
+  const { sessionId } = req.params;
+  if (!userId) return res.status(401).json({ msg: "User not authenticated" });
+  if (!sessionId) return res.status(400).json({ msg: "Session ID is required" });
 
-    if (!userId) return res.status(401).json({ msg: "User not authenticated" });
-    if (!sessionId) return res.status(400).json({ msg: "Session ID is required" });
-
-    try {
-        await db.query(
-            "DELETE FROM chat_history WHERE user_id = ? AND session_id = ?",
-            [userId, sessionId]
-        );
-
-        res.json({ msg: "Chat session deleted successfully" });
-    } catch (err) {
-        res.status(500).json({ msg: "Failed to delete chat session", err });
-    }
+  try {
+    await db.query(
+      "DELETE FROM chat_history WHERE user_id = ? AND session_id = ?",
+      [userId, sessionId]
+    );
+    res.json({ msg: "Chat session deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ msg: "Failed to delete chat session", err });
+  }
 };

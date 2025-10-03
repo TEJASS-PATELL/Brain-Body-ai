@@ -8,11 +8,13 @@ module.exports = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
 
-    if (!req.session) {
-      req.session = {};
-    }
+    // Ensure req.user.userid exists
+    req.user = {
+      userid: decoded.userid || decoded.id || decoded.userId
+    };
+
+    if (!req.session) req.session = {};
 
     next();
   } catch (err) {

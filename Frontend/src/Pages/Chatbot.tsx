@@ -139,49 +139,42 @@ const Chatbot: React.FC = () => {
     };
 
     const handleSendMessage = async () => {
-        const userMessageText = userInput.trim();
-        if (!userMessageText || isLoading || !selectedSessionId || !userId) {
-            return;
-        }
+    const userMessageText = userInput.trim();
+    if (!userMessageText || isLoading || !selectedSessionId || !userId) return;
 
-        const newUserMessage: Message = { role: "user", text: userMessageText };
-        setMessages((prev) => [...prev, newUserMessage]);
-        setUserInput("");
-        setIsLoading(true);
+    const newUserMessage: Message = { role: "user", text: userMessageText };
+    setMessages((prev) => [...prev, newUserMessage]);
+    setUserInput("");
+    setIsLoading(true);
 
-        try {
-            const res = await api.post("/api/chats/start_chat", {
-                sessionId: selectedSessionId,
-                message: userMessageText,
-                language,
-                level,
-                yogaMode
-            });
+    try {
+        // ✅ ensure correct payload
+        const payload = {
+            sessionId: selectedSessionId,
+            message: userMessageText,
+            language: language || "english",
+            level: level || "beginner",
+            yogaMode: yogaMode || false,
+        };
 
-            const reply = res.data.reply || "Sorry, I couldn't get a response.";
-            typeMessage(reply);
+        const res = await api.post("/api/chats/startChat", payload);
 
-            setHistoryRefreshTrigger((prev) => prev + 1);
+        const reply = res.data?.reply || "Sorry, I couldn't get a response.";
+        typeMessage(reply);
 
-        } catch (err: any) {
-            console.error("Error sending message:", err.response?.data?.reply || err.message);
+        setHistoryRefreshTrigger((prev) => prev + 1);
 
-            setMessages((prev) => {
-                const updatedMessages = prev.filter(
-                    (msg) => msg.role !== "user" || msg.text !== userMessageText
-                );
-                return [
-                    ...updatedMessages,
-                    {
-                        role: "model",
-                        text: `Error: ${err.response?.data?.reply || err.message}`,
-                    },
-                ];
-            });
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    } catch (err: any) {
+        console.error("Error sending message:", err.response?.data?.reply || err.message);
+
+        setMessages((prev) => [
+            ...prev,
+            { role: "model", text: `Error: ${err.response?.data?.reply || err.message}` },
+        ]);
+    } finally {
+        setIsLoading(false);
+    }
+};
 
     const handleVoiceInput = () => {
         if (!recognition.current) return;

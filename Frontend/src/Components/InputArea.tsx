@@ -50,7 +50,6 @@ const InputArea: React.FC<InputAreaProps> = ({
       >
           <ArrowRight size={22} />
       </button>
-
     </div>
   );
 };

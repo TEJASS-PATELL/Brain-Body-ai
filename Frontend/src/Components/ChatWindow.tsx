@@ -68,7 +68,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoad
         >
           {msg.role === "model" && (
             <div className="icon">
-              <img className="brain-ai" src="brain.png" alt="AI" />
+              <img className="brain-aii" src="brain.png" alt="AI" />
             </div>
           )}
           <div className="message-bubble">
@@ -84,7 +84,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoad
       {displayedText && (
         <div className="message model-message">
           <div className="icon">
-            <img className="brain-ai" src="brain.png" alt="AI" />
+            <img className="brain-aii" src="brain.png" alt="AI" />
           </div>
           <div className="message-bubble">
             <ReactMarkdown>{displayedText}</ReactMarkdown>

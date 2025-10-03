@@ -148,7 +148,6 @@ const Chatbot: React.FC = () => {
     setIsLoading(true);
 
     try {
-        // ✅ ensure correct payload
         const payload = {
             sessionId: selectedSessionId,
             message: userMessageText,

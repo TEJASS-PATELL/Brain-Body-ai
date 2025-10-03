@@ -95,7 +95,7 @@
 
   .footer-bottom {
     padding: 15px;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .footer-social-icons a {
@@ -114,11 +114,11 @@
   }
 
   .footer-bottom p {
-    font-size: 1rem;
+    font-size: .85rem;
   }
 
   .footer-social-icons a {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     margin: 0 6px;
   }
 }

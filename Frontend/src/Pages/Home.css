@@ -63,8 +63,8 @@
   padding: 0 1rem;
 }
 
-.description{
-    max-width: 1200px;
+.description {
+  max-width: 1200px;
 }
 
 .second-description {
@@ -117,30 +117,24 @@
 
 .chatbot img {
   border-radius: 50%;
-  transition: transform 0.3s ease;
-}
-
-.chatbot img:hover {
-  transform: scale(1.05);
 }
 
 @media (max-width: 1024px) {
   .content h1 {
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
   }
-
+  
   .description,
   .second-description {
-    font-size: 1.05rem;
+    font-size: 1rem;
     max-width: 90%;
   }
 }
 
 @media (max-width: 768px) {
   .header-text {
-    font-size: 0.7rem;
-    margin-top: 80px;
-    padding: 4px 14px;
+    margin-top: 60px;
+    padding: 4px 8px;
   }
 
   .content h1 {
@@ -149,35 +143,46 @@
 
   .description,
   .second-description {
-    font-size: 1.1rem;
-    max-width: 95%;
+    font-size: 0.95rem;
+    max-width: 100%;
   }
 
   .create-account {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+    width: 100%;
   }
 
   .login,
   .signup {
     width: 100%;
-    justify-content: center;
   }
-  
 }
 
 @media (max-width: 480px) {
   .content h1 {
     font-size: 1.5rem;
+    max-width: 100%;
   }
 
   .description,
   .second-description {
-    font-size: 0.95rem;
+    width: 100%;
+    font-size: 0.8rem;
   }
 
   .header-text {
-    font-size: 0.65rem;
-    margin-top: 60px;
+    font-size: 0.45rem;
+    margin-top: 40px;
+  }
+
+  .cta-buttons {
+    gap: 12px;
+  }
+
+  .login,
+  .signup {
+    padding: 10px 14px;
+    font-size: 0.9rem;
   }
 }

@@ -1,0 +1,71 @@
+.mic-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #000;
+  margin: 0 20px;
+}
+
+.send-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: black;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+  color: white;
+}
+
+.send-button:disabled {
+  background-color: #000;
+  cursor: not-allowed;
+}
+
+.input-area {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  background-color: #fff;
+  box-sizing: border-box;
+  border-top: 1px solid #ddd;
+  border-radius: 0 0 16px 16px;
+}
+
+.input-area textarea {
+  flex-grow: 1;
+  height: 45px;
+  width: 100%;
+  padding: 0.75rem;
+  font-weight: 500;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  outline: none;
+  box-sizing: border-box;
+  resize: none; 
+}
+
+.input-area textarea:focus {
+  border-color: black;
+}
+
+@media (max-width: 768px) {
+    .input-area textarea{
+        height: 35px;
+        font-size: .8rem;
+        margin-right: 0rem;
+        padding: 0.5rem;
+    }
+    .send-button{
+        padding: 0.4rem .6rem;
+       }
+
+    .mic-button{
+        margin: 0 10px;
+    }
+}

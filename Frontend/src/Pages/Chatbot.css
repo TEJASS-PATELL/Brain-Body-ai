@@ -125,31 +125,6 @@
   vertical-align: middle;
 }
 
-.send-button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 8px;
-  background-color: black;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  white-space: nowrap;
-  color: white;
-}
-
-.send-button:disabled {
-  background-color: #000;
-  cursor: not-allowed;
-}
-
-.mic-button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: #000;
-  margin: 0 20px;
-}
-
 .middle-area {
   position: relative;
   flex: 1;
@@ -200,7 +175,6 @@
 .user-message {
   flex-direction: row-reverse;
   text-align: right;
-  
 }
 
 .icon {
@@ -248,37 +222,6 @@
   line-height: 1.8;
   color: #000;
   border-top-left-radius: 0;
-}
-
-.input-area {
-  display: flex;
-  width: 100%;
-  padding: 1rem;
-  background-color: #fff;
-  box-sizing: border-box;
-  border-top: 1px solid #ddd;
-  border-radius: 0 0 16px 16px;
-}
-
-.input-area textarea {
-  flex-grow: 1;
-  height: 45px;
-  width: 100%;
-  padding: 0.75rem;
-  font-weight: 500;
-  border: 1px solid #d6d6d6;
-  border-radius: 8px;
-  color: #000;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
-  margin-right: 0.5rem;
-  outline: none;
-  box-sizing: border-box;
-  resize: none; 
-}
-
-.input-area textarea:focus {
-  border-color: black;
 }
 
 .dot {
@@ -367,7 +310,6 @@
 }
 
 @keyframes blink {
-
   0%,
   80%,
   100% {
@@ -469,7 +411,6 @@
 
   .header-leftt {
     display: flex;
-    gap: 220px;
     justify-content: space-between;
     align-items: center;
   }
@@ -480,12 +421,25 @@
 
   .round-button {
     width: 100%;
+    display: flex;
+    margin-top: 10px;
     justify-content: flex-start;
   }
 
   .message {
     display: flex;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 420px) {
+  .round-button {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    margin-top: 10px;
+    gap: 0;
+    justify-content: flex-start;
   }
 }
 
@@ -534,7 +488,6 @@
   display: flex;
   align-items: center;
   gap: 6px;
-
   box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.8);
 }
 

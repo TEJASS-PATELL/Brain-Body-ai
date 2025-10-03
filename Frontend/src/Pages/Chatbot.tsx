@@ -27,6 +27,7 @@ const Chatbot: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [yogaMode, setYogaMode] = useState<boolean>(false);
     const [showRightSidebar, setShowRightSidebar] = useState(true);
+    const [showLeftSidebar, setShowLeftSidebar] = useState(true);
     const [displayedText, setDisplayedText] = useState<string>("");
     const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
     const [language, setLanguage] = useState<string>("english");
@@ -255,12 +256,15 @@ const Chatbot: React.FC = () => {
     return (
         <div className="container">
             <div className="main-box">
-                <LeftSidebar
-                    userId={userId}
-                    handleNewChat={handleNewChat}
-                    onSelectChat={handleSelectChat}
-                    selectedSessionId={selectedSessionId}
-                    historyRefreshTrigger={historyRefreshTrigger} />
+                {showLeftSidebar && (
+                    <LeftSidebar
+                        userId={userId}
+                        handleNewChat={handleNewChat}
+                        onSelectChat={handleSelectChat}
+                        selectedSessionId={selectedSessionId}
+                        historyRefreshTrigger={historyRefreshTrigger}
+                    />
+                )}
 
                 <div className="chat-box">
                     <ChatHeader
@@ -268,7 +272,9 @@ const Chatbot: React.FC = () => {
                         setShowSettingsModal={setShowSettingsModal}
                         handleLogout={handleLogout}
                         showRightSidebar={showRightSidebar}
-                        setShowRightSidebar={setShowRightSidebar} />
+                        showLeftSidebar={showLeftSidebar}
+                        setShowRightSidebar={setShowRightSidebar}
+                        setShowLeftSidebar={setShowLeftSidebar} />
                     <ChatWindow messages={messages} displayedText={displayedText} isLoading={isLoading} />
                     <InputArea
                         userInput={userInput}

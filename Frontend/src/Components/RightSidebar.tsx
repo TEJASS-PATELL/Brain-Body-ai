@@ -32,7 +32,6 @@ const RightSidebar = () => {
         setLoading(false);
       }
     };
-
     fetchTasks();
   }, []);
 
@@ -60,10 +59,7 @@ const RightSidebar = () => {
           ) : dailyTasks.length ? (
             dailyTasks.map((task, index) => (
               <li key={index} className="task-item">
-                {String(task)
-                  .split("\n")
-                  .filter((line) => line.trim() !== "")
-                  .map((line, i) => (
+                {String(task).split("\n").filter((line) => line.trim() !== "").map((line, i) => (
                     <div key={i}>{line}</div>
                   ))}
               </li>

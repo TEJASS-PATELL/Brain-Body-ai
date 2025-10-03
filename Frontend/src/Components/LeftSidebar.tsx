@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./LeftSidebar.css";
 import api from "../api";
-import { MessageCircle, History, Trash2 } from "lucide-react"; // Using Trash2 icon
+import { MessageCircle, History, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 interface ChatSession {
@@ -41,8 +41,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
       const data = res.data;
       setChatHistory(data.history || []);
     } catch (err: any) {
-      console.error("Failed to load chat history:", err.response?.data?.msg || err.message);
-      toast.error("Chat history load nahi ho payi.");
+      toast.error("Failed to load chat history: ", err.message);
     }
   };
 

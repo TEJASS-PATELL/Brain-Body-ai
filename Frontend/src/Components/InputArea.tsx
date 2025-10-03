@@ -1,6 +1,6 @@
 import React from 'react';
-import { Mic, MicOff } from 'lucide-react';
-import '../Pages/Chatbot.css';
+import { ArrowRight, Mic, MicOff, Send } from 'lucide-react';
+import './Input.css';
 
 interface InputAreaProps {
   userInput: string;
@@ -40,15 +40,17 @@ const InputArea: React.FC<InputAreaProps> = ({
         }}
       />
       <button onClick={handleVoiceInput} title="Voice Input" className="mic-button" disabled={isDisabled}>
-        {isListening ? <MicOff size={22} /> : <Mic size={22} />}
+        {isListening ? <MicOff size={20} /> : <Mic size={20} />}
       </button>
       <button
         onClick={handleSendMessage}
         className="send-button"
         disabled={isDisabled || !userInput.trim()}
+        title="Send"
       >
-        Send
+          <ArrowRight size={22} />
       </button>
+
     </div>
   );
 };

@@ -154,7 +154,11 @@
 }
 
 @media (max-width: 480px) {
+  .signup-title{
+    font-size: 28px;
+  }
   .signup-box {
+    border: none;
     padding: 32px 24px;
   }
 }

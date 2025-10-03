@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { HeartPulse, Settings, HelpCircle, LogOut, PanelRightClose, PanelRightOpen } from 'lucide-react';
-import '../Pages/Chatbot.css'; 
+import { HeartPulse, Settings, HelpCircle, LogOut, PanelRightClose, PanelRightOpen, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import '../Pages/Chatbot.css';
 
 interface ChatHeaderProps {
   toggleBMIPopup: () => void;
   setShowSettingsModal: (show: boolean) => void;
   handleLogout: () => void;
   showRightSidebar: boolean;
+  showLeftSidebar: boolean;
   setShowRightSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowLeftSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ChatHeader: React.FC<ChatHeaderProps> = ({
@@ -17,6 +19,8 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   handleLogout,
   showRightSidebar,
   setShowRightSidebar,
+  showLeftSidebar,
+  setShowLeftSidebar,
 }) => {
   return (
     <div className="chat-headerr">
@@ -41,6 +45,11 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
           <button className="main" onClick={() => setShowRightSidebar((prev) => !prev)}>
             {showRightSidebar ? <PanelRightClose size={22} /> : <PanelRightOpen size={22} />}
           </button>
+
+          <button className="main" onClick={() => setShowLeftSidebar((prev) => !prev)}>
+            {showLeftSidebar ? <PanelLeftClose size={22} /> : <PanelLeftOpen size={22} />}
+          </button>
+
           <button className="logout" onClick={handleLogout} title="logout">
             <LogOut size={22} />
           </button>

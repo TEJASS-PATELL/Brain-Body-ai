@@ -33,21 +33,25 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
           </div>
         </div>
         <div className="round-button">
+          
+          <button className="main" onClick={() => setShowLeftSidebar((prev) => !prev)}>
+            {showLeftSidebar ? <PanelLeftClose size={22} /> : <PanelLeftOpen size={22} />}
+          </button>
+
           <button className="bmi-button" onClick={toggleBMIPopup} title="BMI-Calculator">
             <HeartPulse size={22} />
           </button>
+
           <button className="main" onClick={() => setShowSettingsModal(true)} title="Setting">
             <Settings size={22} />
           </button>
+
           <Link to="/chatbot/features" className="main" title='Features'>
             <HelpCircle size={22} />
           </Link>
+          
           <button className="main" onClick={() => setShowRightSidebar((prev) => !prev)}>
             {showRightSidebar ? <PanelRightClose size={22} /> : <PanelRightOpen size={22} />}
-          </button>
-
-          <button className="main" onClick={() => setShowLeftSidebar((prev) => !prev)}>
-            {showLeftSidebar ? <PanelLeftClose size={22} /> : <PanelLeftOpen size={22} />}
           </button>
 
           <button className="logout" onClick={handleLogout} title="logout">

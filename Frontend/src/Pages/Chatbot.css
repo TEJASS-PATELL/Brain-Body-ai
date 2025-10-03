@@ -441,6 +441,10 @@
     gap: 0;
     justify-content: flex-start;
   }
+  
+.chat-box {
+  margin: 10px 0 10px 0px;
+}
 }
 
 .chat-intro {

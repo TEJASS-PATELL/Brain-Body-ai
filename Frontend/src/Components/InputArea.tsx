@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Mic, MicOff, Send } from 'lucide-react';
+import { ArrowRight, Mic, MicOff } from 'lucide-react';
 import './Input.css';
 
 interface InputAreaProps {

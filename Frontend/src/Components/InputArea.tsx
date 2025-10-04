@@ -29,7 +29,7 @@ const InputArea: React.FC<InputAreaProps> = ({
         className="chat-input"
         value={userInput}
         onChange={(e) => setUserInput(e.target.value)}
-        placeholder="Ready to level up? Ask your AI Chatbot...."
+        placeholder="Ask your AI Chatbot...."
         disabled={isDisabled}
         rows={3}
         onKeyDown={(e) => {

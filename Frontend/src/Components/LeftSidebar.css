@@ -2,7 +2,6 @@
   background-color: #ffffff;
   width: 80px;
   transition: width 0.3s ease;
-  margin: 10px 0 10px 10px;
   padding: 20px 10px;
   display: flex;
   position: relative;
@@ -131,10 +130,6 @@
     font-size: 16px;
     font-weight: 600;
     color: #000000;
-  }
-
-  .left-bar{
-      margin: 10px 0 4px 10px;
   }
 
   .history-panel li {

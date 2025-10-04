@@ -4,71 +4,65 @@
   width: 100%;
   padding: 1rem;
   background-color: #fff;
-  box-sizing: border-box;
   border-top: 1px solid #ddd;
-  border-radius: 0 0 16px 16px;
+  border-radius: 0 0 12px 12px;
+  box-sizing: border-box;
   position: sticky; 
   bottom: 0;
-  z-index: 10;
+  z-index: 1000;
 }
 
 .input-area textarea {
-  flex: 1; 
+  flex: 1;
   height: 45px;
   padding: 0.75rem;
-  font-weight: 500;
   font-size: 1rem;
   font-family: 'Montserrat', sans-serif;
   border: 1px solid #d6d6d6;
   border-radius: 8px;
-  margin-right: 0.5rem;
-  color: #000;
+  resize: none;
   outline: none;
-  resize: none; 
-  box-sizing: border-box;
+  margin-right: 0.5rem;
 }
 
 .input-area textarea:focus {
   border-color: black;
 }
 
+.send-button,
 .mic-button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: #000;
-  margin-right: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
+  cursor: pointer;
+  border-radius: 10%;
 }
 
 .send-button {
   padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 8px;
   background-color: black;
   color: white;
   font-size: 1.1rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
 }
 
 .send-button:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-@media (max-width: 768px) {
+.mic-button {
+  background: transparent;
+  color: #000;
+  margin-right: 0.5rem;
+}
 
+@media (max-width: 768px) {
   .input-area textarea {
     height: 35px;
     font-size: 0.85rem;
-    margin-right: 0.25rem;
     padding: 0.5rem;
+    margin-right: 0.25rem;
   }
 
   .send-button {
@@ -85,7 +79,7 @@
   .input-area textarea {
     height: 32px;
     font-size: 0.8rem;
-    margin-right: 0.8rem;
+    margin-right: 0.6rem;
   }
 
   .send-button {

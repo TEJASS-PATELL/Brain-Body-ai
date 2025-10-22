@@ -449,8 +449,12 @@
     margin: 0px 0 0px 0px;
   }
 
-  .brain-aii {
-    display: none;
+  .message .icon {
+    width: 0px;
+  }
+
+  .icon{
+    margin: 0 5px;
   }
 
   .message {

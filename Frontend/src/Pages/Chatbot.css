@@ -450,7 +450,7 @@
   }
 
   .brain-aii {
-    visibility: hidden;
+    display: none;
   }
 
   .message {

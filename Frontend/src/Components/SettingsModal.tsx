@@ -19,8 +19,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   currentYogaMode,
   onSave
 }) => {
-  const handleComplete = (language: string, level: string, isYogaMode: boolean, replyType: string) => {
-    onSave(language, level, isYogaMode, replyType);
+  const handleComplete = (language: string, level: string, YogaMode: boolean, replyType: string) => {
+    onSave(language, level, YogaMode, replyType);
     onClose();
   };
 

@@ -35,10 +35,6 @@ const Setting: React.FC<SettingProps> = ({
         setUserName(data.name || "");
         setEmail(data.email || "");
 
-        setLanguage(data.language || currentLanguage);
-        setReplyType(data.replyType || currentReplyType);
-        setLevel(data.level || currentLevel);
-        setYogaMode(data.yogaMode ?? currentYogaMode);
       } catch (err: any) {
         console.error("Failed to fetch user info:", err.response?.data?.msg || err.message);
       }
@@ -56,20 +52,8 @@ const Setting: React.FC<SettingProps> = ({
     setIsSaving(true);
     try {
       const { data } = await api.post("/api/auth/update_detail", { language, level, yogaMode, replyType });
-
-      const updatedLanguage = data.language || language;
-      const updatedReplyType = data.replyType || replyType;
-      const updatedLevel = data.level || level;
-      const updatedYogaMode =
-        typeof data.yogaMode === "boolean" ? data.yogaMode : yogaMode;
-
-      setLanguage(updatedLanguage);
-      setReplyType(updatedReplyType);
-      setLevel(updatedLevel);
-      setYogaMode(updatedYogaMode);
-
       toast.success(data.message || "Preferences updated");
-      onComplete(updatedLanguage, updatedLevel, updatedYogaMode, updatedReplyType);
+      onComplete(language, level, yogaMode, replyType);
     } catch {
       toast.error("Error updating preferences");
     } finally {
@@ -122,7 +106,7 @@ const Setting: React.FC<SettingProps> = ({
       </div>
 
       <div className="form-group">
-        <label>Select Level</label>
+        <label>-- Select Level --</label>
         <select value={level} onChange={(e) => setLevel(e.target.value)}>
           <option value="">-- Choose Level --</option>
           <option value="beginner">Beginner</option>
@@ -135,9 +119,9 @@ const Setting: React.FC<SettingProps> = ({
         <label>Reply Type</label>
         <select value={replyType} onChange={(e) => setReplyType(e.target.value)}>
           <option value="">-- Select Reply Type --</option>
-          <option value="concise">Short</option>
-          <option value="balanced">Balanced</option>
-          <option value="detailed">Detailed</option>
+          <option value="concise">Short 50 to 100 words</option>
+          <option value="balanced">Balanced 120 to 200 words</option>
+          <option value="detailed">Detailed 250+ words</option>
         </select>
       </div>
 

@@ -34,6 +34,7 @@ const Chatbot: React.FC = () => {
     const [showBMIPopup, setShowBMIPopup] = useState(false);
     const navigate = useNavigate();
     const [level, setLevel] = useState<string>("beginner");
+    const [replyType, setReplyType] = useState<string>("Short 50 to 100 words");
     const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
     const [isListening, setIsListening] = useState(false);
     const [userId, setUserId] = useState<string | null>(null);
@@ -72,6 +73,7 @@ const Chatbot: React.FC = () => {
                 setUserId(data.id || null);
                 setLanguage(data.language || "english");
                 setLevel(data.level || "beginner");
+                setReplyType(data.replyType || "");
                 setYogaMode(data.yogaMode || false);
             } catch (err: any) {
                 console.error("Failed to fetch user details:", err.response?.data?.msg || err.message);
@@ -139,41 +141,41 @@ const Chatbot: React.FC = () => {
     };
 
     const handleSendMessage = async () => {
-    const userMessageText = userInput.trim();
-    if (!userMessageText || isLoading || !selectedSessionId || !userId) return;
+        const userMessageText = userInput.trim();
+        if (!userMessageText || isLoading || !selectedSessionId || !userId) return;
 
-    const newUserMessage: Message = { role: "user", text: userMessageText };
-    setMessages((prev) => [...prev, newUserMessage]);
-    setUserInput("");
-    setIsLoading(true);
+        const newUserMessage: Message = { role: "user", text: userMessageText };
+        setMessages((prev) => [...prev, newUserMessage]);
+        setUserInput("");
+        setIsLoading(true);
 
-    try {
-        const payload = {
-            sessionId: selectedSessionId,
-            message: userMessageText,
-            language: language || "english",
-            level: level || "beginner",
-            yogaMode: yogaMode || false,
-        };
+        try {
+            const payload = {
+                sessionId: selectedSessionId,
+                message: userMessageText,
+                language: language || "english",
+                level: level || "beginner",
+                yogaMode: yogaMode || false,
+            };
 
-        const res = await api.post("/api/chats/startChat", payload);
+            const res = await api.post("/api/chats/startChat", payload);
 
-        const reply = res.data?.reply || "Sorry, I couldn't get a response.";
-        typeMessage(reply);
+            const reply = res.data?.reply || "Sorry, I couldn't get a response.";
+            typeMessage(reply);
 
-        setHistoryRefreshTrigger((prev) => prev + 1);
+            setHistoryRefreshTrigger((prev) => prev + 1);
 
-    } catch (err: any) {
-        console.error("Error sending message:", err.response?.data?.reply || err.message);
+        } catch (err: any) {
+            console.error("Error sending message:", err.response?.data?.reply || err.message);
 
-        setMessages((prev) => [
-            ...prev,
-            { role: "model", text: `Error: ${err.response?.data?.reply || err.message}` },
-        ]);
-    } finally {
-        setIsLoading(false);
-    }
-};
+            setMessages((prev) => [
+                ...prev,
+                { role: "model", text: `Error: ${err.response?.data?.reply || err.message}` },
+            ]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleVoiceInput = () => {
         if (!recognition.current) return;
@@ -228,71 +230,63 @@ const Chatbot: React.FC = () => {
         }
     };
 
-    const handleSettingsUpdate = async (newLanguage: string, newLevel: string, newYogaMode: boolean) => {
-        try {
-            await api.post("/api/auth/update_detail", {
-                language: newLanguage,
-                level: newLevel,
-                yogaMode: newYogaMode,
-            });
-            setLanguage(newLanguage);
-            setLevel(newLevel);
-            setYogaMode(newYogaMode);
-        } catch (err) {
-            console.error("Failed to update settings", err);
-        } finally {
-            setShowSettingsModal(false);
-        }
-    };
+    const handleSettingsUpdate = (language: string, level: string, yogaMode: boolean, replyType: string) => {
+        setLanguage(language);
+        setReplyType(replyType);
+        setLevel(level);
+        setYogaMode(yogaMode);
+        setShowSettingsModal(false);
+    }
 
-    return (
-        <div className="container">
-            <div className="main-box">
-                {showLeftSidebar && (
-                    <LeftSidebar
-                        userId={userId}
-                        handleNewChat={handleNewChat}
-                        onSelectChat={handleSelectChat}
-                        selectedSessionId={selectedSessionId}
-                        historyRefreshTrigger={historyRefreshTrigger}
-                    />
-                )}
-
-                <div className="chat-box">
-                    <ChatHeader
-                        toggleBMIPopup={toggleBMIPopup}
-                        setShowSettingsModal={setShowSettingsModal}
-                        handleLogout={handleLogout}
-                        showRightSidebar={showRightSidebar}
-                        showLeftSidebar={showLeftSidebar}
-                        setShowRightSidebar={setShowRightSidebar}
-                        setShowLeftSidebar={setShowLeftSidebar} />
-                    <ChatWindow messages={messages} displayedText={displayedText} isLoading={isLoading} />
-                    <InputArea
-                        userInput={userInput}
-                        setUserInput={setUserInput}
-                        handleVoiceInput={handleVoiceInput}
-                        handleSendMessage={handleSendMessage}
-                        isLoading={isLoading}
-                        isListening={isListening}
-                        isReadyToChat={isReadyToChat} />
-                </div>
-
-                {showRightSidebar && <RightSidebar />}
-            </div>
-
-            {showSettingsModal && (
-                <SettingsModal
-                    onClose={() => setShowSettingsModal(false)}
-                    onSave={handleSettingsUpdate}
-                    currentLanguage={language}
-                    currentLevel={level}
-                    currentYogaMode={yogaMode}
+return (
+    <div className="container">
+        <div className="main-box">
+            {showLeftSidebar && (
+                <LeftSidebar
+                    userId={userId}
+                    handleNewChat={handleNewChat}
+                    onSelectChat={handleSelectChat}
+                    selectedSessionId={selectedSessionId}
+                    historyRefreshTrigger={historyRefreshTrigger}
                 />
             )}
-            <BMIPopup show={showBMIPopup} onClose={toggleBMIPopup} />
-        </div>
-    );
-};
 
+            <div className="chat-box">
+                <ChatHeader
+                    toggleBMIPopup={toggleBMIPopup}
+                    setShowSettingsModal={setShowSettingsModal}
+                    handleLogout={handleLogout}
+                    showRightSidebar={showRightSidebar}
+                    showLeftSidebar={showLeftSidebar}
+                    setShowRightSidebar={setShowRightSidebar}
+                    setShowLeftSidebar={setShowLeftSidebar} />
+                <ChatWindow messages={messages} displayedText={displayedText} isLoading={isLoading} />
+                <InputArea
+                    userInput={userInput}
+                    setUserInput={setUserInput}
+                    handleVoiceInput={handleVoiceInput}
+                    handleSendMessage={handleSendMessage}
+                    isLoading={isLoading}
+                    isListening={isListening}
+                    isReadyToChat={isReadyToChat} />
+            </div>
+
+            {showRightSidebar && <RightSidebar />}
+        </div>
+
+        {showSettingsModal && (
+            <SettingsModal
+                onClose={() => setShowSettingsModal(false)}
+                onSave={handleSettingsUpdate}
+                currentLanguage={language}
+                currentReplyType={replyType}
+                currentLevel={level}
+                currentYogaMode={yogaMode}
+            />
+        )}
+        <BMIPopup show={showBMIPopup} onClose={toggleBMIPopup} />
+    </div>
+);
+
+}
 export default Chatbot;

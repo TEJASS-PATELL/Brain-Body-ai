@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Setting.css';
 import toast from 'react-hot-toast';
 import api from '../api';
+import { useNavigate } from 'react-router-dom';
 
 interface SettingProps {
   onComplete: (language: string, level: string, yogaMode: boolean, replyType: string) => void;
@@ -25,6 +26,7 @@ const Setting: React.FC<SettingProps> = ({
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
@@ -51,8 +53,8 @@ const Setting: React.FC<SettingProps> = ({
 
     setIsSaving(true);
     try {
-      const { data } = await api.post("/api/auth/update_detail", { language, level, yogaMode, replyType });
-      toast.success(data.message || "Preferences updated");
+      await api.post("/api/auth/update_detail", { language, level, yogaMode, replyType });
+      toast.success("Preferences updated");
       onComplete(language, level, yogaMode, replyType);
     } catch {
       toast.error("Error updating preferences");
@@ -66,12 +68,17 @@ const Setting: React.FC<SettingProps> = ({
 
     setIsDeleting(true);
     try {
-      const { data } = await api.delete("/api/auth/delete-account");
-      data?.success
-        ? toast.success(data?.msg)
-        : toast.error(data?.msg);
+      const res = await api.delete("/api/auth/delete-account");
+
+      if (res.status === 200) {
+        toast.success(res.data?.msg || "Account deleted successfully"); 
+        navigate("/login", { replace: true });
+      } else {
+        toast.error(res.data?.msg || "Error deleting account");
+      }
     } catch (err: any) {
-      toast.error(err.response?.data?.msg || "Error deleting account");
+      console.error("Delete Account Error:", err);
+      toast.error(err.response?.data?.msg || "Error deleting account: Server or Network issue");
     } finally {
       setIsDeleting(false);
     }

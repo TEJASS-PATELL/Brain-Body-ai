@@ -165,7 +165,8 @@ exports.deleteAccount = async (req, res) => {
       return res.status(401).json({ msg: "Unauthorized – user ID not found" });
     }
 
-    const [result] = await db.execute("DELETE FROM users WHERE id = ?", [userId]);
+    await db.execute("DELETE FROM chats WHERE user_id = ?", [userId]);
+    await db.execute("DELETE FROM users WHERE id = ?", [userId]);
 
     req.session?.destroy(err => {
       if (err) console.error("Session destroy error:", err);

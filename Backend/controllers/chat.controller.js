@@ -21,7 +21,7 @@ const withRetry = async (fn, retries = 3, delay = 1000) => {
 exports.sendAndSaveChat = async (req, res) => {
   try {
     const userId = req.user?.userid;
-    const { sessionId, message, language = "english", level = "beginner", yogaMode, replyType = "Short (50-100 words)" } = req.body;
+    const { sessionId, message, language = "english", level = "beginner", yogaMode, replyType = "Short 50 to 100 words" } = req.body;
 
     if (!userId) return res.status(401).json({ msg: "User not authenticated" });
     if (!sessionId || !message) return res.status(400).json({ msg: "Missing required fields: sessionId or message" });

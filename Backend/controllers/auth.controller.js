@@ -80,7 +80,7 @@ exports.logout = (req, res) => {
 };
 
 exports.update_detail = (req, res) => {
-  const { language, level, yogaMode } = req.body;
+  const { language, level, yogaMode, replyType } = req.body;
 
   if (!language || !level)
     return res.status(400).json({ message: "Language and level are required" });
@@ -92,6 +92,7 @@ exports.update_detail = (req, res) => {
 
   req.session.language = language;
   req.session.level = level;
+  req.session.replyType = replyType;
   req.session.yogaMode = yogaModeBool;
 
   req.session.save((err) => {
@@ -101,6 +102,7 @@ exports.update_detail = (req, res) => {
       message: `Preferences set: ${language} (${level}), YogaMode: ${req.session.yogaMode ? "ON" : "OFF"}`,
       language,
       level,
+      replyType,
       yogaMode: req.session.yogaMode,
     });
   });
@@ -108,14 +110,15 @@ exports.update_detail = (req, res) => {
 
 exports.get_detail = (req, res) => {
   if (!req.user) {
-    return res.json({ id: null, language: "", level: "", yogaMode: false });
+    return res.json({ id: null, language: "", level: "", yogaMode: false, replyType: "" });
   }
 
   const language = req.session.language || "";
   const level = req.session.level || "";
+  const replyType = req.session.replyType || "";
   const yogaMode = !!req.session.yogaMode;
 
-  res.json({ id: req.user.userid, language, level, yogaMode });
+  res.json({ id: req.user.userid, language, level, yogaMode, replyType });
 };
 
 exports.user_info = async (req, res) => {
@@ -133,6 +136,7 @@ exports.user_info = async (req, res) => {
       email: rows[0].email,
       language: req.session.language || "",
       level: req.session.level || "",
+      replyType: req.session.replyType || "",
       yogaMode: Boolean(req.session.yogaMode),
     });
   } catch (err) {
@@ -155,9 +159,6 @@ exports.check = (req, res) => {
 };
 
 exports.deleteAccount = async (req, res) => {
-  req.session?.destroy((err) => {
-    if (err) console.error("Session destroy error:", err);
-  });
   try {
     const userId = req.user.userid;
     if (!userId) {
@@ -175,6 +176,6 @@ exports.deleteAccount = async (req, res) => {
     return res.status(200).json({ msg: "Account deleted successfully", success: true });
   } catch (err) {
     console.error("Delete Account Error:", err);
-    return res.status(500).json({ msg: "Account deletion failed", error: err.message });
+    return res.status(500).json({ msg: "Account deletion failed", error: err.message, success: false });
   }
 };

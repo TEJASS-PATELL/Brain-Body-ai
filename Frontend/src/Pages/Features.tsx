@@ -21,7 +21,7 @@ const features = [
       "Start by selecting your preferred language and experience level (beginner to advanced). This helps the AI respond in the way that suits you best.",
   },
   {
-    title: "Use BMI Calculator + Personalized Plan",
+    title: "BMI Calculator + Personalized Plan",
     icon: <Activity className="htu-icon green" />,
     description:
       "Use our built-in BMI calculator to quickly check your body status and receive a fully personalized wellness plan based on your results, goals, and health metrics.",
@@ -64,7 +64,7 @@ const features = [
   },
   {
     title: "Yoga / Meditation Mode",
-    icon: <LucideOctagonPause className="htu-icon grey" />,
+    icon: <LucideOctagonPause className="htu-icon red" />,
     description:
       "Switch to a calm, mindful mode where your AI guides you through yoga poses, breathing exercises, and meditation practices — helping you relax, focus, and find inner peace anytime.",
   },
@@ -95,7 +95,7 @@ const Features: React.FC = () => {
 
         <div className="htu-final">
           <p className="htu-link-note">
-            Go to your <Link to="/chatbot" className="htu-link">AI ChatBot</Link> to begin your wellness journey!
+            Go to your <Link to="/chatbot" className="htu-link">Brain + Body</Link> chatbot to begin your wellness journey!
           </p>
         </div>
       </div>

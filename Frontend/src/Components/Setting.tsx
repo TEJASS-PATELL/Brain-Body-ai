@@ -1,28 +1,25 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Setting.css';
 import toast from 'react-hot-toast';
 import api from '../api';
 
 interface SettingProps {
-  onComplete: (language: string, level: string, yogaMode: boolean) => void;
+  onComplete: (language: string, level: string, yogaMode: boolean, replytype: string) => void;
   currentLanguage: string;
   currentLevel: string;
+  currentReplyType: string;
   currentYogaMode: boolean;
 }
 
-const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage = "", currentLevel = "", currentYogaMode = false, }) => {
+const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage = "", currentLevel = "", currentYogaMode = false, currentReplyType = "" }) => {
   const [language, setLanguage] = useState(currentLanguage);
   const [level, setLevel] = useState(currentLevel);
   const [yogaMode, setYogaMode] = useState(currentYogaMode);
+  const [replyType, setReplyType] = useState(currentReplyType);
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLanguage(currentLanguage);
-    setLevel(currentLevel);
-    setYogaMode(!!currentYogaMode);
-  }, [currentLanguage, currentLevel, currentYogaMode]);
+  const [DeleteAccount, setDeleteAccount] = useState(false);
+  const [SetValue, setSetValue] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -32,6 +29,7 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage = "", cur
         setUserName(data.name || "");
         setEmail(data.email || "");
         setLanguage(data.language || currentLanguage);
+        setLanguage(data.replyType || currentReplyType);
         setLevel(data.level || currentLevel);
         setYogaMode(!!data.yogaMode || currentYogaMode);
       } catch (err: any) {
@@ -39,53 +37,51 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage = "", cur
       }
     };
     fetchUserInfo();
-  }, [currentLanguage, currentLevel, currentYogaMode]);
-
-  const UserName = useMemo(() => userName || "N/A", [userName]);
-  const Email = useMemo(() => email || "N/A", [email]);
+  }, [currentLanguage, currentLevel, currentYogaMode, currentReplyType]);
 
   const handleSubmit = async () => {
-    if (!language || !level) {
-      toast.error("Please select both language and level");
+    if(!level || !language || !replyType){
+      toast.error("Please Select each field's")
       return;
     }
 
-    setLoading(true);
-
+    setSetValue(true);
     try {
-      const res = await api.post("/api/auth/update_detail", { language, level, yogaMode });
+      const { data } = await api.post("/api/auth/update_detail", { language, level, yogaMode, replyType });
 
-      const updatedLanguage = res.data.language || language;
-      const updatedLevel = res.data.level || level;
-      const updatedYogaMode = typeof res.data.yogaMode === "boolean" ? res.data.yogaMode : yogaMode;
+      const updatedLanguage = data.language || language;
+      const updatedReplyType = data.replyType || language;
+      const updatedLevel = data.level || level;
+      const updatedYogaMode = typeof data.yogaMode === "boolean" ? data.yogaMode : yogaMode;
 
       setLanguage(updatedLanguage);
       setLevel(updatedLevel);
       setYogaMode(updatedYogaMode);
+      setReplyType(updatedReplyType);
 
-      toast.success(res.data.message || "Preferences updated");
-      onComplete(updatedLanguage, updatedLevel, updatedYogaMode);
+      toast.success(data.message || "Preferences updated");
+      onComplete(updatedLanguage, updatedLevel, updatedYogaMode, updatedReplyType);
     } catch (err: any) {
       toast.error("Error updating preferences");
     } finally {
-      setLoading(false);
+      setSetValue(false);
     }
   };
 
   const handleDeleteAccount = async () => {
     if (!window.confirm("Are you sure? This action is permanent!")) return;
-    setLoading(true);
+    setDeleteAccount(true);
     try {
-      const res = await api.delete("/api/auth/delete-account", { withCredentials: true });
-      if(res.data?.success){
-        toast.success(res.data?.msg);
-      }else{
-        toast.error(res.data?.msg);
+      const { data } = await api.delete("/api/auth/delete-account");
+      if (data?.success) {
+        toast.success(data?.msg);
+      } else {
+        toast.error(data?.msg);
       }
     } catch (err: any) {
       toast.error(err.response?.data?.msg || "Error deleting account");
     } finally {
-      setLoading(false);
+      setDeleteAccount(false);
     }
   };
 
@@ -93,10 +89,10 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage = "", cur
     <div className="language-selector">
       <div className="user-info">
         <p>
-          Name: <strong>{UserName}</strong>
+          Name: <strong>{userName ? userName : "Loading...."}</strong>
         </p>
         <p>
-          Email: <strong>{Email}</strong>
+          Email: <strong>{email ? email : "Loading...."}</strong>
         </p>
       </div>
 
@@ -131,6 +127,16 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage = "", cur
         </select>
       </div>
 
+      <div className="form-group">
+        <label>Reply Type</label>
+        <select value={replyType} onChange={(e) => setReplyType(e.target.value)}>
+          <option value="">-- Select Reply Type --</option>
+          <option value="concise">Short (50-100 words)</option>
+          <option value="balanced">Medium (120-200 words)</option>
+          <option value="detailed">Detailed (250+ words)</option>
+        </select>
+      </div>
+
       <div className="form-group toggle-wrap">
         <label>Yoga & Meditation Mode</label>
         <label className="switch">
@@ -143,17 +149,21 @@ const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage = "", cur
         </label>
       </div>
 
-      <button className="sett-button" onClick={handleSubmit} disabled={loading}>
-        {loading ? "Saving..." : "Set Preferences"}
-      </button>
-      <button
-        className="delete-button"
-        onClick={handleDeleteAccount}
-        disabled={loading}
-      >
-        {loading ? "Deleting..." : "Delete Account"}
-      </button>
+      <div className="button-group">
+        <button className="sett-button" onClick={handleSubmit} disabled={SetValue}>
+          {SetValue ? "Saving..." : "Set Preferences"}
+        </button>
+
+        <button
+          className="delete-button"
+          onClick={handleDeleteAccount}
+          disabled={DeleteAccount}
+        >
+          {DeleteAccount ? "Deleting..." : "Delete Account"}
+        </button>
+      </div>
     </div>
+
   );
 };
 

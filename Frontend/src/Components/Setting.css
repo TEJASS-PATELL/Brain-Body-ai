@@ -10,7 +10,7 @@
 }
 
 .user-info {
-  background-color: #f5f5f5;
+  background-color: #d8d8d892;
   border-left: 4px solid #000000;
   padding: 12px 16px;
   border-radius: 8px;
@@ -20,6 +20,7 @@
 
 .user-info p {
   margin: 5px 0;
+  font-weight: 900;
   font-size: 15.5px;
   line-height: 1.4;
 }
@@ -30,16 +31,16 @@
   margin-bottom: 1.2rem;
 }
 
-label {
+.form-group .hint {
   font-weight: 600;
-  color: #333;
+  color: rgb(0, 0, 0);
   margin-bottom: 0.4rem;
   font-size: 15px;
 }
 
 select {
   padding: 10px 12px;
-  border-radius: 8px;
+  appearance: none;
   border: 1px solid #ccc;
   font-size: 1rem;
   background-color: #fefefe;
@@ -63,7 +64,6 @@ select:focus {
 
 .sett-button {
   display: block;
-  margin: 16px auto 0 auto;
   padding: 8px 20px;
   background-color: #000000;
   border: none;
@@ -72,14 +72,18 @@ select:focus {
   font-size: 1rem;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: transform 0.3s ease;
+}
+
+.sett-button:hover{
+  transform: scale(1.02);
 }
 
 .toggle-wrap {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: start;
 }
 
 .switch input {
@@ -137,14 +141,11 @@ select:focus {
   background-color: #ff0015;
   color: white;
   border: none;
+  width: 100%;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.delete-button:hover {
-  transform: scale(1.02);
 }
 
 .delete-button:disabled {
@@ -185,7 +186,6 @@ select:focus {
 
   .toggle-wrap {
     flex-direction: column;
-    align-items: flex-start;
     gap: 8px;
   }
 

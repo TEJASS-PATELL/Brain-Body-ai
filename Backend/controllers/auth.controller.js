@@ -165,7 +165,6 @@ exports.deleteAccount = async (req, res) => {
       return res.status(401).json({ msg: "Unauthorized – user ID not found" });
     }
 
-    await db.execute("DELETE FROM chat_history WHERE user_id = ?", [userId]);
     await db.execute("DELETE FROM users WHERE id = ?", [userId]);
 
     req.session?.destroy(err => {

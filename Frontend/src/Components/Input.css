@@ -9,7 +9,6 @@
   box-sizing: border-box;
   position: sticky; 
   bottom: 0;
-  z-index: 1000;
 }
 
 .input-area textarea {
@@ -22,7 +21,7 @@
   border-radius: 8px;
   resize: none;
   outline: none;
-  margin-right: 0.5rem;
+  margin-right: 1rem;
 }
 
 .input-area textarea:focus {
@@ -54,7 +53,7 @@
 .mic-button {
   background: transparent;
   color: #000;
-  margin-right: 0.5rem;
+  margin-right: 1rem;
 }
 
 @media (max-width: 768px) {

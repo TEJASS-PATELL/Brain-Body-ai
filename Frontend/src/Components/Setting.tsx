@@ -10,12 +10,7 @@ interface SettingProps {
   currentYogaMode: boolean;
 }
 
-const Setting: React.FC<SettingProps> = ({
-  onComplete,
-  currentLanguage = "",
-  currentLevel = "",
-  currentYogaMode = false,
-}) => {
+const Setting: React.FC<SettingProps> = ({ onComplete, currentLanguage = "", currentLevel = "", currentYogaMode = false, }) => {
   const [language, setLanguage] = useState(currentLanguage);
   const [level, setLevel] = useState(currentLevel);
   const [yogaMode, setYogaMode] = useState(currentYogaMode);
@@ -58,11 +53,7 @@ const Setting: React.FC<SettingProps> = ({
     setLoading(true);
 
     try {
-      const res = await api.post("/api/auth/update_detail", {
-        language,
-        level,
-        yogaMode,
-      });
+      const res = await api.post("/api/auth/update_detail", { language, level, yogaMode });
 
       const updatedLanguage = res.data.language || language;
       const updatedLevel = res.data.level || level;
@@ -76,6 +67,23 @@ const Setting: React.FC<SettingProps> = ({
       onComplete(updatedLanguage, updatedLevel, updatedYogaMode);
     } catch (err: any) {
       toast.error("Error updating preferences");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!window.confirm("Are you sure? This action is permanent!")) return;
+    setLoading(true);
+    try {
+      const res = await api.delete("/api/auth/delete-account", { withCredentials: true });
+      if(res.data?.success){
+        toast.success(res.data?.msg);
+      }else{
+        toast.error(res.data?.msg);
+      }
+    } catch (err: any) {
+      toast.error(err.response?.data?.msg || "Error deleting account");
     } finally {
       setLoading(false);
     }
@@ -137,6 +145,13 @@ const Setting: React.FC<SettingProps> = ({
 
       <button className="sett-button" onClick={handleSubmit} disabled={loading}>
         {loading ? "Saving..." : "Set Preferences"}
+      </button>
+      <button
+        className="delete-button"
+        onClick={handleDeleteAccount}
+        disabled={loading}
+      >
+        {loading ? "Deleting..." : "Delete Account"}
       </button>
     </div>
   );

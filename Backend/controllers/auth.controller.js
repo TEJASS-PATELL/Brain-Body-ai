@@ -6,7 +6,7 @@ const cookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
   sameSite: "none",
-  maxAge: 7 * 24 * 60 * 60 * 1000, 
+  maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
 exports.signup = async (req, res) => {
@@ -69,7 +69,7 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  req.logout?.(() => {});
+  req.logout?.(() => { });
   req.session?.destroy((err) => {
     if (err) console.error("Session destroy error:", err);
   });
@@ -151,5 +151,30 @@ exports.check = (req, res) => {
   } catch (err) {
     console.error("JWT verification error:", err.message);
     res.status(401).json({ msg: "Invalid token" });
+  }
+};
+
+exports.deleteAccount = async (req, res) => {
+  req.session?.destroy((err) => {
+    if (err) console.error("Session destroy error:", err);
+  });
+  try {
+    const userId = req.user.userid;
+    if (!userId) {
+      return res.status(401).json({ msg: "Unauthorized – user ID not found" });
+    }
+
+    const [result] = await db.execute("DELETE FROM users WHERE id = ?", [userId]);
+
+    req.session?.destroy(err => {
+      if (err) console.error("Session destroy error:", err);
+    });
+
+    res.clearCookie("token", cookieOptions);
+
+    return res.status(200).json({ msg: "Account deleted successfully", success: true });
+  } catch (err) {
+    console.error("Delete Account Error:", err);
+    return res.status(500).json({ msg: "Account deletion failed", error: err.message });
   }
 };

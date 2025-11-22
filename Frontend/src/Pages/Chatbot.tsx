@@ -38,9 +38,7 @@ const Chatbot: React.FC = () => {
     const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
     const [isListening, setIsListening] = useState(false);
     const [userId, setUserId] = useState<string | null>(null);
-
     const [historyRefreshTrigger, setHistoryRefreshTrigger] = useState(0);
-
     const recognition = useRef<any>(null);
 
     const isReadyToChat = useMemo(() => userId !== null && selectedSessionId !== null, [userId, selectedSessionId]);
@@ -187,6 +185,10 @@ const Chatbot: React.FC = () => {
         setIsListening((prev) => !prev);
     };
 
+    const handleRightSidebarToggle = () => {
+        setShowRightSidebar((prev) => !prev);
+    };
+
     const handleNewChat = () => {
         const newSessionId = `session-${Date.now()}`;
         setSelectedSessionId(newSessionId);
@@ -238,55 +240,56 @@ const Chatbot: React.FC = () => {
         setShowSettingsModal(false);
     }
 
-return (
-    <div className="container">
-        <div className="main-box">
-            {showLeftSidebar && (
-                <LeftSidebar
-                    userId={userId}
-                    handleNewChat={handleNewChat}
-                    onSelectChat={handleSelectChat}
-                    selectedSessionId={selectedSessionId}
-                    historyRefreshTrigger={historyRefreshTrigger}
+    return (
+        <div className="container">
+            <div className="main-box">
+                {showLeftSidebar && (
+                    <LeftSidebar
+                        userId={userId}
+                        handleNewChat={handleNewChat}
+                        onSelectChat={handleSelectChat}
+                        selectedSessionId={selectedSessionId}
+                        historyRefreshTrigger={historyRefreshTrigger}
+                    />
+                )}
+
+                <div className="chat-box">
+                    <ChatHeader
+                        toggleBMIPopup={toggleBMIPopup}
+                        setShowSettingsModal={setShowSettingsModal}
+                        handleLogout={handleLogout}
+                        showRightSidebar={showRightSidebar}
+                        showLeftSidebar={showLeftSidebar}
+                        setShowRightSidebar={setShowRightSidebar}
+                        setShowLeftSidebar={setShowLeftSidebar} />
+                    <ChatWindow messages={messages} displayedText={displayedText} isLoading={isLoading} />
+                    <InputArea
+                        userInput={userInput}
+                        setUserInput={setUserInput}
+                        handleVoiceInput={handleVoiceInput}
+                        handleSendMessage={handleSendMessage}
+                        isLoading={isLoading}
+                        isListening={isListening}
+                        isReadyToChat={isReadyToChat} />
+                </div>
+
+                {showRightSidebar && <RightSidebar onToggleSidebar={handleRightSidebarToggle} />}
+            </div>
+
+            {showSettingsModal && (
+                <SettingsModal
+                    onClose={() => setShowSettingsModal(false)}
+                    onSave={handleSettingsUpdate}
+                    currentLanguage={language}
+                    currentReplyType={replyType}
+                    currentLevel={level}
+                    currentYogaMode={yogaMode}
                 />
             )}
 
-            <div className="chat-box">
-                <ChatHeader
-                    toggleBMIPopup={toggleBMIPopup}
-                    setShowSettingsModal={setShowSettingsModal}
-                    handleLogout={handleLogout}
-                    showRightSidebar={showRightSidebar}
-                    showLeftSidebar={showLeftSidebar}
-                    setShowRightSidebar={setShowRightSidebar}
-                    setShowLeftSidebar={setShowLeftSidebar} />
-                <ChatWindow messages={messages} displayedText={displayedText} isLoading={isLoading} />
-                <InputArea
-                    userInput={userInput}
-                    setUserInput={setUserInput}
-                    handleVoiceInput={handleVoiceInput}
-                    handleSendMessage={handleSendMessage}
-                    isLoading={isLoading}
-                    isListening={isListening}
-                    isReadyToChat={isReadyToChat} />
-            </div>
-
-            {showRightSidebar && <RightSidebar />}
+            <BMIPopup show={showBMIPopup} onClose={toggleBMIPopup} />
         </div>
-
-        {showSettingsModal && (
-            <SettingsModal
-                onClose={() => setShowSettingsModal(false)}
-                onSave={handleSettingsUpdate}
-                currentLanguage={language}
-                currentReplyType={replyType}
-                currentLevel={level}
-                currentYogaMode={yogaMode}
-            />
-        )}
-        <BMIPopup show={showBMIPopup} onClose={toggleBMIPopup} />
-    </div>
-);
+    );
 
 }
 export default Chatbot;

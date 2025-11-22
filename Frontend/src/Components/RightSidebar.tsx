@@ -4,7 +4,11 @@ import api from "../api";
 import "./RightSidebar.css";
 import Timers from "./Timer";
 
-const RightSidebar = () => {
+interface RightSidebarProps {
+  onToggleSidebar: () => void;
+}
+
+const RightSidebar: React.FC<RightSidebarProps> = ({ onToggleSidebar }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [dailyTasks, setDailyTasks] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -44,7 +48,7 @@ const RightSidebar = () => {
 
   return (
     <div className="right-bar">
-      <div className="info-box">
+      <div className="info-box" onDoubleClick={onToggleSidebar}>
         <div className="info-header">
           <h4 className="info-title">
             Daily <strong>Body + Brain</strong> Tasks

@@ -114,9 +114,3 @@
   font-weight: bold;
   background: #000000;
 }
-
-@media (max-width: 768px) {
-  .right-bar{
-      margin: 10px 10px 4px 10px;
-  }
-}

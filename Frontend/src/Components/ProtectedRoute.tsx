@@ -22,7 +22,7 @@ const ProtectedRoute: React.FC = () => {
     checkLogin();
   }, []);
 
-  if (isLoading) return <Loader />
+  if (isLoading) return <Loader text="Loading Brain+Body AI...." />
   return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
 };
 

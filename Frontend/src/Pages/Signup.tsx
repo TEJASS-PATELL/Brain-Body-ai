@@ -48,12 +48,12 @@ const Signup: React.FC = () => {
     e.preventDefault();
     if (!validate()) return;
     try {
-      const res = await api.post('/api/auth/signup', { 
+      await api.post('/api/auth/signup', { 
         name: form.name, 
         email: form.email, 
         password: form.password 
       });
-      toast.success(res.data.msg || "Signup successful!");
+      toast.success("Welcome to Brain+Body AI");
       navigate('/chatbot', { replace: true });
     } catch (err: any) {
       if (err.response?.status === 409) {
@@ -113,8 +113,7 @@ const Signup: React.FC = () => {
               placeholder="••••••••"
               value={form.password}
               onChange={handleChange}
-              aria-describedby="password-error"
-            />
+              aria-describedby="password-error"/>
           </div>
           {errors.password && <p className="error-text" id="password-error">{errors.password}</p>}
           <small className="password-help">Password must be at least 6 characters.</small>

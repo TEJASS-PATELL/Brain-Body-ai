@@ -23,19 +23,23 @@ const Setting: React.FC<SettingProps> = ({
   const [level, setLevel] = useState(currentLevel);
   const [yogaMode, setYogaMode] = useState(currentYogaMode);
   const [replyType, setReplyType] = useState(currentReplyType);
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState(localStorage.getItem("userName") || "");
+  const [email, setEmail] = useState(localStorage.getItem("email") || "");
   const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
+      if (userName && email) return;
       try {
         const { data } = await api.get("/api/auth/userinfo");
 
         setUserName(data.name || "");
         setEmail(data.email || "");
+
+        localStorage.setItem("userName", data.name || "");
+        localStorage.setItem("email", data.email || "");
 
       } catch (err: any) {
         console.error("Failed to fetch user info:", err.response?.data?.msg || err.message);
@@ -71,7 +75,9 @@ const Setting: React.FC<SettingProps> = ({
       const res = await api.delete("/api/auth/delete-account");
 
       if (res.status === 200) {
-        toast.success(res.data?.msg || "Account deleted successfully"); 
+        toast.success(res.data?.msg || "Account deleted successfully");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("email");
         navigate("/login", { replace: true });
       } else {
         toast.error(res.data?.msg || "Error deleting account");

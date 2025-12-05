@@ -44,22 +44,48 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoad
       {messages.length === 0 && (
         <div className="chat-intro">
           <h2>
-            Hi! <strong>{username}</strong> , Welcome to <strong>BrainBody</strong> AI
+            Hey <strong>{username}</strong> Welcome to <strong>BrainBody AI</strong>
           </h2>
-          <p>Your personal assistant for optimizing both mind and body.</p>
-          <p>You can ask me about:</p>
+
+          <p>Your all-in-one companion for a sharper mind and stronger body.</p>
+          <p>You can ask me anything related to:</p>
 
           <div className="badge-container">
-            <span className="tag"><FaBrain style={{ marginRight: '6px' }} /> Mental Fitness</span>
-            <span className="tag"><FaDumbbell style={{ marginRight: '6px' }} /> Workout Routines</span>
-            <span className="tag"><FaAppleAlt style={{ marginRight: '6px' }} /> Balanced Nutrition</span>
-            <span className="tag"><FaSmile style={{ marginRight: '6px' }} /> Stress Management</span>
-            <span className="tag"><FaBullseye style={{ marginRight: '6px' }} /> Focus & Concentration</span>
-            <span className="tag"><FaCheckCircle style={{ marginRight: '6px' }} /> Habit Building</span>
-            <span className="tag more"><FaPlus style={{ marginRight: '6px' }} /> More</span>
+            <span className="tag">
+              <FaBrain style={{ marginRight: "6px" }} /> Mind Fitness
+            </span>
+
+            <span className="tag">
+              <FaDumbbell style={{ marginRight: "6px" }} /> Workout Plans
+            </span>
+
+            <span className="tag">
+              <FaAppleAlt style={{ marginRight: "6px" }} /> Healthy Nutrition
+            </span>
+
+            <span className="tag">
+              <FaSmile style={{ marginRight: "6px" }} /> Stress Relief
+            </span>
+
+            <span className="tag">
+              <FaBullseye style={{ marginRight: "6px" }} /> Focus Boost
+            </span>
+
+            <span className="tag">
+              <FaCheckCircle style={{ marginRight: "6px" }} /> Habit Tracking
+            </span>
+
+            <span className="tag more">
+              <FaPlus style={{ marginRight: "6px" }} /> Explore More
+            </span>
           </div>
+
+          <p className="intro-note">
+            Just type your question — I’ll guide you with personalized, science-based suggestions.
+          </p>
         </div>
       )}
+
 
       {messages.map((msg, index) => (
         <div

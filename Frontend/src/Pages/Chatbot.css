@@ -365,6 +365,10 @@
   margin: 1rem 0;
 }
 
+.chat-intro .intro-note{
+  margin-top: 15px;
+}
+
 @media (max-width: 900px) {
   .user-message .message-bubble {
     font-size: 1em;
@@ -523,7 +527,7 @@
   color: #000;
   font-weight: 500;
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: 10px;
   font-size: 1rem;
   display: flex;
   align-items: center;

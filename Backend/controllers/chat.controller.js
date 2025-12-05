@@ -2,7 +2,8 @@ const { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } = require("@googl
 const db = require("../config/db");
 const dayjs = require("dayjs");
 const { generateSystemPrompt, yogaPrompt } = require("../Prompt/BrainBody");
-
+import NodeCache from "node-cache";
+const taskCache = new NodeCache({ stdTTL: 86400 });
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
@@ -78,14 +79,12 @@ exports.sendAndSaveChat = async (req, res) => {
   }
 };
 
-let cachedTasks = null;
-let lastGeneratedTask = null;
-
 exports.generateDailytask = async (req, res) => {
-  const todayTask = dayjs().format("YYYY-MM-DD");
+  const cacheKey = "daily_tasks";
+  const cached = taskCache.get(cacheKey);
 
-  if (cachedTasks && lastGeneratedTask === todayTask) {
-    return res.json({ tasks: cachedTasks });
+  if (cached) {
+    return res.json({ tasks: cached });
   }
 
   const defaultTasks = [
@@ -101,15 +100,18 @@ exports.generateDailytask = async (req, res) => {
     const prompt = `
       You are a creative wellness coach AI.
       Create 5-6 short daily challenges for mind and body.
-      Each task should be a single line, simple, practical, and slightly longer.
-      Respond with a JSON array of strings only.
+      Each task should be a single line.
+      Respond with JSON array of strings.
     `;
 
     const result = await withRetry(() =>
-      model.generateContent({ contents: [{ role: "user", parts: [{ text: prompt }] }] })
+      model.generateContent({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+      })
     );
 
     let tasks = [];
+
     try {
       tasks = JSON.parse(result.response.text());
       if (!Array.isArray(tasks)) tasks = defaultTasks;
@@ -118,13 +120,12 @@ exports.generateDailytask = async (req, res) => {
     }
 
     tasks = tasks.slice(0, 6);
-    cachedTasks = tasks;
-    lastGeneratedTask = todayTask;
+    taskCache.set(cacheKey, tasks); 
+
     res.json({ tasks });
   } catch (err) {
     console.error("Error generating daily tasks:", err);
-    cachedTasks = defaultTasks;
-    lastGeneratedTask = todayTask;
+    taskCache.set(cacheKey, defaultTasks);
     res.json({ tasks: defaultTasks });
   }
 };

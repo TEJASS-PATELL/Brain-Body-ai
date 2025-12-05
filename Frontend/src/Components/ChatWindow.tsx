@@ -17,14 +17,18 @@ interface ChatWindowProps {
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoading }) => {
   const chatWindowRef = useRef<HTMLDivElement>(null);
-  const [username, setUserName] = useState<string>("");
+  const [username, setUserName] = useState<string>(() => {
+    return localStorage.getItem("username") || ""; 
+  });
 
   useEffect(() => {
     const fetchUserInfo = async () => {
+      if(username) return;
       try {
         const res = await api.get("/api/auth/userinfo");
         const data = res.data;
         setUserName(data.name);
+        localStorage.setItem("username", data.name);
       } catch (err: any) {
         console.error("Failed to fetch user info:", err.response?.data?.msg || err.message);
       }
@@ -44,7 +48,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoad
       {messages.length === 0 && (
         <div className="chat-intro">
           <h2>
-            Hey <strong>{username}</strong> Welcome to <strong>BrainBody AI</strong>
+            Hey <strong>{localStorage.getItem("username")}</strong> Welcome to <strong>BrainBody AI</strong>
           </h2>
 
           <p>Your all-in-one companion for a sharper mind and stronger body.</p>
@@ -85,7 +89,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoad
           </p>
         </div>
       )}
-
 
       {messages.map((msg, index) => (
         <div

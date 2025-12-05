@@ -1,8 +1,7 @@
 const { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } = require("@google/generative-ai");
 const db = require("../config/db");
-const dayjs = require("dayjs");
 const { generateSystemPrompt, yogaPrompt } = require("../Prompt/BrainBody");
-import NodeCache from "node-cache";
+const NodeCache = require("node-cache");
 const taskCache = new NodeCache({ stdTTL: 86400 });
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });

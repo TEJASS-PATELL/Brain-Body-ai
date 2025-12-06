@@ -48,7 +48,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoad
       {messages.length === 0 && (
         <div className="chat-intro">
           <h2>
-            Hey <strong>{localStorage.getItem("username")}</strong> Welcome to <strong>BrainBody AI</strong>
+            Hey <strong>{localStorage.getItem("username")}</strong>, Welcome to <strong>BrainBody AI</strong>
           </h2>
 
           <p>Your all-in-one companion for a sharper mind and stronger body.</p>

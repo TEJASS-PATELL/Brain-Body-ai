@@ -27,11 +27,13 @@ exports.sendAndSaveChat = async (req, res) => {
     if (!sessionId || !message) return res.status(400).json({ msg: "Missing required fields: sessionId or message" });
 
     const [oldMessages] = await db.query(
-      "SELECT sender, message FROM chat_history WHERE user_id = ? AND session_id = ? ORDER BY timestamp ASC",
+      "SELECT sender, message FROM chat_history WHERE user_id = ? AND session_id = ? ORDER BY id DESC LIMIT 10",
       [userId, sessionId]
     );
 
-    const chatHistory = oldMessages.map(msg => ({
+    const limitedMessages = oldMessages.reverse();
+
+    const chatHistory = limitedMessages.map(msg => ({
       role: msg.sender === "model" ? "model" : "user",
       parts: [{ text: msg.message }],
     }));
@@ -43,11 +45,20 @@ exports.sendAndSaveChat = async (req, res) => {
       { role: "user", parts: [{ text: message }] }
     ];
 
+    const tokenMap = (replyType) => {
+      if (replyType.toLowerCase().includes("short")) return 150;
+      if (replyType.toLowerCase().includes("long")) return 500;
+      if (replyType.toLowerCase().includes("medium")) return 300;
+      return 250;
+    };
+
     const result = await withRetry(() =>
       model.generateContent({
-        contents: contents,
-        systemInstruction: systemInstruction,
-        generationConfig: { maxOutputTokens: 2500 },
+        contents,
+        systemInstruction,
+        generationConfig: {
+          maxOutputTokens: tokenMap(replyType)
+        },
         safetySettings: [
           { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
           { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
@@ -59,6 +70,8 @@ exports.sendAndSaveChat = async (req, res) => {
 
     const reply = result.response?.text() || "Sorry, I couldn't generate a response.";
 
+    await db.query("START TRANSACTION");
+
     await db.query(
       "INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)",
       [userId, sessionId, "user", message]
@@ -67,6 +80,8 @@ exports.sendAndSaveChat = async (req, res) => {
       "INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)",
       [userId, sessionId, "model", reply]
     );
+
+    await db.query("COMMIT");
 
     res.json({ reply });
   } catch (error) {
@@ -119,7 +134,7 @@ exports.generateDailytask = async (req, res) => {
     }
 
     tasks = tasks.slice(0, 6);
-    taskCache.set(cacheKey, tasks); 
+    taskCache.set(cacheKey, tasks);
 
     res.json({ tasks });
   } catch (err) {
@@ -184,3 +199,6 @@ exports.deleteChatSession = async (req, res) => {
     res.status(500).json({ msg: "Failed to delete chat session", err });
   }
 };
+
+
+

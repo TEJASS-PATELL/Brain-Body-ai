@@ -40,16 +40,13 @@ exports.sendAndSaveChat = async (req, res) => {
 
     const systemInstruction = yogaMode ? yogaPrompt(language, level, replyType) : generateSystemPrompt(language, level, replyType);
 
-    const contents = [
-      ...chatHistory,
-      { role: "user", parts: [{ text: message }] }
-    ];
+    const contents = [...chatHistory, { role: "user", parts: [{ text: message }]}];
 
     const tokenMap = (replyType) => {
-      if (replyType.toLowerCase().includes("short")) return 150;
-      if (replyType.toLowerCase().includes("long")) return 500;
-      if (replyType.toLowerCase().includes("medium")) return 300;
-      return 250;
+      if (replyType.toLowerCase().includes("short")) return 900;
+      if (replyType.toLowerCase().includes("balanced")) return 1400;
+      if (replyType.toLowerCase().includes("detailed")) return 2500;
+      return 1800;
     };
 
     const result = await withRetry(() =>
@@ -71,7 +68,6 @@ exports.sendAndSaveChat = async (req, res) => {
     const reply = result.response?.text() || "Sorry, I couldn't generate a response.";
 
     await db.query("START TRANSACTION");
-
     await db.query(
       "INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)",
       [userId, sessionId, "user", message]
@@ -80,20 +76,16 @@ exports.sendAndSaveChat = async (req, res) => {
       "INSERT INTO chat_history (user_id, session_id, sender, message) VALUES (?, ?, ?, ?)",
       [userId, sessionId, "model", reply]
     );
-
     await db.query("COMMIT");
 
     res.json({ reply });
   } catch (error) {
     console.error("500 Internal Server Error in sendAndSaveChat:", error);
-    res.status(500).json({
-      reply: `Sorry, I can't assist right now in ${req.body.language || "english"}.`,
-      error: error.message
-    });
+    res.status(500).json({ reply: `Sorry, I can't assist right now.`, error: error.message});
   }
 };
 
-exports.generateDailytask = async (req, res) => {
+exports.generateDailytask = async (res) => {
   const cacheKey = "daily_tasks";
   const cached = taskCache.get(cacheKey);
 

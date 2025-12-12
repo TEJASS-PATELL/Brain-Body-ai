@@ -56,8 +56,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/chats", chatRoutes);
 app.use("/api/livekit", livekitRoutes);
 
-const server = app.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  startAI
-  console.log('WebSocket handler initialized for live-chat endpoint.');
 });

@@ -85,7 +85,7 @@ exports.sendAndSaveChat = async (req, res) => {
   }
 };
 
-exports.generateDailytask = async (res) => {
+exports.generateDailytask = async (req, res) => {
   const cacheKey = "daily_tasks";
   const cached = taskCache.get(cacheKey);
 
@@ -94,12 +94,12 @@ exports.generateDailytask = async (res) => {
   }
 
   const defaultTasks = [
-    "Take 10 deep breaths to energize your body and mind, improving focus and calm",
-    "Balance a book on your head for 1 minute to improve posture and concentration",
-    "Name 5 things you are grateful for to boost positivity and mental clarity",
-    "Close your eyes and focus on 3 sounds to enhance awareness and inner calm",
-    "Stretch arms overhead and rotate shoulders to loosen tension and increase flexibility",
-    "Speak a positive affirmation aloud 3 times to boost confidence and motivation"
+    "Take 10 deep breaths to energize your mind",
+    "Name 5 things you're grateful for",
+    "Stretch arms overhead",
+    "Speak a positive affirmation aloud 3 times",
+    "Focus on 3 surrounding sounds",
+    "Balance a book on your head for posture"
   ];
 
   try {
@@ -116,7 +116,7 @@ exports.generateDailytask = async (res) => {
       })
     );
 
-    let tasks = [];
+    let tasks;
 
     try {
       tasks = JSON.parse(result.response.text());
@@ -129,6 +129,7 @@ exports.generateDailytask = async (res) => {
     taskCache.set(cacheKey, tasks);
 
     res.json({ tasks });
+
   } catch (err) {
     console.error("Error generating daily tasks:", err);
     taskCache.set(cacheKey, defaultTasks);

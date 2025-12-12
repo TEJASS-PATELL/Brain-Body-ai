@@ -249,8 +249,7 @@ const Chatbot: React.FC = () => {
                         handleNewChat={handleNewChat}
                         onSelectChat={handleSelectChat}
                         selectedSessionId={selectedSessionId}
-                        historyRefreshTrigger={historyRefreshTrigger}
-                    />
+                        historyRefreshTrigger={historyRefreshTrigger}/>
                 )}
 
                 <div className="chat-box">

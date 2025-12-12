@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { HeartPulse, Settings, HelpCircle, LogOut, PanelRightClose, PanelRightOpen, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { HeartPulse, Settings, HelpCircle, LogOut, PanelRightClose, PanelRightOpen, PanelLeftClose, PanelLeftOpen, MessageSquare } from 'lucide-react';
 import '../Pages/Chatbot.css';
 
 interface ChatHeaderProps {
@@ -33,7 +33,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
           </div>
         </div>
         <div className="round-button">
-          
+
           <button className="main" onClick={() => setShowLeftSidebar((prev) => !prev)}>
             {showLeftSidebar ? <PanelLeftClose size={22} /> : <PanelLeftOpen size={22} />}
           </button>
@@ -49,7 +49,11 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
           <Link to="/chatbot/features" className="main" title='Features'>
             <HelpCircle size={22} />
           </Link>
-          
+
+          <Link to="/chatbot/live-Chat" className="main livechat-btn" title="Live Chat">
+            <MessageSquare size={22} />
+          </Link>
+
           <button className="main" onClick={() => setShowRightSidebar((prev) => !prev)}>
             {showRightSidebar ? <PanelRightClose size={22} /> : <PanelRightOpen size={22} />}
           </button>

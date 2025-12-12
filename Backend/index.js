@@ -9,7 +9,6 @@ const chatRoutes = require("./routers/chatRoutes");
 const livekitRoutes = require("./routers/livechat");
 const authRoutes = require("./routers/authroutes");
 const cookieParser = require("cookie-parser");
-const initializeWebSocket = require("./helper/socket");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 5000;

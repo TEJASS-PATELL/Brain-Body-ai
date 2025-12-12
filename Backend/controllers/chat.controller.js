@@ -105,8 +105,8 @@ exports.generateDailytask = async (req, res) => {
   try {
     const prompt = `
       You are a creative wellness coach AI.
-      Create 5-6 short daily challenges for mind and body.
-      Each task should be a single line.
+      Create 6-7 short daily challenges for mind and body.
+      Each task should be a double line.
       Respond with JSON array of strings.
     `;
 
@@ -125,7 +125,7 @@ exports.generateDailytask = async (req, res) => {
       tasks = defaultTasks;
     }
 
-    tasks = tasks.slice(0, 6);
+    tasks = tasks.slice(0, 7);
     taskCache.set(cacheKey, tasks);
 
     res.json({ tasks });

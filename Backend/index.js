@@ -6,7 +6,6 @@ const cors = require("cors");
 const helmetConfig = require("./middleware/helmet");
 const db = require("./config/db");
 const chatRoutes = require("./routers/chatRoutes");
-const livekitRoutes = require("./routers/livechat");
 const authRoutes = require("./routers/authroutes");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
@@ -53,7 +52,6 @@ app.use(passport.session());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/chats", chatRoutes);
-app.use("/api/livekit", livekitRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

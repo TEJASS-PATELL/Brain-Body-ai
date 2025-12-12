@@ -10,6 +10,7 @@ import ErrorPage from './Pages/ErrorPage';
 import ProtectedRoute from './Components/ProtectedRoute';
 import Features from './Pages/Features';
 import Loader from './Components/Loader';
+import LiveChat from './Pages/LiveChat';
 
 const LazyChatbot = React.lazy(() => import('./Pages/Chatbot'));
 
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
               </Suspense>
             ),
           },
+          { path: 'live-Chat', element: <LiveChat /> },
         ],
       },
     ],
@@ -42,5 +44,5 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')!).render(
-    <RouterProvider router={router} />
+  <RouterProvider router={router} />
 );

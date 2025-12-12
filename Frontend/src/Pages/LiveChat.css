@@ -1,0 +1,67 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  background: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.micSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.brainImg {
+width: 320px;
+height: 320px;
+object-fit: contain;
+animation: floatAnim 4s ease-in-out infinite;
+}
+
+@keyframes floatAnim {
+0% { transform: translateY(0); }
+50% { transform: translateY(-15px); }
+100% { transform: translateY(0); }
+}
+
+.btnRow {
+  display: flex;
+  gap: 15px;
+}
+
+.startBtn,
+.stopBtn,
+.backBtn {
+  padding: 8px 22px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  color: white;
+  transition: 0.2s ease;
+}
+
+.startBtn {
+  background: rgb(0, 136, 255);
+}
+
+.stopBtn {
+  background: #ff0000;
+}
+
+.backBtn {
+  background: #000000;
+}
+
+.text {
+  font-size: 16px;
+  color: #292929;
+}
+
+.text strong{
+    color: rgb(0, 115, 255);
+}

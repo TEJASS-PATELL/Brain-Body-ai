@@ -158,6 +158,7 @@ const Setting: React.FC<SettingProps> = ({
         <button className="delete-button" onClick={handleDeleteAccount} disabled={isDeleting}>
           {isDeleting ? "Deleting..." : "Delete Account"}
         </button>
+
       </div>
     </div>
   );

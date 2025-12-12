@@ -61,19 +61,12 @@
     padding: 40px 20px;
     gap: 20px;
   }
-
   .footer-bottom p {
     font-size: 1.1rem;
   }
 }
 
 @media (max-width: 768px) {
-  .bb-footer {
-    position: fixed;
-    bottom: 5px;
-    left: 0;
-  }
-
   .footer-container {
     flex-direction: column;
     align-items: center;
@@ -86,14 +79,8 @@
     margin: 15px 0;
   }
 
-  .footer-contact input,
-  .footer-contact textarea,
-  .footer-contact button {
-    width: 100%;
-  }
-
   .footer-bottom {
-    padding: 15px;
+    padding: 32px;
     font-size: 1rem;
   }
 
@@ -104,14 +91,6 @@
 }
 
 @media (max-width: 480px) {
-
-  .bb-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
-  }
-
   .footer-bottom p {
     font-size: .85rem;
   }

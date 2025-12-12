@@ -6,8 +6,10 @@ const cors = require("cors");
 const helmetConfig = require("./middleware/helmet");
 const db = require("./config/db");
 const chatRoutes = require("./routers/chatRoutes");
+const livekitRoutes = require("./routers/livechat");
 const authRoutes = require("./routers/authroutes");
 const cookieParser = require("cookie-parser");
+const initializeWebSocket = require("./helper/socket");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 5000;
@@ -40,7 +42,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", 
+      secure: process.env.NODE_ENV === "production",
       sameSite: "none",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     },
@@ -52,7 +54,10 @@ app.use(passport.session());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/chats", chatRoutes);
+app.use("/api/livekit", livekitRoutes);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  startAI
+  console.log('WebSocket handler initialized for live-chat endpoint.');
 });

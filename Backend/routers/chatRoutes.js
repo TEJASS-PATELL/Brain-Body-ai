@@ -9,4 +9,5 @@ router.get("/history", authMiddleware, chatController.getChatSessions);
 router.get("/:sessionId", authMiddleware, chatController.getChatBySession);
 router.delete("/:sessionId", authMiddleware, chatController.deleteChatSession);
 
+
 module.exports = router;

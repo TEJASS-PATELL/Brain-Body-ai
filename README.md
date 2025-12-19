@@ -64,7 +64,7 @@
   </tr>
   <tr>
     <td align="center" width="150">
-      <img src="https://www.vectorlogo.zone/logos/google_gemini/google_gemini-icon.svg" width="50" height="50" alt="Gemini" />
+      <img src="https://www.vecteezy.com/png/55687055-rectangle-gemini-google-icon-symbol-logo" width="50" height="50" alt="Gemini" />
       <br /><b>Gemini API</b>
     </td>
     <td align="center" width="150">

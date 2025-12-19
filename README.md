@@ -85,7 +85,7 @@ The application is hosted on a high-performance cloud environment:
 ### 🌐 Deployment Status
 | Platform | Link | Status |
 | :--- | :--- | :--- |
-| **Vercel (Frontend)** | [Live App ↗️](https://brain-body-ai.vercel.app) | ![Active](https://img.shields.io/badge/Online-brightgreen?style=flat-square) |
+| **Vercel (Frontend)** | [Live App](https://brain-body-ai.vercel.app) | 
 
 ## ⚙️ Installation Guide
 

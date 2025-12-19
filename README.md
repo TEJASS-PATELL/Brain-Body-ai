@@ -83,8 +83,8 @@ The application is hosted on a high-performance cloud environment:
 ---
 
 ### 🌐 Deployment Status
-| Platform | Link | Status |
-| :--- | :--- | :--- |
+| Platform | Link |
+| :--- | :--- |
 | **Vercel (Frontend)** | [Live App](https://brain-body-ai.vercel.app) | 
 
 ## ⚙️ Installation Guide

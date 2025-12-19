@@ -8,35 +8,36 @@
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
 
-**Brain-Body AI ek intelligent health companion hai jo AI conversation aur real-time body metrics ko ek jagah lata hai.**
+**An intelligent health companion that bridges the gap between AI-powered mental wellness and real-time physical metrics tracking.**
 
-[Features](#-key-features) • [Tech Stack](#-tech-stack) • [Installation](#-installation-guide) • [Live Demo](#-screenshots)
+[Features](#-key-features) • [Tech Stack](#-tech-stack) • [Installation](#-installation-guide) • [Live Demo](#-live-demo)
 
 </div>
 
 ---
 
 ## 📖 Overview
-**Brain-Body AI** fitness tracking aur mental wellness ka ek unique blend hai. Chahe aapko BMI calculate karna ho, health related sawal puchne hon, ya meditation sessions track karne hon—yeh platform sab kuch seamless digital experience ke saath handle karta hai.
+**Brain-Body AI** is a comprehensive wellness platform that blends natural AI conversation with health metric tracking. From calculating BMI with actionable insights to providing a dedicated space for guided yoga and meditation, it offers a seamless digital experience to help users monitor and transform their overall health.
 
 ---
 
 ## 🚀 Key Features
 
-### 🤖 **AI & Smart Interaction**
-- **AI Chatbot:** Health aur fitness guidance ke liye natural conversation support.
-- **Voice Input:** Hands-free experience ke liye voice-to-text interaction.
-- **Google Search Integration:** App ke andar hi diet plans aur exercises search karne ki suvidha.
+### 🤖 **AI & Intelligent Interaction**
+- **AI Chatbot:** Engage in context-aware conversations for personalized health and fitness guidance.
+- **Voice Support:** Interact hands-free with integrated voice input capabilities.
+- **Google Search Integration:** Quickly find external diet plans, exercises, or health tips within the app.
 
-### 📊 **Health Metrics & Tracking**
-- **BMI Calculator:** Instant results with category classification aur actionable advice.
-- **History Management:** Aapka chat aur health data securely store hota hai, jise aap kabhi bhi delete ya review kar sakte hain.
-- **Habit Tracker:** Daily fitness goals aur tasks create karein AI assistance ke saath.
+### 📊 **Health Metrics & Management**
+- **BMI Calculator:** Instant health classification with detailed recommendations based on results.
+- **Data History:** Securely store and review past BMI results and chat logs to track progress over time.
+- **Privacy Controls:** Full control over your data with the ability to delete chat and metric history.
+- **Habit Tracking:** Create and manage daily fitness goals with AI-assisted consistency tracking.
 
-### 🧘 **Mindfulness & Productivity**
-- **Yoga & Meditation:** Relaxation ke liye dedicated module.
-- **Smart Timer:** Meditation sessions track karne ke liye built-in stopwatch.
-- **Responsive UI:** Vite + React ka use karke ek fast aur mobile-friendly interface.
+### 🧘 **Wellness & UI/UX**
+- **Yoga & Meditation Hub:** A dedicated module for mental relaxation featuring a built-in session timer.
+- **Premium Interface:** A sleek, responsive, and mobile-friendly UI built using React.js and Vite.
+- **Multi-Language Ready:** Architecture prepared for future global language support.
 
 ---
 
@@ -73,48 +74,39 @@
 
 ---
 
-## 🌐 Deployment Architecture
-
-Project ko scalable cloud platforms par host kiya gaya hai:
-- **Frontend:** Hosted on **Vercel** (Global Delivery).
-- **Backend:** Hosted on **Render** (Continuous Deployment).
-- **Database:** Hosted on **Railway** (Secure MySQL hosting).
+## 🌐 Deployment
+The application is hosted on a high-performance cloud environment:
+- **Frontend:** Deployed on **Vercel** for fast global delivery.
+- **Backend:** Hosted on **Render** with seamless GitHub auto-deployment.
+- **Database:** **MySQL** managed via **Railway** for secure and scalable data storage.
 
 ---
 
 ## ⚙️ Installation Guide
 
-Follow these steps to run the project locally:
+Follow these steps to set up the project locally:
 
 1. **Clone the Repository**
    ```bash
    git clone [https://github.com/TEJASS-PATELL/Brain-Body-ai.git](https://github.com/TEJASS-PATELL/Brain-Body-ai.git)
    cd Brain-Body-ai
-Setup Backend
 
-Bash
+2. Configure Backend
+   ```bash
+   cd Backend
+   npm install
+   # Configure your .env file with MySQL and API credentials
+   npm start
 
-cd Backend
-npm install
-# Add your MySQL credentials in your environment variables
-npm start
-Setup Frontend
+3. Configure Frontend
+   ```bash
+   cd ../Frontend
+   npm install
+   npm run dev
 
-Bash
-
-cd ../Frontend
-npm install
-npm run dev
-📸 Screenshots
-Aap project ke visuals yahan dekh sakte hain: 👉 Project Screenshots
-
-🤝 Connect With Me
-Agar aapko yeh project pasand aaya, toh mujhse jud sakte hain:
+Contact & Connect
+Feel free to reach out for collaborations or inquiries:
 
 <p align="left"> <a href="https://www.linkedin.com/in/tejasspatell"><img src="https://www.google.com/search?q=https://img.shields.io/badge/LinkedIn-0077B5%3Fstyle%3Dfor-the-badge%26logo%3Dlinkedin%26logoColor%3Dwhite" /></a> <a href="mailto:tejasspatell2@gmail.com"><img src="https://www.google.com/search?q=https://img.shields.io/badge/Email-D14836%3Fstyle%3Dfor-the-badge%26logo%3Dgmail%26logoColor%3Dwhite" /></a> <a href="https://github.com/TEJASS-PATELL"><img src="https://www.google.com/search?q=https://img.shields.io/badge/GitHub-100000%3Fstyle%3Dfor-the-badge%26logo%3Dgithub%26logoColor%3Dwhite" /></a> </p>
 
 <div align="center">
-
-Developed with ❤️ by Tejas Patel Don't forget to ⭐ the repo if you like it!
-
-</div>

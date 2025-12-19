@@ -61,12 +61,6 @@
       <img src="https://skillicons.dev/icons?i=mysql" width="50" height="50" alt="MySQL" />
       <br /><b>MySQL</b>
     </td>
-  </tr>
-  <tr>
-<td align="center" width="150">
-  <img src="https://www.vectorlogo.zone/logos/google_gemini/google_gemini-icon.svg" width="50" height="50" alt="Gemini API" />
-  <br /><b>Gemini API</b>
-</td>
     <td align="center" width="150">
       <img src="https://skillicons.dev/icons?i=vercel" width="50" height="50" alt="Vercel" />
       <br /><b>Vercel</b>

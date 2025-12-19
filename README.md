@@ -120,3 +120,5 @@ Feel free to reach out for collaborations or inquiries:
 </p>
 
 <div align="center">
+Developed with ❤️ by Tejas Patel If you find this project useful, please consider giving it a ⭐!
+</div>

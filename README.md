@@ -63,14 +63,10 @@
     </td>
   </tr>
   <tr>
-    <td align="center" width="150">
-      <img src="[https://www.vecteezy.com/png/55687055-rectangle-gemini-google-icon-symbol-logo](https://img.freepik.com/premium-vector/gemini-logo-icon_1273375-853.jpg)" width="50" height="50" alt="Gemini" />
-      <br /><b>Gemini API</b>
-    </td>
-    <td align="center" width="150">
-      <img src="https://skillicons.dev/icons?i=google" width="50" height="50" alt="Google Login" />
-      <br /><b>Google OAuth</b>
-    </td>
+<td align="center" width="150">
+  <img src="https://www.vectorlogo.zone/logos/google_gemini/google_gemini-icon.svg" width="50" height="50" alt="Gemini API" />
+  <br /><b>Gemini API</b>
+</td>
     <td align="center" width="150">
       <img src="https://skillicons.dev/icons?i=vercel" width="50" height="50" alt="Vercel" />
       <br /><b>Vercel</b>

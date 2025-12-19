@@ -45,27 +45,37 @@
 
 <table align="center">
   <tr>
-    <td align="center" width="120">
+    <td align="center" width="150">
       <img src="https://skillicons.dev/icons?i=react" width="50" height="50" alt="React" />
       <br /><b>React (Vite)</b>
     </td>
-    <td align="center" width="120">
+    <td align="center" width="150">
       <img src="https://skillicons.dev/icons?i=nodejs" width="50" height="50" alt="Node.js" />
       <br /><b>Node.js</b>
     </td>
-    <td align="center" width="120">
+    <td align="center" width="150">
       <img src="https://skillicons.dev/icons?i=express" width="50" height="50" alt="Express" />
       <br /><b>Express.js</b>
     </td>
-    <td align="center" width="120">
+    <td align="center" width="150">
       <img src="https://skillicons.dev/icons?i=mysql" width="50" height="50" alt="MySQL" />
       <br /><b>MySQL</b>
     </td>
-    <td align="center" width="120">
+  </tr>
+  <tr>
+    <td align="center" width="150">
+      <img src="https://www.vectorlogo.zone/logos/google_gemini/google_gemini-icon.svg" width="50" height="50" alt="Gemini" />
+      <br /><b>Gemini API</b>
+    </td>
+    <td align="center" width="150">
+      <img src="https://skillicons.dev/icons?i=google" width="50" height="50" alt="Google Login" />
+      <br /><b>Google OAuth</b>
+    </td>
+    <td align="center" width="150">
       <img src="https://skillicons.dev/icons?i=vercel" width="50" height="50" alt="Vercel" />
       <br /><b>Vercel</b>
     </td>
-    <td align="center" width="120">
+    <td align="center" width="150">
       <img src="https://skillicons.dev/icons?i=postman" width="50" height="50" alt="Postman" />
       <br /><b>REST APIs</b>
     </td>

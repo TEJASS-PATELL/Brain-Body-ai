@@ -4,7 +4,7 @@
   padding: 2rem 1rem;
   font-family: 'Montserrat';
   color: #1c1c1c;
-  overflow-x: hidden; 
+  overflow-x: hidden;
 }
 
 .htu-title {
@@ -14,8 +14,8 @@
   margin-bottom: 0.5rem;
 }
 
-.htu-title strong{
- font-family: 'Orbitron', Tahoma, Geneva, Verdana, sans-serif;
+.htu-title strong {
+  font-family: 'Orbitron', Tahoma, Geneva, Verdana, sans-serif;
   color: #007bff;
 }
 
@@ -67,13 +67,33 @@
   font-size: 22px;
 }
 
-.blue { color: #007bff; }
-.green { color: #28a745; }
-.orange { color: #ff9900; }
-.purple { color: #6f42c1; }
-.red { color: #dc3545; }
-.yellow{ color: rgb(255, 0, 251);}
-.grey { color: rgb(89, 0, 255);}
+.blue {
+  color: #007bff;
+}
+
+.green {
+  color: #28a745;
+}
+
+.orange {
+  color: #ff9900;
+}
+
+.purple {
+  color: #6f42c1;
+}
+
+.red {
+  color: #dc3545;
+}
+
+.yellow {
+  color: rgb(255, 0, 251);
+}
+
+.grey {
+  color: rgb(89, 0, 255);
+}
 
 .htu-final {
   margin-top: 2rem;
@@ -85,7 +105,7 @@
 }
 
 .htu-link {
-  color:#007bff;
+  color: #007bff;
   font-weight: bold;
   text-decoration: underline;
 }
@@ -97,6 +117,7 @@
 
   .htu-title {
     font-size: 1.6rem;
+
     line-height: 1.4;
   }
 
@@ -160,8 +181,11 @@
     font-size: 0.88rem;
   }
 
+  .htu-card:hover {
+    transform: none;
+  }
+
   .htu-link {
     font-size: 0.95rem;
   }
 }
-

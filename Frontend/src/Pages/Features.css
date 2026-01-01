@@ -4,6 +4,7 @@
   padding: 2rem 1rem;
   font-family: 'Montserrat';
   color: #1c1c1c;
+  overflow-x: hidden; 
 }
 
 .htu-title {
@@ -27,22 +28,20 @@
 
 .htu-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr));
+  gap: 24px;
 }
 
 .htu-card {
   background: #f8f9fa;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #c8c8c8;
   border-radius: 14px;
   padding: 1.2rem;
   transition: 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .htu-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .htu-card-header {
@@ -133,7 +132,7 @@
 
 @media (max-width: 480px) {
   .htu-title {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
   }
 
   .htu-subtitle {

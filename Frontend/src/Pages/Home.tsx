@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Demo from "../Components/Demo";
 import { useEffect, useState } from "react";
 import api from "../api";
-import { FaSignInAlt, FaUserPlus } from "react-icons/fa";
+import { FaSignInAlt } from "react-icons/fa";
 
 const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,52 +14,47 @@ const HomePage = () => {
       .catch(() => setIsLoggedIn(false));
   }, []);
   return (
-    <>
       <div className="heroo">
-        <div className="navbar-container">
-          <div className="hero-container">
-            <main className="content">
-              <span className="header-text">
-                YOUR AI COMPANION FOR MENTAL CLARITY & PHYSICAL ENERGY
-              </span>
+        <div className="hero-container">
+          <main className="content">
+            <span className="header-text">
+              AI-POWERED PERFORMANCE COACH
+            </span>
 
-              <h1>
-                Elevate Your Mind and Body with <span>Brain + Body</span> Intelligence
-              </h1>
+            <h1>
+              Unlock Your Peak Potential with <span>Brain + Body</span> AI
+            </h1>
 
-              <p className="description">
-                Experience highly personalized AI guidance carefully designed to sharpen your mental focus, strengthen your workout habits, effectively reduce daily stress, and keep you consistently motivated every single day.
-              </p>
+            <p className="description">
+              Sharpen your mental focus and transform your physical health with a single AI companion. Personalised neuroscience-backed strategies for modern achievers.
+            </p>
 
-              <p className="second-description">
-                Tailored for modern lifestyles and powered by neuroscience, real-time behavioral insights, practical actionable recommendations, and deeply personalized strategies.
-              </p>
+            <p className="second-description">
+              Smart Workouts • Cognitive Training • Stress Recovery • Daily Motivation
+            </p>
 
-              <div className="cta-buttons">
-                {isLoggedIn ? (
-                  <Link to="/chatbot" className="chatbot" title="Start BrainBody AI">
-                    <img src="brain.png" alt="Open BrainBody Chatbot" width={85} height={85} />
+            <div className="cta-buttons">
+              {isLoggedIn ? (
+                <Link to="/chatbot" className="chatbot" title="Start BrainBody AI">
+                  <img src="brain.png" alt="BrainBody AI" width={90} height={90} />
+                </Link>
+              ) : (
+                <div className="create-account">
+                  <Link to="/login" className="login">
+                    <FaSignInAlt style={{ marginRight: '8px' }} />
+                    Login
                   </Link>
-                ) : (
-                  <div className="create-account">
-                    <Link to="/login" className="login" title="Login to your account">
-                      <FaSignInAlt style={{ marginRight: '5px' }} />
-                      Login
-                    </Link>
 
-                    <Link to="/signup" className="signup" title="Create a new account">
-                      <FaUserPlus style={{ marginRight: '5px' }} />
-                      Signup
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </main>
-          </div>
-          <Demo />
+                  <Link to="/signup" className="signup">
+                    Get Started Free
+                  </Link>
+                </div>
+              )}
+            </div>
+          </main>
         </div>
+        <Demo />
       </div>
-    </>
   );
 };
 

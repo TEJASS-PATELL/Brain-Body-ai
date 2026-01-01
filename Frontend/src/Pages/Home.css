@@ -52,15 +52,21 @@
   color: #00a2ff;
 }
 
-.description,
-.second-description {
-  font-size: 1.25rem;
-  font-weight: 500;
+.description {
+  font-size: 1.2rem;
+  color: #000000;
   line-height: 1.6;
-  letter-spacing: 1px;
-  color: #1a1a1a;
-  margin: 0 auto 1rem;
-  padding: 0 1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.second-description {
+  font-size: 1rem;
+  color: #404040;
+  line-height: 1.5;
+  font-weight: 500;
+  margin-bottom: 40px;
+  padding: 0 50px;
 }
 
 .description {

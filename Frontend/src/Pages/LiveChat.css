@@ -1,67 +1,117 @@
 .container {
   width: 100%;
   height: 100vh;
-  background: #f4f4f4;
+  background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
 }
 
 .micSection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 24px;
+  border: 1px rgba(255, 255, 255, 0.1) solid;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  max-width: 450px;
+  width: 90%;
 }
 
 .brainImg {
-width: 320px;
-height: 320px;
-object-fit: contain;
-animation: floatAnim 4s ease-in-out infinite;
+  width: 280px;
+  height: 280px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(0, 136, 255, 0.4));
+  animation: floatAnim 4s ease-in-out infinite, pulse 3s ease-in-out infinite;
 }
 
 @keyframes floatAnim {
-0% { transform: translateY(0); }
-50% { transform: translateY(-15px); }
-100% { transform: translateY(0); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse {
+  0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 136, 255, 0.4)); }
+  50% { filter: drop-shadow(0 0 40px rgba(0, 136, 255, 0.7)); }
 }
 
 .btnRow {
   display: flex;
-  gap: 15px;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
 }
 
-.startBtn,
-.stopBtn,
-.backBtn {
-  padding: 8px 22px;
+.startBtn, .stopBtn, .backBtn {
+  padding: 12px 24px;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  color: white;
-  transition: 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .startBtn {
-  background: rgb(0, 136, 255);
+  background: linear-gradient(135deg, #0088ff, #0055ff);
+  color: white;
+  flex: 2;
+}
+
+.startBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 136, 255, 0.4);
 }
 
 .stopBtn {
-  background: #ff0000;
+  background: rgba(255, 50, 50, 0.1);
+  border: 1px solid rgba(255, 50, 50, 0.5);
+  color: #ff4444;
+}
+
+.stopBtn:hover {
+  background: #ff3232;
+  color: white;
 }
 
 .backBtn {
-  background: #000000;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.backBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .text {
-  font-size: 16px;
-  color: #292929;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  margin-top: 10px;
 }
 
-.text strong{
-    color: rgb(0, 115, 255);
+.userTranscript {
+  background: rgba(0, 136, 255, 0.1);
+  padding: 15px;
+  border-radius: 12px;
+  color: #e0e0e0;
+  font-size: 14px;
+  width: 100%;
+  border-left: 4px solid #0088ff;
+  line-height: 1.5;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

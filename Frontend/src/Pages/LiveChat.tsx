@@ -35,12 +35,8 @@ const LiveChat: React.FC = () => {
 
   const StartLiveChat = () => {
     setStartChat(true);
-
-    const voice = new SpeechSynthesisUtterance(
-      "Hello, I am Brain Body AI. Nice to meet you!"
-    );
+    const voice = new SpeechSynthesisUtterance( "Hello, I am Brain Body AI. Nice to meet you!");
     window.speechSynthesis.speak(voice);
-
     recognitionRef.current?.start();
   };
 

@@ -38,7 +38,7 @@
 .footer-bottom strong {
   font-weight: 600;
   font-family: 'Orbitron', sans-serif;
-  color: #2563eb;
+  color: #000000;
 }
 
 .footer-social-icons {
@@ -53,7 +53,7 @@
 }
 
 .footer-social-icons a:hover {
-  color: #3b82f6;
+  color: #000000;
 }
 
 @media (max-width: 1024px) {

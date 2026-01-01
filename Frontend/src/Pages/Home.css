@@ -1,3 +1,4 @@
+/* --- Desktop & Base Styles --- */
 .heroo {
   background-color: #ffffff;
   color: #000000;
@@ -7,7 +8,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 20px 10px 20px;
+  padding: 60px 20px 20px 20px;
   box-sizing: border-box;
 }
 
@@ -16,78 +17,86 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 60px; /* Reduced for better flow */
 }
 
 .hero-container {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 .content {
   max-width: 1000px;
   text-align: center;
+  width: 100%;
 }
 
 .header-text {
   display: inline-block;
-  font-size: 12px;
+  font-size: clamp(10px, 2vw, 12px); /* Responsive font size */
   font-weight: 800;
-  letter-spacing: 4px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   border: 2px solid #000;
-  padding: 8px 15px;
-  margin-bottom: 30px;
+  padding: 6px 12px;
+  margin-bottom: 25px;
 }
 
 h1 {
-  font-size: 4rem;
+  font-size: clamp(2.2rem, 8vw, 4rem); /* Dynamic resizing */
   font-weight: 900;
-  max-width: 6000px;
-  line-height: 1;
+  line-height: 1.1;
   text-transform: uppercase;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   color: #000;
+  word-wrap: break-word;
 }
 
 h1 span {
   background-color: #000;
   color: #fff;
-  padding: 0 10px;
+  padding: 0 8px;
+  display: inline-block; /* Prevents awkward line breaks */
 }
 
 .description {
-  font-size: 1.4rem;
+  font-size: clamp(1rem, 4vw, 1.4rem);
   font-weight: 500;
-  line-height: 1.4;
-  margin-bottom: 20px;
+  line-height: 1.5;
+  margin-bottom: 15px;
   color: #000;
+  padding: 0 10px;
 }
 
 .second-description {
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 3.5vw, 1.1rem);
   line-height: 1.6;
   color: #666;
   max-width: 700px;
-  margin: 0 auto 50px auto;
+  margin: 0 auto 40px auto;
+  padding: 0 15px;
 }
 
+/* --- Buttons Layout --- */
 .cta-buttons {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  width: 100%;
 }
 
 .create-account {
   display: flex;
-  gap: 20px;
+  gap: 15px;
   width: 100%;
+  max-width: 500px; /* Limits width on tablet/desktop */
   justify-content: center;
 }
 
 .login, .signup {
-  padding: 15px 45px;
-  font-size: 16px;
+  flex: 1; /* Equal width buttons */
+  padding: 16px 20px;
+  font-size: 14px;
   font-weight: 800;
   text-transform: uppercase;
   text-decoration: none;
@@ -95,54 +104,69 @@ h1 span {
   border: 3px solid #000;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
 }
 
-.login {
-  background-color: #fff;
-  color: #000;
-}
+.login { background-color: #fff; color: #000; }
+.signup { background-color: #000; color: #fff; }
 
-.login:hover {
-  background-color: #f0f0f0;
-  transform: translateY(-3px);
-}
-
-.signup {
-  background-color: #000;
-  color: #fff;
-}
-
-.signup:hover {
-  background-color: #333;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 0 #000;
-}
-
-.chatbot img {
-  padding: 10px;
-}
-
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2.5rem;
+@media (max-width: 580px) {
+  .heroo {
+    padding: 40px 15px;
   }
 
-  .description {
-    font-size: 1.1rem;
+  .navbar-container {
+    gap: 30px;
+  }
+
+  h1 {
+    font-size: 2.1rem; 
+    letter-spacing: -1px;
+  }
+
+  .header-text {
+    letter-spacing: 2px;
+    margin-bottom: 20px;
   }
 
   .create-account {
-    flex-direction: column;
-    padding: 0 20px;
+    flex-direction: column; 
+    gap: 12px;
+    padding: 0 10px;
   }
 
   .login, .signup {
     width: 100%;
-    justify-content: center;
+    padding: 18px; 
+    font-size: 15px;
   }
-  
-  .navbar-container {
-    gap: 40px;
+
+  .description{
+    font-size: 0.9rem;
+  }
+
+  .second-description {
+    margin-bottom: 30px;
+    font-size: 0.85rem;
+  }
+
+  .chatbot img {
+    width: 70px; 
+    height: 70px;
+  }
+}
+
+@media (min-width: 769px) {
+  .login:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-3px);
+  }
+
+  .signup:hover {
+    background-color: #333;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 0 #000;
   }
 }

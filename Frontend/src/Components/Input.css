@@ -1,92 +1,92 @@
 .input-area {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 1rem;
-  background-color: #fff;
-  border-top: 1px solid #ddd;
-  border-radius: 0 0 12px 12px;
-  box-sizing: border-box;
-  position: sticky; 
-  bottom: 0;
+    padding: 20px 10%; /* Chat window ki alignment se match karne ke liye */
+    background: linear-gradient(to top, #ffffff 80%, rgba(255,255,255,0));
+    display: flex;
+    align-items: flex-end; /* Textarea expand ho toh buttons neeche rahein */
+    gap: 10px;
+    position: sticky;
+    bottom: 0;
 }
 
-.input-area textarea {
-  flex: 1;
-  height: 45px;
-  padding: 0.75rem;
-  font-size: 1rem;
-  font-family: 'Montserrat', sans-serif;
-  border: 1px solid #d6d6d6;
-  border-radius: 8px;
-  resize: none;
-  outline: none;
-  margin-right: 1rem;
+/* Textarea styling */
+.chat-input {
+    flex: 1;
+    min-height: 45px;
+    max-height: 150px;
+    padding: 12px 20px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 24px;
+    font-size: 15px;
+    resize: none; /* User manually resize na kar sake */
+    outline: none;
+    transition: all 0.3s ease;
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    font-family: inherit;
 }
 
-.input-area textarea:focus {
-  border-color: black;
+.chat-input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.1);
 }
 
-.send-button,
+.chat-input:disabled {
+    background: #f9f9f9;
+    cursor: not-allowed;
+}
+
+/* Control Buttons (Mic & Send) */
+.mic-button, .send-button {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0; /* Button chota na ho */
+}
+
+/* Mic Button Specific */
 .mic-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  cursor: pointer;
-  border-radius: 10%;
+    background: #f1f3f4;
+    color: #5f6368;
 }
 
+.mic-button:hover:not(:disabled) {
+    background: #e8eaed;
+    color: #d93025; /* Voice recording feel */
+}
+
+/* Pulse animation for Mic when listening */
+.mic-button.listening {
+    background: #ffebee;
+    color: #d93025;
+    animation: pulseMic 1.5s infinite;
+}
+
+/* Send Button Specific */
 .send-button {
-  padding: 0.5rem 1rem;
-  background-color: black;
-  color: white;
-  font-size: 1.1rem;
+    background: #4a90e2;
+    color: white;
+    box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+}
+
+.send-button:hover:not(:disabled) {
+    background: #357abd;
+    transform: scale(1.05);
 }
 
 .send-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    background: #ccc;
+    box-shadow: none;
+    cursor: not-allowed;
 }
 
-.mic-button {
-  background: transparent;
-  color: #000;
-  margin-right: 1rem;
-}
-
-@media (max-width: 768px) {
-  .input-area textarea {
-    height: 35px;
-    font-size: 0.85rem;
-    padding: 0.5rem;
-    margin-right: 0.25rem;
-  }
-
-  .send-button {
-    padding: 0.4rem 0.6rem;
-    font-size: 0.95rem;
-  }
-
-  .mic-button {
-    margin-right: 0.25rem;
-  }
-}
-
-@media (max-width: 420px) {
-  .input-area textarea {
-    height: 32px;
-    font-size: 0.8rem;
-    margin-right: 0.6rem;
-  }
-
-  .send-button {
-    padding: 0.35rem 0.5rem;
-    font-size: 0.85rem;
-  }
-
-  .mic-button {
-    margin-right: 0.6rem;
-  }
+@keyframes pulseMic {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(217, 48, 37, 0.4); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(217, 48, 37, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(217, 48, 37, 0); }
 }

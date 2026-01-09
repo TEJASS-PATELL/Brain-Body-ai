@@ -9,10 +9,9 @@ const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    api.get('/api/auth/check')
-      .then(() => setIsLoggedIn(true))
-      .catch(() => setIsLoggedIn(false));
+    api.get('/api/auth/check').then(() => setIsLoggedIn(true)).catch(() => setIsLoggedIn(false));
   }, []);
+  
   return (
       <div className="heroo">
         <div className="hero-container">

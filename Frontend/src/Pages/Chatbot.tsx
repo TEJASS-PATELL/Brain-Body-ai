@@ -56,9 +56,7 @@ const Chatbot: React.FC = () => {
                 setUserInput((prev) => prev + " " + speechResult);
             };
 
-            recognition.current.onend = () => {
-                setIsListening(false);
-            };
+            recognition.current.onend = () => setIsListening(false);
         }
     }, []);
 
@@ -67,18 +65,15 @@ const Chatbot: React.FC = () => {
             try {
                 const res = await api.get("/api/auth/get_detail");
                 const data = res.data;
-
                 setUserId(data.id || null);
                 setLanguage(data.language || "english");
                 setLevel(data.level || "beginner");
                 setReplyType(data.replyType || "");
                 setYogaMode(data.yogaMode || false);
-            } catch (err: any) {
-                console.error("Failed to fetch user details:", err.response?.data?.msg || err.message);
+            } catch (err) {
                 setUserId(null);
             }
         };
-
         fetchUserDetails();
     }, []);
 
@@ -86,7 +81,6 @@ const Chatbot: React.FC = () => {
         if (userId) {
             const savedSessionId = localStorage.getItem(`selectedSessionId-${userId}`);
             if (savedSessionId) {
-                setSelectedSessionId(savedSessionId);
                 handleSelectChat(savedSessionId);
             } else {
                 handleNewChat();
@@ -95,81 +89,62 @@ const Chatbot: React.FC = () => {
     }, [userId]);
 
     useEffect(() => {
-        if (window.innerWidth < 900) {
-            setShowRightSidebar(false);
-        }
+        const handleResize = () => {
+            if (window.innerWidth < 900) setShowRightSidebar(false);
+        };
+        window.addEventListener('resize', handleResize);
+        handleResize();
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const toggleBMIPopup = () => {
-        setShowBMIPopup(prev => !prev);
-    };
+    const toggleBMIPopup = () => setShowBMIPopup(prev => !prev);
 
     const typeMessage = (fullText: string) => {
         setDisplayedText("");
         let index = 0;
-
-        const step = () => {
+        const interval = setInterval(() => {
             setDisplayedText((prev) => prev + fullText[index]);
             index++;
-            if (index < fullText.length) {
-                requestAnimationFrame(step);
-            } else {
+            if (index >= fullText.length) {
+                clearInterval(interval);
                 setMessages((prev) => [...prev, { role: "model", text: fullText }]);
                 setDisplayedText("");
             }
-        };
-
-        requestAnimationFrame(step);
+        }, 15);
     };
 
     const handleLogout = async () => {
         try {
             const res = await api.post("/api/auth/logout");
             if (res.status === 200) {
-                if (userId) {
-                    localStorage.removeItem(`selectedSessionId-${userId}`);
-                }
+                if (userId) localStorage.removeItem(`selectedSessionId-${userId}`);
                 navigate("/login", { replace: true });
-            } else {
-                console.error("Logout failed:", res.data?.msg || "Unknown error");
             }
-        } catch (err: any) {
-            console.error("Logout error:", err.response?.data?.msg || err.message);
+        } catch (err) {
+            console.error(err);
         }
     };
 
     const handleSendMessage = async () => {
         const userMessageText = userInput.trim();
-        if (!userMessageText || isLoading || !selectedSessionId || !userId) return;
+        if (!userMessageText || isLoading || !isReadyToChat) return;
 
-        const newUserMessage: Message = { role: "user", text: userMessageText };
-        setMessages((prev) => [...prev, newUserMessage]);
+        setMessages((prev) => [...prev, { role: "user", text: userMessageText }]);
         setUserInput("");
         setIsLoading(true);
 
         try {
-            const payload = {
+            const res = await api.post("/api/chats/startChat", {
                 sessionId: selectedSessionId,
                 message: userMessageText,
-                language: language || "english",
-                level: level || "beginner",
-                yogaMode: yogaMode || false,
-            };
-
-            const res = await api.post("/api/chats/startChat", payload);
-
-            const reply = res.data?.reply || "Sorry, I couldn't get a response.";
-            typeMessage(reply);
-
+                language,
+                level,
+                yogaMode,
+            });
+            typeMessage(res.data?.reply || "No response.");
             setHistoryRefreshTrigger((prev) => prev + 1);
-
-        } catch (err: any) {
-            console.error("Error sending message:", err.response?.data?.reply || err.message);
-
-            setMessages((prev) => [
-                ...prev,
-                { role: "model", text: `Error: ${err.response?.data?.reply || err.message}` },
-            ]);
+        } catch (err) {
+            setMessages((prev) => [...prev, { role: "model", text: "Error: Connection failed." }]);
         } finally {
             setIsLoading(false);
         }
@@ -177,55 +152,29 @@ const Chatbot: React.FC = () => {
 
     const handleVoiceInput = () => {
         if (!recognition.current) return;
-        if (isListening) {
-            recognition.current.stop();
-        } else {
-            recognition.current.start();
-        }
+        isListening ? recognition.current.stop() : recognition.current.start();
         setIsListening((prev) => !prev);
-    };
-
-    const handleRightSidebarToggle = () => {
-        setShowRightSidebar((prev) => !prev);
     };
 
     const handleNewChat = () => {
         const newSessionId = `session-${Date.now()}`;
         setSelectedSessionId(newSessionId);
         setMessages([]);
-        if (userId) {
-            localStorage.setItem(`selectedSessionId-${userId}`, newSessionId);
-        }
-        localStorage.setItem("showIntro", "false");
-
+        if (userId) localStorage.setItem(`selectedSessionId-${userId}`, newSessionId);
         setHistoryRefreshTrigger(prev => prev + 1);
     };
 
     const handleSelectChat = async (sessionId: string) => {
-        if (!userId) {
-            console.log("User ID is not available. Cannot fetch chat history.");
-            return;
-        }
-
+        if (!userId) return;
         setSelectedSessionId(sessionId);
         setMessages([]);
         setIsLoading(true);
-
         localStorage.setItem(`selectedSessionId-${userId}`, sessionId);
-        localStorage.setItem("showIntro", "false");
 
         try {
             const res = await api.get(`/api/chats/${sessionId}`);
-            const data = res.data;
-
-            const formattedMessages = data.messages.map((msg: any) => ({
-                role: msg.role,
-                text: msg.text,
-            }));
-
-            setMessages(formattedMessages || []);
-        } catch (err: any) {
-            console.error("Failed to fetch chat:", err.response?.data?.msg || err.message);
+            setMessages(res.data.messages || []);
+        } catch (err) {
             setMessages([]);
         } finally {
             setIsLoading(false);
@@ -238,7 +187,7 @@ const Chatbot: React.FC = () => {
         setLevel(level);
         setYogaMode(yogaMode);
         setShowSettingsModal(false);
-    }
+    };
 
     return (
         <div className="container">
@@ -249,7 +198,7 @@ const Chatbot: React.FC = () => {
                         handleNewChat={handleNewChat}
                         onSelectChat={handleSelectChat}
                         selectedSessionId={selectedSessionId}
-                        historyRefreshTrigger={historyRefreshTrigger}/>
+                        historyRefreshTrigger={historyRefreshTrigger} />
                 )}
 
                 <div className="chat-box">
@@ -272,7 +221,7 @@ const Chatbot: React.FC = () => {
                         isReadyToChat={isReadyToChat} />
                 </div>
 
-                {showRightSidebar && <RightSidebar onToggleSidebar={handleRightSidebarToggle} />}
+                {showRightSidebar && <RightSidebar onToggleSidebar={() => setShowRightSidebar(!showRightSidebar)} />}
             </div>
 
             {showSettingsModal && (
@@ -289,6 +238,6 @@ const Chatbot: React.FC = () => {
             <BMIPopup show={showBMIPopup} onClose={toggleBMIPopup} />
         </div>
     );
+};
 
-}
 export default Chatbot;

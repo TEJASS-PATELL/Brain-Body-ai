@@ -1,23 +1,22 @@
 .input-area {
-    padding: 20px 10%; /* Chat window ki alignment se match karne ke liye */
+    padding: 20px 10%; 
     background: linear-gradient(to top, #ffffff 80%, rgba(255,255,255,0));
     display: flex;
-    align-items: flex-end; /* Textarea expand ho toh buttons neeche rahein */
+    align-items: flex-end; 
     gap: 10px;
     position: sticky;
     bottom: 0;
 }
 
-/* Textarea styling */
 .chat-input {
     flex: 1;
     min-height: 45px;
     max-height: 150px;
     padding: 12px 20px;
-    border: 1.5px solid #e0e0e0;
+    border: 1.5px solid #9f9f9f;
     border-radius: 24px;
     font-size: 15px;
-    resize: none; /* User manually resize na kar sake */
+    resize: none; 
     outline: none;
     transition: all 0.3s ease;
     background: #ffffff;
@@ -26,8 +25,7 @@
 }
 
 .chat-input:focus {
-    border-color: #4a90e2;
-    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.1);
+    border-color: #b7b7b7;
 }
 
 .chat-input:disabled {
@@ -35,7 +33,6 @@
     cursor: not-allowed;
 }
 
-/* Control Buttons (Mic & Send) */
 .mic-button, .send-button {
     width: 45px;
     height: 45px;
@@ -46,10 +43,8 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    flex-shrink: 0; /* Button chota na ho */
-}
+    flex-shrink: 0; 
 
-/* Mic Button Specific */
 .mic-button {
     background: #f1f3f4;
     color: #5f6368;
@@ -57,17 +52,15 @@
 
 .mic-button:hover:not(:disabled) {
     background: #e8eaed;
-    color: #d93025; /* Voice recording feel */
+    color: #ff1100; 
 }
 
-/* Pulse animation for Mic when listening */
 .mic-button.listening {
     background: #ffebee;
     color: #d93025;
     animation: pulseMic 1.5s infinite;
 }
 
-/* Send Button Specific */
 .send-button {
     background: #4a90e2;
     color: white;

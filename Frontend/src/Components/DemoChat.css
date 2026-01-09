@@ -178,8 +178,7 @@
   padding: 0.6rem 1rem;
   font-weight: 500;
   background-color: #fff;
-  border: 1px solid #dfdfdf;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #c4c4c4;
 }
 
 .user-messagee .message-content {

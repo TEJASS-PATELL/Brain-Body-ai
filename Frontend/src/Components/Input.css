@@ -44,6 +44,7 @@
     cursor: pointer;
     transition: all 0.2s ease;
     flex-shrink: 0; 
+}
 
 .mic-button {
     background: #f1f3f4;
@@ -78,8 +79,35 @@
     cursor: not-allowed;
 }
 
-@keyframes pulseMic {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(217, 48, 37, 0.4); }
-    70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(217, 48, 37, 0); }
-    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(217, 48, 37, 0); }
+@media (max-width: 768px) {
+    .input-area {
+        padding: 15px 5%;
+        gap: 8px;
+    }
+    .chat-input {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .input-area {
+        padding: 10px 12px;
+        gap: 6px;
+        background: #ffffff;
+    }
+    .chat-input {
+        min-height: 40px;
+        max-height: 120px;
+        padding: 8px 14px;
+        font-size: 14px;
+        border-radius: 20px;
+    }
+    .mic-button, .send-button {
+        width: 40px;
+        height: 40px;
+    }
+    .send-button:hover:not(:disabled) {
+        transform: none;
+    }
 }

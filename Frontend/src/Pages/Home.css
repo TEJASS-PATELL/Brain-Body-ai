@@ -156,3 +156,26 @@ h1 span {
     height: 70px;
   }
 }
+
+@media (max-width: 768px) {
+  .heroo {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .hero-container {
+    flex-shrink: 0;
+  }
+
+  .laptop-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .bb-footer {
+    margin-top: auto;
+  }
+}

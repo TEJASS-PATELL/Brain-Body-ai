@@ -69,3 +69,51 @@
   text-align: center;
   margin-top: 10px;
 }
+
+@media (max-width: 768px) {
+  .micSection {
+    padding: 28px 22px;
+    gap: 22px;
+    border-radius: 20px;
+  }
+
+  .brainImg {
+    width: 220px;
+    height: 220px;
+  }
+
+  .btnRow {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .startBtn,
+  .stopBtn,
+  .backBtn {
+    width: 100%;
+    padding: 14px 0;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .micSection {
+    padding: 22px 18px;
+    gap: 18px;
+    border-radius: 18px;
+  }
+
+  .construction-title{font-size: 18px;}
+
+  .brainImg {
+    width: 180px;
+    height: 180px;
+  }
+
+  .startBtn,
+  .stopBtn,
+  .backBtn {
+    font-size: 12px;
+    letter-spacing: 0.8px;
+  }
+}

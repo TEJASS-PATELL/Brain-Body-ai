@@ -52,3 +52,35 @@
   background-color: black;
   color: white;
 }
+
+@media (max-width: 768px) {
+  #error-txt img {
+    width: 60%;
+    height: auto;
+  }
+
+  .error-content h2 {
+    font-size: 26px;
+    margin-bottom: 16px;
+  }
+
+  .error-btn {
+    width: 100%;
+    margin: 8px 0;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  #error-txt img {
+    width: 75%;
+  }
+
+  .error-content h2 {
+    font-size: 22px;
+  }
+
+  .Error {
+    padding: 14px;
+  }
+}

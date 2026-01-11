@@ -7,7 +7,7 @@ import HomePage from './Pages/Home';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import ErrorPage from './Pages/ErrorPage';
-import ProtectedRoute from './Components/ProtectedRoute';
+import ProtectedRoute from './security/ProtectedRoute';
 import Features from './Pages/Features';
 import Loader from './Components/Loader';
 import LiveChat from './Pages/LiveChat';

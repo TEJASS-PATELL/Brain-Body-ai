@@ -1,4 +1,4 @@
-.container {
+.live-container {
   width: 100%;
   height: 100vh;
   background: white;
@@ -53,17 +53,9 @@
   flex: 2;
 }
 
-.startBtn:hover {
-  transform: translateY(-2px);
-}
-
 .stopBtn {
   background: rgb(255, 0, 0);
   color: #ffffff;
-}
-
-.stopBtn:hover {
-  transform: translateY(-2px);
 }
 
 .backBtn {
@@ -71,30 +63,9 @@
   color: white;
 }
 
-.backBtn:hover {
-  transform: translateY(-2px);
-}
-
 .text {
   font-size: 15px;
   color: rgba(255, 255, 255, 0.7);
   text-align: center;
   margin-top: 10px;
-}
-
-.userTranscript {
-  background: rgba(0, 136, 255, 0.1);
-  padding: 15px;
-  border-radius: 12px;
-  color: #e0e0e0;
-  font-size: 14px;
-  width: 100%;
-  border-left: 4px solid #0088ff;
-  line-height: 1.5;
-  animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }

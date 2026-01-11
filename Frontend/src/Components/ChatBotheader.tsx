@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { HeartPulse, Settings, HelpCircle, LogOut, PanelRightClose, PanelRightOpen, PanelLeftClose, PanelLeftOpen, MessageSquare } from 'lucide-react';
 import '../Pages/Chatbot.css';
 
@@ -22,11 +22,12 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   showLeftSidebar,
   setShowLeftSidebar,
 }) => {
+  const navigate = useNavigate();
   return (
     <div className="chat-headerr">
       <div className="header-leftt">
         <div style={{ display: "flex", alignItems: "center" }}>
-          <img className="brain-ai" src="brain.png" alt="Brain" />
+          <img className="brain-ai" src="brain.png" alt="Brain" onClick={() => navigate("/")}/>
           <div style={{ marginLeft: "10px" }}>
             <div className="title">BrainBody Coach</div>
             <div className="status">Online</div>

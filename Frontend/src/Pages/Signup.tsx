@@ -3,6 +3,7 @@ import './Signup.css';
 import toast from 'react-hot-toast';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../api';
+import { Sparkles } from 'lucide-react';
 
 interface FormState {
   name: string;
@@ -141,6 +142,10 @@ const Signup: React.FC = () => {
           Already have an account? <Link to="/login">Login</Link>
         </p>
       </form>
+      <div className="bottom-system-status">
+        <Sparkles size={12} />
+        <span>System Ready: V2.0.5</span>
+      </div>
     </div>
   );
 };

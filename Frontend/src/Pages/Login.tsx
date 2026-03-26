@@ -4,6 +4,7 @@ import './Login.css';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
+import { Sparkles } from 'lucide-react';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -74,6 +75,11 @@ const Login: React.FC = () => {
         <p className="signup-text">
           Don’t have an account? <Link to="/signup">Sign up</Link>
         </p>
+      </div>
+
+      <div className="bottom-system-status">
+        <Sparkles size={12} />
+        <span>System Ready: V2.0.5</span>
       </div>
     </div>
   );

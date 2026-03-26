@@ -173,3 +173,13 @@
     display: none;
   }
 }
+
+.bottom-system-status {
+  position: absolute;
+  bottom: 20px;
+  font-size: 14px;
+  color: var(--text-gray);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

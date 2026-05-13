@@ -3,7 +3,9 @@ import './Footer.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { FaHeart } from 'react-icons/fa';
+import { FaHeart, FaReact } from 'react-icons/fa';
+import { SiLangchain, SiGooglegemini, SiFastapi } from 'react-icons/si';
+import { Trees } from 'lucide-react';
 
 const socialLinks = {
   github: 'https://github.com/TEJASS-PATELL',
@@ -13,20 +15,33 @@ const socialLinks = {
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bb-footer">
-      <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} <strong>Body + Brain</strong> — All Rights Reserved</p>
-        <p>
-          Made with <FaHeart style={{ color: '#3B82F6', display: 'inline', verticalAlign: 'middle' }} /> by <strong>Tejas Patel</strong> using <strong>Gemini AI</strong>
-        </p>
+    <footer className="rag-footer">
+      <div className="footer-content">
+        <div className="footer-info">
+          <p className="copyright">
+            &copy; {new Date().getFullYear()} <strong>DocuMind AI</strong> — Intelligent RAG Systems
+          </p>
+          <p className="made-by">
+            Built with <FaHeart className="heart-icon" /> by <strong>Tejas Patel</strong>
+          </p>
+        </div>
+
+        <div className="footer-tech-stack">
+          <span><FaReact size={14} /> React</span>
+          <span><SiFastapi size={14} /> FastAPI</span>
+          <span><SiLangchain size={14} /> LangChain</span>
+          <span><SiGooglegemini size={14} /> Gemini</span>
+          <span><Trees size={14} /> Pinecone</span>
+        </div>
+
         <div className="footer-social-icons">
-          <a href={socialLinks.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <a href={socialLinks.github} target="_blank" rel="noopener noreferrer" title="GitHub">
             <FontAwesomeIcon icon={faGithub} />
           </a>
-          <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn">
             <FontAwesomeIcon icon={faLinkedin} />
           </a>
-          <a href={socialLinks.email} aria-label="Email">
+          <a href={socialLinks.email} title="Email">
             <FontAwesomeIcon icon={faEnvelope} />
           </a>
         </div>

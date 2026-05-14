@@ -1,66 +1,51 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { HeartPulse, Settings, HelpCircle, LogOut, PanelRightClose, PanelRightOpen, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
-import '../Pages/Chatbot.css';
+import { useNavigate } from 'react-router-dom';
+import { Settings, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import './ChatHeader.css';
 
 interface ChatHeaderProps {
-  toggleBMIPopup: () => void;
   setShowSettingsModal: (show: boolean) => void;
   handleLogout: () => void;
-  showRightSidebar: boolean;
   showLeftSidebar: boolean;
-  setShowRightSidebar: React.Dispatch<React.SetStateAction<boolean>>;
   setShowLeftSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ChatHeader: React.FC<ChatHeaderProps> = ({
-  toggleBMIPopup,
   setShowSettingsModal,
   handleLogout,
-  showRightSidebar,
-  setShowRightSidebar,
   showLeftSidebar,
   setShowLeftSidebar,
 }) => {
   const navigate = useNavigate();
+  
   return (
-    <div className="chat-headerr">
-      <div className="header-leftt">
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <img className="brain-ai" src="brain.png" alt="Brain" onClick={() => navigate("/")}/>
-          <div style={{ marginLeft: "10px" }}>
-            <div className="title">BrainBody Coach</div>
-            <div className="status">Online</div>
-          </div>
-        </div>
-        <div className="round-button">
-
-          <button className="main" onClick={() => setShowLeftSidebar((prev) => !prev)}>
-            {showLeftSidebar ? <PanelLeftClose size={22} /> : <PanelLeftOpen size={22} />}
-          </button>
-
-          <button className="bmi-button" onClick={toggleBMIPopup} title="BMI-Calculator">
-            <HeartPulse size={22} />
-          </button>
-
-          <button className="main" onClick={() => setShowSettingsModal(true)} title="Setting">
-            <Settings size={22} />
-          </button>
-
-          <Link to="/chatbot/features" className="main" title='Features'>
-            <HelpCircle size={22} />
-          </Link>
-
-          <button className="main" onClick={() => setShowRightSidebar((prev) => !prev)}>
-            {showRightSidebar ? <PanelRightClose size={22} /> : <PanelRightOpen size={22} />}
-          </button>
-
-          <button className="logout" onClick={handleLogout} title="logout">
-            <LogOut size={22} />
-          </button>
-        </div>
+    <header className="chat-header">
+      <div className="chat-header-left">
+        <button className="header-logo-btn" onClick={() => navigate('/')} title="Back to home">
+          <img src="/DocuMind.svg" alt="DocuMind" className="header-logo" />
+        </button>
       </div>
-    </div>
+
+      <div className="chat-header-actions">
+        <button
+          className="header-btn"
+          onClick={() => setShowLeftSidebar(prev => !prev)}
+          title="Toggle sidebar"
+        >
+          {showLeftSidebar ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
+        </button>
+
+        <button className="header-btn" onClick={() => setShowSettingsModal(true)} title="Settings">
+          <Settings size={18} />
+        </button>
+
+        <div className="header-divider" />
+
+        <button className="header-btn header-btn--danger" onClick={handleLogout} title="Sign out">
+          <LogOut size={18} />
+        </button>
+      </div>
+    </header>
   );
 };
 

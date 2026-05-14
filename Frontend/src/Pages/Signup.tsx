@@ -25,22 +25,22 @@ const Signup: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setForm(prev => ({
-      ...prev,
-      [name]: value,
-    }));
+    setForm(prev => ({ ...prev, [name]: value }));
     setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
-    if (!form.name.trim()) newErrors.name = 'Full Name is required';
+    if (!form.name.trim()) newErrors.name = 'Full name is required';
     if (!form.email.trim()) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = 'Email is invalid';
+    else if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = 'Enter a valid email address';
+    
     if (!form.password) newErrors.password = 'Password is required';
-    else if (form.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
+    else if (form.password.length < 6) newErrors.password = 'Must be at least 6 characters';
+    
     if (!form.confirmPassword) newErrors.confirmPassword = 'Please confirm your password';
     else if (form.confirmPassword !== form.password) newErrors.confirmPassword = 'Passwords do not match';
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -49,18 +49,18 @@ const Signup: React.FC = () => {
     e.preventDefault();
     if (!validate()) return;
     try {
-      await api.post('/api/auth/signup', { 
-        name: form.name, 
-        email: form.email, 
-        password: form.password 
+      await api.post('/api/auth/signup', {
+        name: form.name,
+        email: form.email,
+        password: form.password,
       });
-      toast.success("Welcome to Brain+Body AI");
+      toast.success('Welcome to DocuMind AI');
       navigate('/chatbot', { replace: true });
     } catch (err: any) {
       if (err.response?.status === 409) {
-        toast.error("Email already exists. Please login.");
+        toast.error('Email already registered. Try logging in.');
       } else {
-        toast.error("Something went wrong. Please try again.");
+        toast.error('Something went wrong. Please try again.');
       }
     }
   };
@@ -68,13 +68,16 @@ const Signup: React.FC = () => {
   return (
     <div className="signup-wrapper">
       <form className="signup-box" onSubmit={handleSubmit} noValidate>
-
         <div className="logo-top-left">
-          <img src="/brain.png" alt="Logo" />
+          <span className="logo-name">DocuMind AI</span>
         </div>
 
-        <h2 className="signup-title">Create Your Account</h2>
-        <p className="signup-subtitle">Join us and start your <span>Body + Brain</span> journey today!</p>
+        <h2 className="signup-title">
+          Create an <em>account</em>
+        </h2>
+        <p className="signup-subtitle">
+          Join <span>DocuMind AI</span> and start chatting with your documents.
+        </p>
 
         <div className="form-group">
           <label htmlFor="name">Full Name</label>
@@ -82,12 +85,11 @@ const Signup: React.FC = () => {
             id="name"
             type="text"
             name="name"
-            placeholder="Name"
+            placeholder="Tejas Patel"
             value={form.name}
             onChange={handleChange}
-            aria-describedby="name-error"
           />
-          {errors.name && <p className="error-text" id="name-error">{errors.name}</p>}
+          {errors.name && <p className="error-text">{errors.name}</p>}
         </div>
 
         <div className="form-group">
@@ -96,28 +98,28 @@ const Signup: React.FC = () => {
             id="email"
             type="email"
             name="email"
-            placeholder="example@email.com"
+            placeholder="you@example.com"
             value={form.email}
             onChange={handleChange}
-            aria-describedby="email-error"
           />
-          {errors.email && <p className="error-text" id="email-error">{errors.email}</p>}
+          {errors.email && <p className="error-text">{errors.email}</p>}
         </div>
 
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <div className="password-input-wrapper">
-            <input
-              id="password"
-              type="password"
-              name="password"
-              placeholder="••••••••"
-              value={form.password}
-              onChange={handleChange}
-              aria-describedby="password-error"/>
-          </div>
-          {errors.password && <p className="error-text" id="password-error">{errors.password}</p>}
-          <small className="password-help">Password must be at least 6 characters.</small>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="••••••••"
+            value={form.password}
+            onChange={handleChange}
+          />
+          {errors.password ? (
+            <p className="error-text">{errors.password}</p>
+          ) : (
+            <small className="password-help">At least 6 characters.</small>
+          )}
         </div>
 
         <div className="form-group">
@@ -129,22 +131,23 @@ const Signup: React.FC = () => {
             placeholder="••••••••"
             value={form.confirmPassword}
             onChange={handleChange}
-            aria-describedby="confirmPassword-error"
           />
-          {errors.confirmPassword && <p className="error-text" id="confirmPassword-error">{errors.confirmPassword}</p>}
+          {errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
         </div>
 
         <button type="submit" className="signup-btn">
-          Sign Up
+          Create account
         </button>
 
         <p className="login-redirect">
-          Already have an account? <Link to="/login">Login</Link>
+          Already have an account? <Link to="/login">Sign in</Link>
         </p>
       </form>
+
       <div className="bottom-system-status">
-        <Sparkles size={12} />
-        <span>System Ready: V2.0.5</span>
+        <span className="status-dot" />
+        <Sparkles size={11} />
+        <span>System ready · v2.0.5</span>
       </div>
     </div>
   );

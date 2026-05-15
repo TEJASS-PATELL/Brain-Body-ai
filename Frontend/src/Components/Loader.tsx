@@ -1,12 +1,14 @@
-import { OrbitProgress } from 'react-loading-indicators';
 import './Loader.css';
 
-export default function Loader({ text = "Loading your experience..." }) {
+export default function Loader() {
   return (
-    <div className="loader-container">
-      <div className="loader-content">
-        <OrbitProgress variant="dotted" color="black" size="large" />
-        <p className="loader-text">{text}</p>
+    <div className="loader-wrapper">
+      <div className="loader-mark">
+        <div className="loader-ring" />
+        <div className="loader-ring loader-ring--2" />
+        <span className="loader-wordmark">
+          Docu<span>Mind</span><em> AI</em>
+        </span>
       </div>
     </div>
   );

@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { FaBrain, FaDumbbell, FaAppleAlt, FaSmile, FaBullseye, FaCheckCircle, FaPlus } from "react-icons/fa";
-import '../Pages/Chatbot.css';
-import api from "../api";
+import {
+  FaFilePdf, FaSearch, FaChartBar, FaFileAlt,
+  FaShieldAlt, FaBolt, FaPlus
+} from 'react-icons/fa';
+import './ChatWindow.css';
 
 interface Message {
-  role: "user" | "model";
+  role: 'user' | 'model';
   text: string;
 }
 
@@ -15,27 +17,26 @@ interface ChatWindowProps {
   isLoading: boolean;
 }
 
+const TAGS = [
+  { icon: <FaFilePdf />, label: 'PDF Analysis' },
+  { icon: <FaSearch />, label: 'Semantic Search' },
+  { icon: <FaChartBar />, label: 'Data & Tables' },
+  { icon: <FaFileAlt />, label: 'Research Papers' },
+  { icon: <FaShieldAlt />, label: 'Private & Secure' },
+  { icon: <FaBolt />, label: 'Instant Answers' },
+  { icon: <FaPlus />, label: 'Explore More', more: true },
+];
+
+const SUGGESTIONS = [
+  'Summarize the key findings of this document',
+  'What does section 3 say about revenue?',
+  'List all action items mentioned in the report',
+  'Compare the data in tables 2 and 4',
+];
+
 const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoading }) => {
   const chatWindowRef = useRef<HTMLDivElement>(null);
-  const [username, setUserName] = useState<string>(() => {
-    return localStorage.getItem("username") || ""; 
-  });
-
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      if(username) return;
-      try {
-        const res = await api.get("/api/auth/userinfo");
-        const data = res.data;
-        setUserName(data.name);
-        localStorage.setItem("username", data.name);
-      } catch (err: any) {
-        console.error("Failed to fetch user info:", err.response?.data?.msg || err.message);
-      }
-    };
-
-    fetchUserInfo();
-  }, []);
+  const username = localStorage.getItem('username') || 'None';
 
   useEffect(() => {
     if (chatWindowRef.current) {
@@ -47,90 +48,72 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, displayedText, isLoad
     <div className="chat-window" ref={chatWindowRef}>
       {messages.length === 0 && (
         <div className="chat-intro">
-          <h2>
-            Hey <strong>{localStorage.getItem("username")}</strong>, Welcome to <strong>BrainBody AI</strong>
+          <div className="chat-intro-status">
+            <span className="status-text">DocuMind Core v2.0 Active</span>
+          </div>
+
+          <h2 className="intro-heading">
+            {username ? <>Hey, <strong>{username}</strong></> : 'Welcome'}
           </h2>
 
-          <p>Your all-in-one companion for a sharper mind and stronger body.</p>
-          <p>You can ask me anything related to:</p>
+          <p className="intro-sub">
+            I'm <strong>DocuMind AI</strong> — upload a document and ask me anything.
+          </p>
 
-          <div className="badge-container">
-            <span className="tag">
-              <FaBrain style={{ marginRight: "6px" }} /> Mind Fitness
-            </span>
+          <div className="intro-tags">
+            {TAGS.map(t => (
+              <span className={`intro-tag${t.more ? ' intro-tag--more' : ''}`} key={t.label}>
+                {t.icon} {t.label}
+              </span>
+            ))}
+          </div>
 
-            <span className="tag">
-              <FaDumbbell style={{ marginRight: "6px" }} /> Workout Plans
-            </span>
+          <div className="intro-features-grid">
+            <div className="feature-cards">
+              <div className="feature-card-title">Instant Analysis</div>
+              <div className="feature-card-desc">Extract key insights from long documents in seconds.</div>
+            </div>
+            <div className="feature-cards">
+              <div className="feature-card-title">Smart Query</div>
+              <div className="feature-card-desc">Ask complex questions and get context-aware answers.</div>
+            </div>
+          </div>
 
-            <span className="tag">
-              <FaAppleAlt style={{ marginRight: "6px" }} /> Healthy Nutrition
-            </span>
-
-            <span className="tag">
-              <FaSmile style={{ marginRight: "6px" }} /> Stress Relief
-            </span>
-
-            <span className="tag">
-              <FaBullseye style={{ marginRight: "6px" }} /> Focus Boost
-            </span>
-
-            <span className="tag">
-              <FaCheckCircle style={{ marginRight: "6px" }} /> Habit Tracking
-            </span>
-
-            <span className="tag more">
-              <FaPlus style={{ marginRight: "6px" }} /> Explore More
-            </span>
+          <div className="intro-suggestions">
+            <p className="suggestions-label">Try asking:</p>
+            <div className="suggestions-list">
+              {SUGGESTIONS.map(s => (
+                <span className="suggestion-chip" key={s}>{s}</span>
+              ))}
+            </div>
           </div>
 
           <p className="intro-note">
-            Just type your question — I’ll guide you with personalized, science-based suggestions.
+            Upload a document using the <strong>+</strong> button, then start chatting.
           </p>
         </div>
       )}
 
-      {messages.map((msg, index) => (
-        <div
-          key={index}
-          className={`message ${msg.role}-message ${msg.role === "model" ? "ai-message" : ""}`}
-        >
-          {msg.role === "model" && (
-            <div className="icon">
-              <img className="brain-aii" src="brain.png" alt="AI" />
-            </div>
-          )}
-          <div className="message-bubble">
-            {msg.role === "model" ? (
-              <ReactMarkdown>{msg.text}</ReactMarkdown>
-            ) : (
-              <p style={{ whiteSpace: "pre-line", textAlign: "left" }}>{msg.text}</p>
-            )}
+      {messages.map((msg, i) => (
+        <div key={i} className={`msg-row msg-row--${msg.role}`}>
+          <div className="msg-bubble">
+            {msg.role === 'model' ? <ReactMarkdown>{msg.text}</ReactMarkdown> : <p>{msg.text}</p>}
           </div>
         </div>
       ))}
 
       {displayedText && (
-        <div className="message model-message">
-          <div className="icon">
-            <img className="brain-aii" src="brain.png" alt="AI" />
-          </div>
-          <div className="message-bubble">
+        <div className="msg-row msg-row--model">
+          <div className="msg-bubble">
             <ReactMarkdown>{displayedText}</ReactMarkdown>
           </div>
         </div>
       )}
 
       {isLoading && !displayedText && (
-        <div className="message model-message">
-          <div className="message-bubble typing-indicator">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+        <div className="msg-row msg-row--model">
+          <div className="msg-bubble msg-bubble--typing">
+            <span /><span /><span /><span />
           </div>
         </div>
       )}

@@ -1,57 +1,161 @@
 .input-area {
   flex-shrink: 0;
-  padding: 12px 16px 16px;
+  padding: 12px 20px 16px;
   background: var(--bg);
-  border-top: 1px solid var(--border);
   font-family: 'DM Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  /* position relative zaroori hai taaki chips iske andar align rahein */
+  position: relative; 
+}
+
+.file-chips {
+  position: absolute;
+  /* input-area ke padding ke hisab se top par position kiya */
+  bottom: calc(100% - 4px); 
+  left: 20px;
+  right: 20px;
+  
+  display: flex;
+  flex-wrap: nowrap;          /* Wrap nahi hoga, ek line me rahega */
+  overflow-x: auto;          /* Agar zyada files hain toh andar hi scroll hoga */
+  gap: 8px;
+  padding: 8px 0;
+  background: var(--bg);     /* Taaki piche ka chat text chhup jaye jab chips upar aayein */
+  z-index: 10;
+  
+  /* Scrollbar hide karne ke liye */
+  scrollbar-width: none;     
+  -ms-overflow-style: none;  
+  animation: chipsScaleIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.1) both;
+}
+
+/* Chrome, Safari ke liye scrollbar hide */
+.file-chips::-webkit-scrollbar {
+  display: none;
+}
+@keyframes chipsScaleIn {
+  from { opacity: 0; transform: scale(0.95) translateY(4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.file-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px 10px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-med);
+  border-radius: 10px;
+  max-width: 220px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+}
+
+.file-chip:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.file-chip-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.file-chip-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.file-chip-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+.file-chip-size {
+  font-size: 10px;
+  color: var(--text-subtle);
+  line-height: 1;
+}
+
+.file-chip-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-subtle);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.file-chip-remove:hover {
+  background: #FFF0F0;
+  color: #ff0000;
 }
 
 .input-shell {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
   background: var(--bg-card);
   border: 1px solid var(--border-med);
-  border-radius: 14px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  overflow: hidden;
+  border-radius: 40px;
+  padding: 8px 10px;
+  transition: all 0.2s ease;
 }
 
 .input-shell--disabled {
-  opacity: 0.55;
+  opacity: 0.6;
   pointer-events: none;
 }
 
 .input-textarea {
-  width: 100%;
-  padding: 14px 16px 8px;
+  flex: 1;
   border: none;
   outline: none;
   resize: none;
   background: transparent;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
+  font-family: inherit;
+  font-size: 14.5px;
   color: var(--text-primary);
-  line-height: 1.6;
-  min-height: 48px;
-  max-height: 160px;
+  line-height: 1.8;
+  min-height: 24px;
+  max-height: 140px;
   overflow-y: auto;
-  display: block;
+  padding: 4px 2px;
 }
 
 .input-textarea::placeholder {
   color: var(--text-subtle);
+  opacity: 0.8;
 }
 
-.input-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 10px 10px;
+.input-textarea::-webkit-scrollbar {
+  width: 4px;
 }
 
-.input-btns-left, 
-.input-btns-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.input-textarea::-webkit-scrollbar-thumb {
+  background: var(--border-med);
+  border-radius: 4px;
 }
 
 .input-btn {
@@ -60,53 +164,42 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: 8px;
-  border: 1px solid var(--border-med);
+  border-radius: 50px;
+  border: none;
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-  transition: all 0.18s ease;
-}
-
-.input-btn:hover:not(:disabled) {
-  background: var(--bg);
-  color: var(--text-primary);
+  flex-shrink: 0;
+  transition: all 0.2s ease;
 }
 
 .input-btn:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
 }
 
-.input-btn--listening {
-  background: #FFF0F0;
-  border-color: #C0392B;
-  color: #C0392B;
-  animation: micPulse 1.4s ease infinite;
-}
-
-@keyframes micPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.3); }
-  50% { box-shadow: 0 0 0 5px rgba(192, 57, 43, 0); }
+.input-btn--upload:hover:not(:disabled) {
+  background: var(--accent-light);
+  color: var(--accent);
 }
 
 .input-btn--send {
-  border-color: var(--border-med);
   color: var(--text-subtle);
+  background: transparent;
 }
 
 .input-btn--send.input-btn--active {
   background: var(--text-primary);
-  border-color: var(--text-primary);
   color: #ffffff;
 }
 
 .input-btn--send.input-btn--active:hover {
-  background: #333028;
+  background: #111111;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 540px) {
-  .input-area {
-    padding: 10px 12px 14px;
-  }
+  .input-area { padding: 10px 12px; }
+  .file-chip { max-width: 150px; }
+  .file-chip-name { max-width: 80px; }
 }

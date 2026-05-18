@@ -6,9 +6,7 @@ import App from './App';
 import HomePage from './Pages/Home';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
-import ErrorPage from './Pages/ErrorPage';
 import ProtectedRoute from './security/ProtectedRoute';
-import Features from './Pages/Features';
 import Loader from './Components/Loader';
 
 const LazyChatbot = React.lazy(() => import('./Pages/Chatbot'));
@@ -17,12 +15,10 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
       { path: '/login', element: <Login /> },
       { path: '/signup', element: <Signup /> },
-      { path: '/chatbot/features', element: <Features /> },
       {
         path: '/chatbot',
         element: <ProtectedRoute />,
@@ -30,7 +26,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: (
-              <Suspense fallback={<Loader text="Loading Brain+Body AI...." />}>
+              <Suspense fallback={<Loader />}>
                 <LazyChatbot />
               </Suspense>
             ),
